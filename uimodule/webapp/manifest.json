@@ -8,8 +8,23 @@
       "version": "0.0.1"
     },
     "title": "{{appTitle}}",
-    "description": "{{appDescription}}"
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "mainService": {
+        "uri": "/catalog/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
   },
+  "sap.cloud": {
+    "public": true,
+    "service": "cloud.service"
+  },  
   "sap.ui": {
     "technology": "UI5",
     "icons": {
@@ -27,7 +42,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.60",
       "libs": {
@@ -43,6 +58,17 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleName": "PM030.APP3.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "groupId": "$direct"
         }
       }
     },
@@ -65,12 +91,40 @@
       },
       "routes": [
         {
+					"pattern": "",
+					"name": "default",
+					"target": [
+						"TilePage"
+					]
+				},
+				{
+					"pattern": "TilePage",
+					"name": "TilePage",
+					"target": [
+						"TilePage"
+					]
+				},  
+        {
+					"pattern": "ViewPage",
+					"name": "ViewPage",
+					"target": [
+						"ViewPage"
+					]
+				},       
+        {
           "name": "RouteMainView",
           "pattern": "RouteMainView",
           "target": [
             "TargetMainView"
           ]
-        }
+        },
+        {
+					"pattern": "WizardPage",
+					"name": "WizardPage",
+					"target": [
+						"WizardPage"
+					]
+				}
       ],
       "targets": {
         "TargetMainView": {
@@ -79,7 +133,28 @@
           "clearControlAggregation": false,
           "viewId": "MainView",
           "viewName": "MainView"
-        }
+        },
+        "WizardPage": {
+					"controlAggregation": "pages",
+					"viewName": "WizardPage",
+					"viewId": "WizardPage",
+					"viewLevel": 1,
+					"transition": "slide"
+				},
+				"TilePage": {
+					"controlAggregation": "pages",
+					"viewName": "TilePage",
+					"viewId": "TilePage",
+					"viewLevel": 1,
+					"transition": "slide"
+				},
+        "ViewPage": {
+					"controlAggregation": "pages",
+					"viewName": "ViewPage",
+					"viewId": "ViewPage",
+					"viewLevel": 1,
+					"transition": "slide"
+				}
       }
     },
     "rootView": {

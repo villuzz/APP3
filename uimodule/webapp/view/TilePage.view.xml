@@ -1,0 +1,32 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:f="sap.f" controllerName="PM030.APP3.controller.TilePage">
+    <f:DynamicPage id="dynamicPageId" preserveHeaderStateOnScroll="true" showFooter="false" fitContent="true" class="sapUiContentPadding">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:content>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+                        <Button type="Transparent" icon="sap-icon://nav-back" press="onBack" class="sapUiTinyMarginEnd"></Button>
+                        <Title text="{i18n>Piani}"/>
+                    </HBox>
+                </f:content>
+                <f:actions></f:actions>
+                <f:navigationActions>
+                    <Image src="./img/logo.png" width="5rem"/>
+                </f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <HBox height="100%" >
+                <GenericTile class="sapUiTinyMargin" header="{i18n>CreaN}" subheader="{i18n>Piani}" press="onCrea">
+                    <TileContent>
+                        <ImageContent src="sap-icon://create"/>
+                    </TileContent>
+                </GenericTile>
+                <GenericTile class="sapUiTinyMargin" header="{i18n>VisualM}" subheader="{i18n>Piani}" press="onVisualizza">
+                    <TileContent>
+                        <ImageContent src="sap-icon://edit"/>
+                    </TileContent>
+                </GenericTile>
+            </HBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

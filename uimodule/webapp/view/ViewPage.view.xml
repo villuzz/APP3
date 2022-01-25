@@ -1,0 +1,73 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:f="sap.f" controllerName="PM030.APP3.controller.ViewPage">
+    <f:DynamicPage id="dynamicPageId" preserveHeaderStateOnScroll="true" showFooter="false" fitContent="true" class="sapUiContentPadding">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:content>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+                        <Button type="Transparent" icon="sap-icon://nav-back" press="onBack" class="sapUiTinyMarginEnd"></Button>
+                        <Title text="{i18n>Piani}"/>
+                    </HBox>
+                </f:content>
+                <f:actions></f:actions>
+                <f:navigationActions>
+                    <Button icon="sap-icon://action-settings" press="onPersoButtonPressed" class="sapUiTinyMarginBegin"/>
+                    <Button icon="sap-icon://download" press="onDataExport" class="sapUiTinyMarginBegin"/>
+                </f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterbarPiste" useToolbar="false" search="onSearchResult" showRestoreButton="true" showClearButton="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem id="FIWerks" visible="true" groupName="__$INTERNAL$" name="FY" label="{i18n>Werks}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select xmlns="sap.m" id="Werks" change="onFIFiscalYear" items="{path : '/Books'}">
+                                        <items>
+                                            <core:Item xmlns:core="sap.ui.core" key="{ID}" text="{title}"/>
+                                        </items>
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+<OverflowToolbar style="Clear">
+						<Button xmlns="sap.m" icon="sap-icon://create-form" text="{i18n>NuovaKPI}" id="btnNuovaKPI" press="handleNuova"/>
+					
+						<ToolbarSpacer/>
+					
+						<Button xmlns="sap.m" icon="sap-icon://upload" text="{i18n>uploadKPI}" id="btnUploadRisultati" press="handleUploadRisultati"
+							class="sapUiTinyMarginBegin"/>
+					</OverflowToolbar>
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <ScrollContainer width="100%" height="100%" vertical="true" horizontal="true">
+                <Table id="tbPiani" items="{mPiani>/}" mode="MultiSelect" sticky="HeaderToolbar,ColumnHeaders">
+                    <columns>
+                        <Column id="col1"><Text text="{i18n>Piani}"/></Column>
+                        <Column id="col2"><Text text="{i18n>description}"/></Column>
+                        <Column id="col3"><Text text="{i18n>description}"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem vAlign="Middle" type="Active" press="onPressLine">
+                            <cells>
+                                <Text text="{mPiani>Piani}"/>
+                                <Text text="{mPiani>description}"/>
+                                <Text text="{mPiani>description}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </ScrollContainer>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <ToolbarSpacer/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

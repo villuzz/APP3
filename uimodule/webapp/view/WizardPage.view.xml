@@ -1,0 +1,510 @@
+<mvc:View controllerName="PM030.APP3.controller.WizardPage" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:ui="sap.ui.table" xmlns="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" height="100%">
+            <f:DynamicPage
+                id="dynamicPage" toggleHeaderOnTitleClick="{/titleClickable}" stickySubheaderProvider="ShoppingCartWizard" class="sapUiNoContentPadding" showFooter="true">
+                <!-- DynamicPage Title -->
+                <f:title>
+                    <f:DynamicPageTitle>
+                        <f:heading>
+                  <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+						 <Button type="Transparent" icon="sap-icon://nav-back" press="onBack" class="sapUiTinyMarginEnd" ></Button>
+                            <Title text="{i18n>CreazionePiano}"/>
+					</HBox>   
+                         
+                         
+                        </f:heading>
+                    </f:DynamicPageTitle>
+                </f:title>
+                <!-- DynamicPage Header -->
+                <f:content>
+                    <Wizard id="WizardPiani" showNextButton="false" renderMode="Page" >
+                        <WizardStep id="Informazioni" nextStep="Specifiche" title="{i18n>InformazioniDivisione}" icon="sap-icon://map-2">
+                            <form:Form width="100%" editable="true" visible="true">
+                                <form:title/>
+                                <form:formContainers>
+                                    <form:FormContainer visible="true">
+                                        <form:formElements>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Divisione}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <!--<Input type="Text" value="{sSelect>/werks}" showValueHelp="true" valueHelpOnly="false" valueHelpRequest="handleValueHelpWerks" required="true" valueStateText="Invalid entry" />-->
+                                                    <ComboBox width="80%" selectedKey="{sSelect>/Divisione}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Tech}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <ComboBox width="80%" selectedKey="{sSelect>/Tech}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>SedeTT}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <ComboBox width="80%" selectedKey="{sSelect>/SedeTT}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Classe}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <ComboBox width="80%" selectedKey="{sSelect>/Classe}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                    </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Caratteristica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <ComboBox width="80%" selectedKey="{sSelect>/Caratteristica}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Strategia}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                     <ComboBox width="80%" selectedKey="{sSelect>/Strategia}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                            
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>ZBAU}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                     <ComboBox width="80%" selectedKey="{sSelect>/ZBAU}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>SistemaPMO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                      <ComboBox width="80%" selectedKey="{sSelect>/SistemaPMO}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>ClassePMO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                     <ComboBox width="80%" selectedKey="{sSelect>/ClassePMO}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>ProgressivoAssoluto}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                     <ComboBox width="80%" selectedKey="{sSelect>/ProgressivoAssoluto}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                   </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Frequenza}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                      <ComboBox width="80%" selectedKey="{sSelect>/Frequenza}"  items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </ComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                        </form:formElements>
+                                        <form:title/>
+                                    </form:FormContainer>
+                                </form:formContainers>
+                                <form:layout>
+                                    <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                                </form:layout>
+                            </form:Form>
+                        </WizardStep>
+                        <WizardStep id="Specifiche" title="{i18n>Specifiche}" subsequentSteps="Interventi" complete="" icon="sap-icon://money-bills">
+                            <form:Form width="100%" editable="true" visible="true">
+                                <form:title/>
+                                <form:formContainers>
+                                    <form:FormContainer visible="true">
+                                        <form:formElements>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>SedeTecnica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                     <MultiComboBox width="80%" selectedKeys="{sSelect>/SedeTecnica}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </MultiComboBox>
+                                                  </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <MultiComboBox width="80%" selectedKeys="{sSelect>/Equipment}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </MultiComboBox>
+                                                  
+                                                    
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <MultiComboBox width="80%" selectedKeys="{sSelect>/PuntodiMisura}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </MultiComboBox>
+                                                    </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                    <MultiComboBox width="80%" selectedKeys="{sSelect>/TipoOggettoTecnico}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </MultiComboBox>
+                                                     </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement visible="true">
+                                                <form:label>
+                                                    <Label text="{i18n>ProfiloCatalogo}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                </form:label>
+                                                <form:fields>
+                                                   <MultiComboBox width="80%" selectedKeys="{sSelect>/ProfiloCatalogo}" items="{ path: 'sWerks>/', sorter: { path: 'werks' } }" showSecondaryValues= "true">
+                                                        <core:ListItem key="{sWerks>werks}" text="{sWerks>werks}" additionalText="{sWerks>description}" />
+                                                    </MultiComboBox>
+                                                     </form:fields>
+                                            </form:FormElement>
+                                        </form:formElements>
+                                        <form:title/>
+                                    </form:FormContainer>
+                                </form:formContainers>
+                                <form:layout>
+                                    <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                                </form:layout>
+                            </form:Form>
+                        </WizardStep>
+                        <WizardStep id="Interventi" title="{i18n>Interventi}"  icon="sap-icon://insurance-car" subsequentSteps="Review" >
+                          <ui:Table id="idBaseStip" rows="{ path: 'sWerks>/', sorter: { path: 'werks' } }" selectionMode="MultiToggle" visibleRowCountMode="Auto" columnMove="true">
+                            <ui:columns>
+                              <ui:Column width="100%" filterProperty="werks" sortProperty="werks" 	resizable="true" autoResizable="true" >
+                                <Label text="{i18n>Divisione}"/>
+                                <ui:template>
+                                  <Text text="{sWerks>werks}"/>
+                                </ui:template>
+                              </ui:Column>
+                            </ui:columns>
+                          </ui:Table>
+                        </WizardStep>
+                         <WizardStep id="Review" title="{i18n>Review}" complete="" icon="sap-icon://message-information">
+                    <form:Form width="100%" editable="true" visible="true">
+                        <form:title>
+                            <core:Title text="1. {i18n>InformazioniDivisione}" level="Auto"/>
+                        </form:title>
+                        <form:formContainers>
+                            <form:FormContainer visible="true">
+                                <form:formElements>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Divisione}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Divisione}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Tech}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Tech}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>SedeTT}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/SedeTT}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Classe}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Classe}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Caratteristica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Caratteristica}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Strategia}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Strategia}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>ZBAU}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/ZBAU}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>SistemaPMO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/SistemaPMO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>ClassePMO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/ClassePMO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>ProgressivoAssoluto}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/ProgressivoAssoluto}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Frequenza}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Frequenza}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                </form:formElements>
+                                <form:title/>
+                            </form:FormContainer>
+                        </form:formContainers>
+                        <form:layout>
+                            <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                        </form:layout>
+                    </form:Form>
+                    <form:Form width="100%" editable="true" visible="true">
+                        <form:title>
+                            <core:Title text="2. {i18n>Specifiche}" level="Auto"/>
+                        </form:title>
+                        <form:formContainers>
+                            <form:FormContainer visible="true">
+                                <form:formElements>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>SedeTecnica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/SedeTecnica}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/Equipment}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/PuntodiMisura}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/TipoOggettoTecnico}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                    <form:FormElement visible="true">
+                                        <form:label>
+                                            <Label text="{i18n>ProfiloCatalogo}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:label>
+                                        <form:fields>
+                                            <Text text="{sSelect>/ProfiloCatalogo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        </form:fields>
+                                    </form:FormElement>
+                                </form:formElements>
+                                <form:title/>
+                            </form:FormContainer>
+                        </form:formContainers>
+                        <form:layout>
+                            <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                        </form:layout>
+                    </form:Form>
+                    <form:Form width="100%" editable="true" visible="true">
+                        <form:title>
+                            <core:Title text="3. {i18n>Interventi}" level="Auto"/>
+                        </form:title>
+                        <form:formContainers/>
+                        <form:layout>
+                            <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                        </form:layout>
+                    </form:Form>
+                    <Table width="auto" noDataText="{i18n>Nodata}" mode="None" showSeparators="All" class="sapUiResponsiveMargin">
+                        <infoToolbar>
+                            <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                                <content>
+                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </content>
+                            </Toolbar>
+                        </infoToolbar>
+                        <headerToolbar/>
+                        <columns>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Divisione}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>SedeTecnica}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>DescrizioneST}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>CentrodiLavoro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Strategy}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Materiali}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Servizi}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem type="Active">
+                                <cells>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                    <form:Form width="100%" editable="true" visible="true">
+                        <form:title>
+                            <core:Title text="3. {i18n>InterventiAcc}" level="Auto"/>
+                        </form:title>
+                        <form:formContainers/>
+                        <form:layout>
+                            <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                        </form:layout>
+                    </form:Form>
+                    <Table width="auto" noDataText="{i18n>Nodata}" mode="None" showSeparators="All" class="sapUiResponsiveMargin">
+                        <infoToolbar>
+                            <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                                <content>
+                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </content>
+                            </Toolbar>
+                        </infoToolbar>
+                        <headerToolbar/>
+                        <columns>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Divisione}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>SedeTecnica}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>DescrizioneST}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>CentrodiLavoro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Strategy}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Materiali}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <Text text="{i18n>Servizi}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem type="Active">
+                               <cells>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                  <Text/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+            </WizardStep>
+                    </Wizard>
+                </f:content>
+                <!-- DynamicPage Footer -->
+              	<f:footer>
+                  <OverflowToolbar>
+                    <ToolbarSpacer/>
+                    <Button text="{i18n>Indietro}"                    visible="{sSelect>/btnBack}"   press="onDialogBackButton" />
+                    <Button text="{i18n>Avanti}"   type="Emphasized"  visible="{sSelect>/btnNext}"   press="onDialogNextButton" />
+                    <Button text="{i18n>Review}"   type="Emphasized"  visible="{sSelect>/btnReview}" press="onDialogNextButton" />
+                    <Button text="{i18n>Salva}"    type="Emphasized"  visible="{sSelect>/btnFinish}" press="handleWizardSubmit" />
+                  </OverflowToolbar>
+                </f:footer>
+            </f:DynamicPage>
+</mvc:View>

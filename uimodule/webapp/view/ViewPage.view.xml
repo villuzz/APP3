@@ -4,59 +4,331 @@
             <f:DynamicPageTitle>
                 <f:content>
                     <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                        <Button type="Transparent" icon="sap-icon://nav-back" press="onBack" class="sapUiTinyMarginEnd"></Button>
-                        <Title text="{i18n>Piani}"/>
+                        <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
+                        <Title text="{i18n>Piani}" class="sapUiTinyMarginTop"/>
                     </HBox>
                 </f:content>
                 <f:actions></f:actions>
                 <f:navigationActions>
-                    <Button icon="sap-icon://action-settings" press="onPersoButtonPressed" class="sapUiTinyMarginBegin"/>
-                    <Button icon="sap-icon://download" press="onDataExport" class="sapUiTinyMarginBegin"/>
+                    <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin"/>
+                    <Button icon="sap-icon://action-settings" text="Colonne" press="onPersoButtonPressed" class="sapUiTinyMarginBegin"/>
+                    <Button icon="sap-icon://download" text="Scarica" press="onDataExport" class="sapUiTinyMarginBegin"/>
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar id="filterbarPiste" useToolbar="false" search="onSearchResult" showRestoreButton="true" showClearButton="true">
+                    <fb:FilterBar search="onSearch" clear="onClearFilter" showClearOnFB="true" showRestoreButton="true" showClearButton="true">
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem id="FIWerks" visible="true" groupName="__$INTERNAL$" name="FY" label="{i18n>Werks}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIINDEX" visible="true" groupName="__$INTERNAL$" name="FYINDEX" label="{i18n>INDEX}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Select xmlns="sap.m" id="Werks" change="onFIFiscalYear" items="{path : '/Books'}">
-                                        <items>
-                                            <core:Item xmlns:core="sap.ui.core" key="{ID}" text="{title}"/>
-                                        </items>
-                                    </Select>
+                                    <MultiComboBox items="{ path: 'sHelp>/INDEX' }">
+                                        <core:Item key="{sHelp>INDEX}" text="{sHelp>INDEX}"/>
+                                    </MultiComboBox>
                                 </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem mandatory="true" id="FIDivisioneu" visible="true" groupName="__$INTERNAL$" name="FYDivisione" label="{i18n>Divisioneu}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/DIVISIONEC', length:2000 }" selectedKeys="{sFilter>/DIVISIONEC}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FITIPO_SCHED" visible="true" groupName="__$INTERNAL$" name="FYTIPO_SCHED" label="{i18n>TIPO_SCHED}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/TIPO_SCHED', length:2000 }" selectedKeys="{sFilter>/TIPO_SCHED}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FITIPO_ORDINE" visible="true" groupName="__$INTERNAL$" name="FYTIPO_ORDINE" label="{i18n>TIPO_ORDINE}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/TIPO_ORDINE', length:2000 }" selectedKeys="{sFilter>/TIPO_ORDINE}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FITIPO_ATTIVITA" visible="true" groupName="__$INTERNAL$" name="FYTIPO_ATTIVITA" label="{i18n>TIPO_ATTIVITA}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/TIPO_ATTIVITA', length:2000 }" selectedKeys="{sFilter>/TIPO_ATTIVITA}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FISISTEMA" visible="true" groupName="__$INTERNAL$" name="FYSISTEMA" label="{i18n>SISTEMA}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/SISTEMA', length:2000 }" selectedKeys="{sFilter>/SISTEMA}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FICLASSE" visible="true" groupName="__$INTERNAL$" name="FYCLASSE" label="{i18n>CLASSE}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/CLASSE', length:2000 }" selectedKeys="{sFilter>/CLASSE}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIPROGRES" visible="true" groupName="__$INTERNAL$" name="FYPROGRES" label="{i18n>PROGRES}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/PROGRES', length:2000 }" selectedKeys="{sFilter>/PROGRES}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FISedeTecnica" visible="true" groupName="__$INTERNAL$" name="FYSedeTecnica" label="{i18n>SedeTecnica}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/SedeTecnica}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FIEquipment" visible="true" groupName="__$INTERNAL$" name="FYEquipment" label="{i18n>Equipment}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/Equipment}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FIZBAU" visible="true" groupName="__$INTERNAL$" name="FYZBAU" label="{i18n>ZBAU}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/ZBAU}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FICENTRO_LAVORO" visible="true" groupName="__$INTERNAL$" name="FYCENTRO_LAVORO" label="{i18n>CENTRO_LAVORO}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/CENTRO_LAVORO', length:2500  }" selectedKeys="{sFilter>/CENTRO_LAVORO}">
+                                  <core:ListItem key="{sHelp>Fieldname2}" text="{sHelp>Fieldname2}" additionalText="{sHelp>Fieldname1} - {sHelp>Fieldname3}"/>
+                                </MultiComboBox>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FIonlyActive" visible="true" groupName="__$INTERNAL$" name="onlyActive" label="{i18n>onlyActive}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                              <Select xmlns="sap.m" id="onlyActive" selectedKey="{sFilter>/ATTIVO}">
+                                <items>
+                                <core:ListItem xmlns:core="sap.ui.core" key="0" text="" />
+                                <core:ListItem xmlns:core="sap.ui.core" key="true" icon="sap-icon://accept" text="Attivo" />
+                                <core:ListItem xmlns:core="sap.ui.core" key="false" icon="sap-icon://decline" text="Disattivo"/>
+                                </items>
+                              </Select>
+                              </fb:control>
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
-<OverflowToolbar style="Clear">
-						<Button xmlns="sap.m" icon="sap-icon://create-form" text="{i18n>NuovaKPI}" id="btnNuovaKPI" press="handleNuova"/>
-					
-						<ToolbarSpacer/>
-					
-						<Button xmlns="sap.m" icon="sap-icon://upload" text="{i18n>uploadKPI}" id="btnUploadRisultati" press="handleUploadRisultati"
-							class="sapUiTinyMarginBegin"/>
-					</OverflowToolbar>
-
                 </f:content>
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
             <ScrollContainer width="100%" height="100%" vertical="true" horizontal="true">
-                <Table id="tbPiani" items="{mPiani>/}" mode="MultiSelect" sticky="HeaderToolbar,ColumnHeaders">
+                <Table id="tbPiani" items="{ path: 'mPiani>/',  sorter: [{ path: 'IndexPmo', descending: true, group:false }] }" mode="MultiSelect" sticky="HeaderToolbar,ColumnHeaders">
                     <columns>
-                        <Column id="col1"><Text text="{i18n>Piani}"/></Column>
-                        <Column id="col2"><Text text="{i18n>description}"/></Column>
-                        <Column id="col3"><Text text="{i18n>description}"/></Column>
+                        <Column width="10em" id="col3"><Text text="{i18n>IndexPmo}"/></Column>
+                        <Column width="10em" id="col4"><Text text="{i18n>InizioVal}"/></Column>
+                        <Column width="10em" id="col2"><Text text="{i18n>FineVal}"/></Column>
+                        <Column width="10em" id="col1"><Text text="{i18n>Divisioneu}"/></Column>
+                        <Column width="10em" id="col5"><Text text="{i18n>Uzeit}"/></Column>
+                        <Column width="10em" id="col6"><Text text="{i18n>Appuntam}"/></Column>
+                        <Column width="10em" id="col7"><Text text="{i18n>Azione}"/></Column>
+                        <Column width="10em" id="col8"><Text text="{i18n>Banfn}"/></Column>
+                        <Column width="10em" id="col9"><Text text="{i18n>Cdl}"/></Column>
+                        <Column width="10em" id="col10"><Text text="{i18n>Cdl1}"/></Column>
+                        <Column width="10em" id="col20"><Text text="{i18n>Cdl2}"/></Column>
+                        <Column width="10em" id="col21"><Text text="{i18n>Cdl3}"/></Column>
+                        <Column width="10em" id="col22"><Text text="{i18n>Cdl4}"/></Column>
+                        <Column width="10em" id="col23"><Text text="{i18n>Cdl5}"/></Column>
+                        <Column width="10em" id="col24"><Text text="{i18n>CentroLavoro}"/></Column>
+                        <Column width="10em" id="col25"><Text text="{i18n>Ciclo}"/></Column>
+                        <Column width="10em" id="col26"><Text text="{i18n>Classe}"/></Column>
+                        <Column width="10em" id="col27"><Text text="{i18n>CodAzione}"/></Column>
+                        <Column width="10em" id="col28"><Text text="{i18n>Collective}"/></Column>
+                        <Column width="10em" id="col29"><Text text="{i18n>Criticita}"/></Column>
+                        <Column width="10em" id="col30"><Text text="{i18n>DataInizCiclo}"/></Column>
+                        <Column width="10em" id="col31"><Text text="{i18n>Datum}"/></Column>
+                        <Column width="10em" id="col32"><Text text="{i18n>Daune}"/></Column>
+                        <Column width="10em" id="col33"><Text text="{i18n>DayAdv}"/></Column>
+                        <Column width="10em" id="col34"><Text text="{i18n>DesBreve}"/></Column>
+                        <Column width="10em" id="col35"><Text text="{i18n>DesComponente}"/></Column>
+                        <Column width="10em" id="col36"><Text text="{i18n>DesEstesa}"/></Column>
+                        <Column width="10em" id="col37"><Text text="{i18n>Destinatario}"/></Column>
+                        <Column width="10em" id="col38"><Text text="{i18n>Determinanza}"/></Column>
+                        <Column width="10em" id="col39"><Text text="{i18n>Differibile}"/></Column>
+                        <Column width="10em" id="col40"><Text text="{i18n>Divisionec}"/></Column>
+                        <Column width="10em" id="col41"><Text text="{i18n>DurataCiclo}"/></Column>
+                        <Column width="10em" id="col42"><Text text="{i18n>EquipmentCompo}"/></Column>
+                        <Column width="10em" id="col43"><Text text="{i18n>EquipmentOdm}"/></Column>
+                        <Column width="10em" id="col44"><Text text="{i18n>FineCard}"/></Column>
+                        <Column width="10em" id="col45"><Text text="{i18n>FlagAttivo}"/></Column>
+                        <Column width="10em" id="col46"><Text text="{i18n>FlagInterc}"/></Column>
+                        <Column width="10em" id="col47"><Text text="{i18n>FlagMateriali}"/></Column>
+                        <Column width="10em" id="col48"><Text text="{i18n>FlagOdm}"/></Column>
+                        <Column width="10em" id="col49"><Text text="{i18n>FlagPrestazioni}"/></Column>
+                        <Column width="10em" id="col50"><Text text="{i18n>FlgMail}"/></Column>
+                        <Column width="10em" id="col60"><Text text="{i18n>Frequenza}"/></Column>
+                        <Column width="10em" id="col61"><Text text="{i18n>Hper}"/></Column>
+                        <Column width="10em" id="col62"><Text text="{i18n>Hper1}"/></Column>
+                        <Column width="10em" id="col63"><Text text="{i18n>Hper2}"/></Column>
+                        <Column width="10em" id="col64"><Text text="{i18n>Hper3}"/></Column>
+                        <Column width="10em" id="col65"><Text text="{i18n>Hper4}"/></Column>
+                        <Column width="10em" id="col66"><Text text="{i18n>Hper5}"/></Column>
+                        <Column width="10em" id="col67"><Text text="{i18n>Indisponibilita}"/></Column>
+                        <Column width="10em" id="col68"><Text text="{i18n>IntegTxtEsteso}"/></Column>
+                        <Column width="10em" id="col69"><Text text="{i18n>Lstar}"/></Column>
+                        <Column width="10em" id="col70"><Text text="{i18n>Lstar1}"/></Column>
+                        <Column width="10em" id="col71"><Text text="{i18n>Lstar2}"/></Column>
+                        <Column width="10em" id="col72"><Text text="{i18n>Lstar3}"/></Column>
+                        <Column width="10em" id="col73"><Text text="{i18n>Lstar4}"/></Column>
+                        <Column width="10em" id="col74"><Text text="{i18n>Lstar5}"/></Column>
+                        <Column width="10em" id="col75"><Text text="{i18n>Num}"/></Column>
+                        <Column width="10em" id="col76"><Text text="{i18n>Num1}"/></Column>
+                        <Column width="10em" id="col77"><Text text="{i18n>Num2}"/></Column>
+                        <Column width="10em" id="col78"><Text text="{i18n>Num3}"/></Column>
+                        <Column width="10em" id="col79"><Text text="{i18n>Num4}"/></Column>
+                        <Column width="10em" id="col80"><Text text="{i18n>Num5}"/></Column>
+                        <Column width="10em" id="col90"><Text text="{i18n>Percorso}"/></Column>
+                        <Column width="10em" id="col91"><Text text="{i18n>Persone}"/></Column>
+                        <Column width="10em" id="col92"><Text text="{i18n>Persone1}"/></Column>
+                        <Column width="10em" id="col93"><Text text="{i18n>Persone2}"/></Column>
+                        <Column width="10em" id="col94"><Text text="{i18n>Persone3}"/></Column>
+                        <Column width="10em" id="col95"><Text text="{i18n>Persone4}"/></Column>
+                        <Column width="10em" id="col96"><Text text="{i18n>Persone5}"/></Column>
+                        <Column width="10em" id="col97"><Text text="{i18n>Point}"/></Column>
+                        <Column width="10em" id="col98"><Text text="{i18n>Priorita}"/></Column>
+                        <Column width="10em" id="col99"><Text text="{i18n>Progres}"/></Column>
+                        <Column width="10em" id="col100"><Text text="{i18n>Scostamento}"/></Column>
+                        <Column width="10em" id="col101"><Text text="{i18n>SedeTecOdm}"/></Column>
+                        <Column width="10em" id="col102"><Text text="{i18n>Sistema}"/></Column>
+                        <Column width="10em" id="col103"><Text text="{i18n>StComponente}"/></Column>
+                        <Column width="10em" id="col104"><Text text="{i18n>Steus}"/></Column>
+                        <Column width="10em" id="col105"><Text text="{i18n>Steus1}"/></Column>
+                        <Column width="10em" id="col106"><Text text="{i18n>Steus2}"/></Column>
+                        <Column width="10em" id="col107"><Text text="{i18n>Steus3}"/></Column>
+                        <Column width="10em" id="col108"><Text text="{i18n>Steus4}"/></Column>
+                        <Column width="10em" id="col109"><Text text="{i18n>Steus5}"/></Column>
+                        <Column width="10em" id="col110"><Text text="{i18n>TipoAggr}"/></Column>
+                        <Column width="10em" id="col111"><Text text="{i18n>TipoAttivita}"/></Column>
+                        <Column width="10em" id="col112"><Text text="{i18n>TipoGestione}"/></Column>
+                        <Column width="10em" id="col113"><Text text="{i18n>TipoGestione1}"/></Column>
+                        <Column width="10em" id="col114"><Text text="{i18n>TipoGestione2}"/></Column>
+                        <Column width="10em" id="col115"><Text text="{i18n>TipoOrdine}"/></Column>
+                        <Column width="10em" id="col116"><Text text="{i18n>TipoPmo}"/></Column>
+                        <Column width="10em" id="col117"><Text text="{i18n>Toth}"/></Column>
+                        <Column width="10em" id="col118"><Text text="{i18n>Toth1}"/></Column>
+                        <Column width="10em" id="col119"><Text text="{i18n>Toth2}"/></Column>
+                        <Column width="10em" id="col120"><Text text="{i18n>Toth3}"/></Column>
+                        <Column width="10em" id="col121"><Text text="{i18n>Toth4}"/></Column>
+                        <Column width="10em" id="col122"><Text text="{i18n>Toth5}"/></Column>
+                        <Column width="10em" id="col123"><Text text="{i18n>TxtCiclo}"/></Column>
+                        <Column width="10em" id="col124"><Text text="{i18n>UltimaEsecuz}"/></Column>
+                        <Column width="10em" id="col125"><Text text="{i18n>Uname}"/></Column>
+                        <Column width="10em" id="col126"><Text text="{i18n>UnitaCiclo}"/></Column>
+
                     </columns>
                     <items>
                         <ColumnListItem vAlign="Middle" type="Active" press="onPressLine">
                             <cells>
-                                <Text text="{mPiani>Piani}"/>
-                                <Text text="{mPiani>description}"/>
-                                <Text text="{mPiani>description}"/>
+                                
+                                <Text text="{ parts:[{path:'mPiani>IndexPmo'}], formatter: '.LocalFormatter.alphaOutput'}"/>
+                                <Text text="{ parts:[{path:'mPiani>InizioVal'}], formatter: '.LocalFormatter.formatDate'}"/>
+                                <Text text="{ parts:[{path:'mPiani>FineVal'}], formatter: '.LocalFormatter.formatDate'}"/>
+                                <Text text="{mPiani>Divisioneu}"/>
+
+                                <Text text="{ parts:[{path:'mPiani>Uzeit'}], formatter: '.LocalFormatter.UzeitFormatter'}"/>
+                                <Text text="{mPiani>Appuntam}"/>
+                                <Text text="{mPiani>Azione}"/>
+                                <Text text="{mPiani>Banfn}"/>
+                                <Text text="{mPiani>Cdl}"/>
+                                <Text text="{mPiani>Cdl1}"/>
+                                <Text text="{mPiani>Cdl2}"/>
+                                <Text text="{mPiani>Cdl3}"/>
+                                <Text text="{mPiani>Cdl4}"/>
+                                <Text text="{mPiani>Cdl5}"/>
+                                <Text text="{mPiani>CentroLavoro}"/>
+                                <Text text="{mPiani>Ciclo}"/>
+                                <Text text="{mPiani>Classe}"/>
+                                <Text text="{mPiani>CodAzione}"/>
+                                <Text text="{mPiani>Collective}"/>
+                                <Text text="{mPiani>Criticita}"/>
+                                <Text text="{ parts:[{path:'mPiani>DataInizCiclo'}], formatter: '.LocalFormatter.formatDate'}"/>
+                                <Text text="{mPiani>Datum}"/>
+                                <Text text="{mPiani>Daune}"/>
+                                <Text text="{mPiani>DayAdv}"/>
+                                <Text text="{mPiani>DesBreve}"/>
+                                <Text text="{mPiani>DesComponente}"/>
+                                <Text text="{mPiani>DesEstesa}"/>
+                                <Text text="{mPiani>Destinatario}"/>
+                                <Text text="{mPiani>Determinanza}"/>
+                                <Text text="{mPiani>Differibile}"/>
+                                <Text text="{mPiani>Divisionec}"/>
+                                <Text text="{mPiani>DurataCiclo}"/>
+                                <Text text="{mPiani>EquipmentCompo}"/>
+                                <Text text="{mPiani>EquipmentOdm}"/>
+                                <Text text="{mPiani>FineCard}"/>
+                                <Text text="{mPiani>FlagAttivo}"/>
+                                <Text text="{mPiani>FlagInterc}"/>
+                                <Text text="{mPiani>FlagMateriali}"/>
+                                <Text text="{mPiani>FlagOdm}"/>
+                                <Text text="{mPiani>FlagPrestazioni}"/>
+                                <Text text="{mPiani>FlgMail}"/>
+                                <Text text="{mPiani>Frequenza}"/>
+                                <Text text="{mPiani>Hper}"/>
+                                <Text text="{mPiani>Hper1}"/>
+                                <Text text="{mPiani>Hper2}"/>
+                                <Text text="{mPiani>Hper3}"/>
+                                <Text text="{mPiani>Hper4}"/>
+                                <Text text="{mPiani>Hper5}"/>
+                                <Text text="{mPiani>Indisponibilita}"/>
+                                <Text text="{mPiani>IntegTxtEsteso}"/>
+                                <Text text="{mPiani>Lstar}"/>
+                                <Text text="{mPiani>Lstar1}"/>
+                                <Text text="{mPiani>Lstar2}"/>
+                                <Text text="{mPiani>Lstar3}"/>
+                                <Text text="{mPiani>Lstar4}"/>
+                                <Text text="{mPiani>Lstar5}"/>
+                                <Text text="{mPiani>Num}"/>
+                                <Text text="{mPiani>Num1}"/>
+                                <Text text="{mPiani>Num2}"/>
+                                <Text text="{mPiani>Num3}"/>
+                                <Text text="{mPiani>Num4}"/>
+                                <Text text="{mPiani>Num5}"/>
+                                <Text text="{mPiani>Percorso}"/>
+                                <Text text="{mPiani>Persone}"/>
+                                <Text text="{mPiani>Persone1}"/>
+                                <Text text="{mPiani>Persone2}"/>
+                                <Text text="{mPiani>Persone3}"/>
+                                <Text text="{mPiani>Persone4}"/>
+                                <Text text="{mPiani>Persone5}"/>
+                                <Text text="{mPiani>Point}"/>
+                                <Text text="{mPiani>Priorita}"/>
+                                <Text text="{mPiani>Progres}"/>
+                                <Text text="{mPiani>Scostamento}"/>
+                                <Text text="{mPiani>SedeTecOdm}"/>
+                                <Text text="{mPiani>Sistema}"/>
+                                <Text text="{mPiani>StComponente}"/>
+                                <Text text="{mPiani>Steus}"/>
+                                <Text text="{mPiani>Steus1}"/>
+                                <Text text="{mPiani>Steus2}"/>
+                                <Text text="{mPiani>Steus3}"/>
+                                <Text text="{mPiani>Steus4}"/>
+                                <Text text="{mPiani>Steus5}"/>
+                                <Text text="{mPiani>TipoAggr}"/>
+                                <Text text="{mPiani>TipoAttivita}"/>
+                                <Text text="{mPiani>TipoGestione}"/>
+                                <Text text="{mPiani>TipoGestione1}"/>
+                                <Text text="{mPiani>TipoGestione2}"/>
+                                <Text text="{mPiani>TipoOrdine}"/>
+                                <Text text="{mPiani>TipoPmo}"/>
+                                <Text text="{mPiani>Toth}"/>
+                                <Text text="{mPiani>Toth1}"/>
+                                <Text text="{mPiani>Toth2}"/>
+                                <Text text="{mPiani>Toth3}"/>
+                                <Text text="{mPiani>Toth4}"/>
+                                <Text text="{mPiani>Toth5}"/>
+                                <Text text="{mPiani>TxtCiclo}"/>
+                                <Text text="{ parts:[{path:'mPiani>UltimaEsecuz'}], formatter: '.LocalFormatter.formatDate'}"/>
+                                <Text text="{mPiani>Uname}"/>
+                                <Text text="{mPiani>UnitaCiclo}"/>
+
                             </cells>
                         </ColumnListItem>
                     </items>

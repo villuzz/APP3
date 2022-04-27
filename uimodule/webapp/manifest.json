@@ -62,13 +62,9 @@
       },
       "": {
         "dataSource": "mainService",
-        "preload": true,
+        "preload": false,
         "settings": {
-          "synchronizationMode": "None",
-          "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true,
-          "groupId": "$direct"
+          "useBatch": false
         }
       }
     },
@@ -110,7 +106,14 @@
 					"target": [
 						"ViewPage"
 					]
-				},       
+				},
+        {
+					"pattern": "DetailPage",
+					"name": "DetailPage",
+					"target": [
+						"DetailPage"
+					]
+				},            
         {
           "name": "RouteMainView",
           "pattern": "RouteMainView",
@@ -152,6 +155,13 @@
 					"controlAggregation": "pages",
 					"viewName": "ViewPage",
 					"viewId": "ViewPage",
+					"viewLevel": 1,
+					"transition": "slide"
+				},
+        "DetailPage": {
+					"controlAggregation": "pages",
+					"viewName": "DetailPage",
+					"viewId": "DetailPage",
 					"viewLevel": 1,
 					"transition": "slide"
 				}

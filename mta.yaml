@@ -11,14 +11,21 @@ modules:
       disk-quota: 512M
       memory: 512M
     requires:
+      - name: ins-gds-gpgdh-cf-uitheme-newpm030
       - name: APP3_destination
       - name: APP3_html5_repo_runtime
       - name: APP3_uaa
+      - name: APP3_connectivity
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:ui --prefix ..
   - name: webapp_deployer
     type: com.sap.application.content
     path: deployer
     requires:
-      - name: APP3_html5_repo_host
+      - name: APP3_html5_repo_host_2
         parameters:
           content-target: true
     build-parameters:
@@ -37,6 +44,11 @@ modules:
         - npm run build:uimodule --prefix ..
       supported-platforms: []
 resources:
+  - name: ins-gds-gpgdh-cf-uitheme-newpm030
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: theming 
+      service-plan: standard
   - name: APP3_destination
     type: org.cloudfoundry.managed-service
     parameters:
@@ -45,7 +57,7 @@ resources:
       config:
         HTML5Runtime_enabled: true
         version: 1.0.0
-  - name: APP3_html5_repo_host
+  - name: APP3_html5_repo_host_2
     type: org.cloudfoundry.managed-service
     parameters:
       service-plan: app-host
@@ -63,3 +75,8 @@ resources:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
+  - name: APP3_connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: lite
+      service: connectivity

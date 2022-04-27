@@ -1,0 +1,433 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+    <f:DynamicPage
+        id="Page4" showFooter="true" preserveHeaderStateOnScroll="true" fitContent="true" class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+                        <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
+                        <Title text="{i18n>Review}" class="sapUiTinyMarginTop"/>
+                    </HBox>
+
+
+                </f:heading>
+                <f:navigationActions>
+                  <Button text="" icon="sap-icon://action-settings" press="onPersoButtonPressed2" class="sapUiTinyMarginBegin"/>
+                </f:navigationActions>
+
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:content>
+        <VBox class="sapUiSmallMargin">
+            <form:Form width="100%" editable="true" visible="true">
+                <form:layout>
+                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                </form:layout>
+                <form:title>
+                    <core:Title text="1. {i18n>InformazioniDivisione}" level="Auto"/>
+                </form:title>
+                <form:formContainers>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Divisione}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/DIVISIONE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Tech}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/SEDE_TECNICA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>SedeTT}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Classe}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/CLASSE_SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Caratteristica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/CARATT_SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Strategia}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/STRATEGIA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>ZBAU}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/ZBAU}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>SistemaPMO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/SISTEMA_PMO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>ClassePMO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/CLASSE_PMO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>ProgressivoAssoluto}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/PROGRES_PMO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Frequenza}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/TIPOFREQUENZA} - {sSelect>/FREQ_TEMPO}{sSelect>/FREQ_CICLO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                </form:formContainers>
+            </form:Form>
+            <form:Form width="100%" editable="true" visible="true">
+                <form:layout>
+                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                </form:layout>
+                <form:title>
+                    <core:Title text="2. {i18n>Specifiche}" level="Auto"/>
+                </form:title>
+                <form:formContainers>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>SedeTecnica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/SEDE_TECNICA_ECC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/EQUIPMENT}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/MPTYP}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/OGGETTO_TECNICO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>ProfiloCatalogo}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Text text="{sSelect>/PROFILO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:fields>
+                            </form:FormElement>
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                </form:formContainers>
+
+            </form:Form>
+            <form:Form width="100%" editable="true" visible="true">
+                <form:layout>
+                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                </form:layout>
+                <form:title>
+                    <core:Title text="3. {i18n>Interventi}" level="Auto"/>
+                </form:title>
+                <form:formContainers/>
+
+            </form:Form>
+ <!--           <OverflowToolbar width="100%">
+                <ToolbarSpacer/>
+            </OverflowToolbar>-->
+
+            <ScrollContainer width="100%" horizontal="true">
+                <Table id="tbPiani2" items="{ path: 'allIndex2>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
+            <columns>
+              <Column width="10em" id="vCol1"><Text text="{i18n>INDEX}"/></Column>
+              <Column width="10em" id="vCol2"><Text text="{i18n>CONTATORE}"/></Column>
+              <Column width="5em" id="vCol104"><Text text="{i18n>Materiali}"/></Column>
+              <Column width="5em" id="vCol105"><Text text="{i18n>Servizi}"/></Column>
+              <Column width="10em" id="vCol5"><Text text="{i18n>SISTEMA}"/></Column>
+              <Column width="10em" id="vCol6"><Text text="{i18n>PROGRES}"/></Column>
+              <Column width="16em" id="vCol7"><Text text="{i18n>DESC_PROG}"/></Column>
+              <Column width="10em" id="vCol8"><Text text="{i18n>CLASSE}"/></Column>
+              <Column width="16em" id="vCol9"><Text text="{i18n>DES_COMPONENTE}"/></Column>
+              <Column width="10em" id="vCol10"><Text text="{i18n>DIVISIONE}"/></Column>
+              <Column width="10em" id="vCol20"><Text text="{i18n>SEDE_TECNICA}"/></Column>
+              <Column width="15em" id="vCol21"><Text text="{i18n>SEDE_TECNICA_P}"/></Column>
+              <Column width="18em" id="vCol27"><Text text="{i18n>DESC_SEDE}"/></Column>
+              <Column width="10em" id="vCol28"><Text text="{i18n>EQUIPMENT}"/></Column>
+              <Column width="10em" id="vCol29"><Text text="{i18n>TESTO_ESTESO_P}"/></Column>
+              <Column width="16em" id="vCol30"><Text text="{i18n>CLASSE_SEDE}"/></Column>
+              <Column width="16em" id="vCol31"><Text text="{i18n>CARATT_SEDE}"/></Column>
+              <Column width="16em" id="vCol32"><Text text="{i18n>OGGETTO_TECNICO}"/></Column>
+              <Column width="10em" id="vCol33"><Text text="{i18n>PROFILO}"/></Column>
+              <Column width="10em" id="vCol34"><Text text="{i18n>ZBAU}"/></Column>
+              <Column width="10em" id="vCol35"><Text text="{i18n>VALORE}"/></Column>
+              <Column width="16em" id="vCol37"><Text text="{i18n>STRATEGIA}"/></Column>
+              <Column width="16em" id="vCol38"><Text text="{i18n>STRATEGIA_DESC}"/></Column>
+              <Column width="10em" id="vCol39"><Text text="{i18n>DIVISIONEC}"/></Column>
+              <Column width="10em" id="vCol40"><Text text="{i18n>CENTRO_LAVORO}"/></Column>
+              <Column width="10em" id="vCol50"><Text text="{i18n>TIPO_GESTIONE}"/></Column>
+              <Column width="10em" id="vCol51"><Text text="{i18n>TIPO_GESTIONE_1}"/></Column>
+              <Column width="10em" id="vCol52"><Text text="{i18n>TIPO_GESTIONE_2}"/></Column>
+              <Column width="10em" id="vCol53"><Text text="{i18n>PRIORITA}"/></Column>
+              <Column width="10em" id="vCol54"><Text text="{i18n>TIPO_ATTIVITA}"/></Column>
+              <Column width="18em" id="vCol55"><Text text="{i18n>DESC_BREVE}"/></Column>
+              <Column width="10em" id="vCol56"><Text text="{i18n>TESTO_ESTESO}"/></Column>
+              <Column width="10em" id="vCol57"><Text text="{i18n>INDISPONIBILITA}"/></Column>
+              <Column width="10em" id="vCol58"><Text text="{i18n>TIPO_ORDINE}"/></Column>
+              <Column width="10em" id="vCol59"><Text text="{i18n>LSTAR}"/></Column>
+              <Column width="12em" id="vCol60"><Text text="{i18n>STEUS}"/></Column>
+              <Column width="10em" id="vCol61"><Text text="{i18n>NUM}"/></Column>
+              <Column width="10em" id="vCol62"><Text text="{i18n>PERSONE}"/></Column>
+              <Column width="10em" id="vCol63"><Text text="{i18n>HPER}"/></Column>
+
+              <Column width="10em" id="vCol64"><Text text="{i18n>LSTAR_1}"/></Column>
+              <Column width="12em" id="vCol65"><Text text="{i18n>STEUS_1}"/></Column>
+              <Column width="10em" id="vCol66"><Text text="{i18n>NUM_1}"/></Column>
+              <Column width="10em" id="vCol67"><Text text="{i18n>PERSONE_1}"/></Column>
+              <Column width="10em" id="vCol68"><Text text="{i18n>HPER_1}"/></Column>
+
+              <Column width="10em" id="vCol69"><Text text="{i18n>LSTAR_2}"/></Column>
+              <Column width="12em" id="vCol70"><Text text="{i18n>STEUS_2}"/></Column>
+              <Column width="10em" id="vCol71"><Text text="{i18n>NUM_2}"/></Column>
+              <Column width="10em" id="vCol72"><Text text="{i18n>PERSONE_2}"/></Column>
+              <Column width="10em" id="vCol73"><Text text="{i18n>HPER_2}"/></Column>
+
+
+              <Column width="10em" id="vCol75"><Text text="{i18n>LSTAR_3}"/></Column>
+              <Column width="12em" id="vCol76"><Text text="{i18n>STEUS_3}"/></Column>
+              <Column width="10em" id="vCol77"><Text text="{i18n>NUM_3}"/></Column>
+              <Column width="10em" id="vCol78"><Text text="{i18n>PERSONE_3}"/></Column>
+              <Column width="10em" id="vCol79"><Text text="{i18n>HPER_3}"/></Column>
+
+
+              <Column width="10em" id="vCol80"><Text text="{i18n>LSTAR_4}"/></Column>
+              <Column width="12em" id="vCol81"><Text text="{i18n>STEUS_4}"/></Column>
+              <Column width="10em" id="vCol82"><Text text="{i18n>NUM_4}"/></Column>
+              <Column width="10em" id="vCol83"><Text text="{i18n>PERSONE_4}"/></Column>
+              <Column width="10em" id="vCol84"><Text text="{i18n>HPER_4}"/></Column>
+
+
+              <Column width="10em" id="vCol85"><Text text="{i18n>LSTAR_5}"/></Column>
+              <Column width="12em" id="vCol86"><Text text="{i18n>STEUS_5}"/></Column>
+              <Column width="10em" id="vCol87"><Text text="{i18n>NUM_5}"/></Column>
+              <Column width="10em" id="vCol88"><Text text="{i18n>PERSONE_5}"/></Column>
+              <Column width="10em" id="vCol89"><Text text="{i18n>HPER_5}"/></Column>
+
+
+              <Column width="10em" id="vCol95"><Text text="{i18n>RISK}"/></Column>
+              <Column width="10em" id="vCol96"><Text text="{i18n>LIMITE}"/></Column>
+              <Column width="10em" id="vCol97"><Text text="{i18n>FREQ_TEMPO}"/></Column>
+              <Column width="10em" id="vCol98"><Text text="{i18n>UNITA_TEMPO}"/></Column>
+              <Column width="14em" id="vCol99"><Text text="{i18n>FREQ_CICLO}"/></Column>
+              <Column width="10em" id="vCol100"><Text text="{i18n>UNITA_CICLO}"/></Column>
+              <Column width="14em" id="vCol101"><Text text="{i18n>POINT}"/></Column>
+              <Column width="10em" id="vCol102"><Text text="{i18n>MPTYP}"/></Column>
+              <Column width="10em" id="vCol103"><Text text="{i18n>TIPOFREQUENZA}"/></Column>
+
+            </columns>
+            <items>
+              <ColumnListItem vAlign="Middle" type="Active">
+                <cells>
+                  <Text text="{allIndex2>INDEX}"/>
+                  <Text text="{allIndex2>CONTATORE} " />
+                  <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
+                  <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
+
+                  <Text text="{allIndex2>SISTEMA} " />
+                  <Text text="{allIndex2>PROGRES} " />
+                  <Text text="{allIndex2>DESC_PROG} " />
+                  <Text text="{allIndex2>CLASSE} " />
+                  <Text text="{allIndex2>DES_COMPONENTE} " />
+                  <Text text="{allIndex2>DIVISIONE} " />
+                  <Text text="{allIndex2>SEDE_TECNICA} " />
+                  <Text text="{allIndex2>SEDE_TECNICA_P} " />
+                  <Text text="{allIndex2>DESC_SEDE} " />
+                  <Text text="{allIndex2>EQUIPMENT} " />
+                  <Button icon="sap-icon://document-text" tooltip="{allIndex2>TESTO_ESTESO_P}" type="Transparent" press="handleTestoView" />
+                  <Text text="{allIndex2>CLASSE_SEDE} " />
+                  <Text text="{allIndex2>CARATT_SEDE} " />
+                  <Text text="{allIndex2>OGGETTO_TECNICO} " />
+                  <Text text="{allIndex2>PROFILO} " />
+                  <Text text="{allIndex2>ZBAU} " />
+                  <Text text="{allIndex2>VALORE} " />
+                  <Text text="{allIndex2>STRATEGIA}" />
+                  <Text text="{allIndex2>STRATEGIA_DESC}" />
+                  <Text text="{allIndex2>DIVISIONEC}" />
+                  <Text text="{allIndex2>CENTRO_LAVORO}" />
+                  <Text text="{allIndex2>TIPO_GESTIONE}" />
+                  <Text text="{allIndex2>TIPO_GESTIONE_1}" />
+                  <Text text="{allIndex2>TIPO_GESTIONE_2}" />
+                  <Text text="{allIndex2>PRIORITA}" />
+                  <Text text="{allIndex2>TIPO_ATTIVITA}" />
+                  <Text text="{allIndex2>DESC_BREVE}" />
+                  <Button icon="sap-icon://document-text" tooltip="{allIndex2>TESTO_ESTESO}" type="Transparent" press="handleTesto2View" />
+                  <Text text="{allIndex2>INDISPONIBILITA}" />
+                  <Text text="{allIndex2>TIPO_ORDINE}" />
+                  <Text text="{allIndex2>LSTAR}" />
+                  <Text text="{allIndex2>STEUS}" />
+                  <Text text="{allIndex2>NUM}" />
+                  <Text text="{allIndex2>PERSONE}"/>
+                  <Text text="{allIndex2>HPER}"/>
+
+                  <Text text="{allIndex2>LSTAR_1}" />
+                  <Text text="{allIndex2>STEUS_1}" />
+                  <Text text="{allIndex2>NUM_1}" />
+                  <Text text="{allIndex2>PERSONE_1}"/>
+                  <Text text="{allIndex2>HPER_1}"/>
+
+                  <Text text="{allIndex2>LSTAR_2}" />
+                  <Text text="{allIndex2>STEUS_2}" />
+                  <Text text="{allIndex2>NUM_2}" />
+                  <Text text="{allIndex2>PERSONE_2}"/>
+                  <Text text="{allIndex2>HPER_2}"/>
+
+                  <Text text="{allIndex2>LSTAR_3}" />
+                  <Text text="{allIndex2>STEUS_3}" />
+                  <Text text="{allIndex2>NUM_3}" />
+                  <Text text="{allIndex2>PERSONE_3}"/>
+                  <Text text="{allIndex2>HPER_3}"/>
+
+                  <Text text="{allIndex2>LSTAR_4}" />
+                  <Text text="{allIndex2>STEUS_4}" />
+                  <Text text="{allIndex2>NUM_4}" />
+                  <Text text="{allIndex2>PERSONE_4}"/>
+                  <Text text="{allIndex2>HPER_4}"/>
+
+                  <Text text="{allIndex2>LSTAR_5}" />
+                  <Text text="{allIndex2>STEUS_5}" />
+                  <Text text="{allIndex2>NUM_5}" />
+                  <Text text="{allIndex2>PERSONE_5}"/>
+                  <Text text="{allIndex2>HPER_5}"/>
+
+                  <Text text="{allIndex2>RISK}" />
+                  <Text text="{allIndex2>LIMITE}" />
+                  <Text text="{allIndex2>FREQ_TEMPO}" />
+                  <Text text="{allIndex2>UNITA_TEMPO}" />
+                  <Text text="{allIndex2>FREQ_CICLO}" />
+                  <Text text="{allIndex2>UNITA_CICLO}" />
+                  <Text text="{allIndex2>POINT}" />
+                  <Text text="{allIndex2>MPTYP}" />
+                  <Text text="{allIndex2>TIPOFREQUENZA}" />
+                  
+                </cells>
+              </ColumnListItem>
+            </items>
+          </Table>
+            </ScrollContainer>
+            <form:Form width="100%" editable="true" visible="true">
+                <form:layout>
+                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                </form:layout>
+                <form:title>
+                    <core:Title text="4. {i18n>InterventiAcc}" level="Auto"/>
+                </form:title>
+                <form:formContainers/>
+
+            </form:Form>
+            <ScrollContainer width="100%" horizontal="true" >
+                <Table items="{ path: 'accIndex>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
+                    <columns>
+                        <Column width="10em" id="rCol1"><Text text="{i18n>INDEX}"/></Column>
+                        <Column width="10em" id="rCol2"><Text text="{i18n>AZIONI}"/></Column>
+                        <Column width="6em" id="rCol8"><Text text="{i18n>MATERIALI}"/></Column>
+                        <Column width="6em" id="rCol9"><Text text="{i18n>Servizi}"/></Column>
+                        <Column width="10em" id="rCol3"><Text text="{i18n>Divisione}"/></Column>
+                        <Column width="10em" id="rCol4"><Text text="{i18n>SedeTecnica}"/></Column>
+                        <Column width="25em" id="rCol5"><Text text="{i18n>DescrizioneST}"/></Column>
+                        <Column width="15em" id="rCol6"><Text text="{i18n>CentrodiLavoro}"/></Column>
+                        <Column width="20em" id="rCol7"><Text text="{i18n>Strategy}"/></Column>
+
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active">
+                            <cells>
+                                <Text text="{accIndex>INDEX}"/>
+                                <Text text="{accIndex>CONTATORE}"/>
+                                <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
+                                <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
+                                <Text text="{accIndex>DIVISIONE}"/>
+                                <Text text="{accIndex>SEDE_TECNICA}"/>
+                                <Text text="{accIndex>DESC_SEDE}"/>
+                                <Text text="{accIndex>CENTRO_LAVORO}"/>
+                                <Text text="{accIndex>STRATEGIA}"/>
+
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </ScrollContainer>
+            </VBox>
+        </f:content>
+        <!-- DynamicPage Footer -->
+        <f:dependents>
+            <core:Fragment fragmentName="PM030.APP3.fragment.popTestoEstesoView" type="XML"></core:Fragment>
+            <core:Fragment fragmentName="PM030.APP3.fragment.popMaterialiView" type="XML"></core:Fragment>
+            <core:Fragment fragmentName="PM030.APP3.fragment.popServiziView" type="XML"></core:Fragment>
+        </f:dependents>
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button text="{i18n>Indietro}" press="onDialogBackButton"/>
+                <Button text="{i18n>Salva}" type="Emphasized" press="handleWizardSubmit"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</core:FragmentDefinition>

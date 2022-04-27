@@ -1,0 +1,91 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+    <f:DynamicPage
+        id="Page2" showFooter="true">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
+                        <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
+                        <Title text="{i18n>Specifiche}" class="sapUiTinyMarginTop"/>
+                    </HBox>
+                </f:heading>
+                <f:navigationActions></f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:content>
+            <MessageStrip id="Strip2" class="sapUiSmallMarginBottom" visible="false" type="Error" showIcon="true"/>
+            <form:Form width="80%" editable="true" visible="true">
+                <form:layout>
+                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                </form:layout>
+                <form:title/>
+                <form:formContainers>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>SedeTecnica}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input id="iSedeTecnicaECC" value="{sSelect>/SEDE_TECNICA_ECC}" type="Text" showValueHelp="true" valueHelpRequest="handleSedeTecnicaECC"/>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Equipment}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox value="{sSelect>/EQUIPMENT}" items="{ path: 'sHelp>/EQUIPMENT', sorter: { path: 'EQUIPMENT' } }">
+                                        <core:ListItem key="{sHelp>EQUIPMENT}" text="{sHelp>EQUIPMENT}"/>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox value="{sSelect>/MPTYP}" items="{ path: 'sHelp>/MPTYP', sorter: { path: 'MPTYP' } }">
+                                        <core:ListItem key="{sHelp>MPTYP}" text="{sHelp>MPTYP}"/>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox value="{sSelect>/OGGETTO_TECNICO}" items="{ path: 'sHelp>/OGGETTO_TECNICO', sorter: { path: 'OGGETTO_TECNICO' } }">
+                                        <core:ListItem key="{sHelp>OGGETTO_TECNICO}" text="{sHelp>OGGETTO_TECNICO}"/>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>ProfiloCatalogo}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox value="{sSelect>/PROFILO}" items="{ path: 'sHelp>/PROFILO', sorter: { path: 'PROFILO' } }">
+                                        <core:ListItem key="{sHelp>PROFILO}" text="{sHelp>PROFILO}"/>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                </form:formContainers>
+            </form:Form>
+        </f:content>
+        <!-- DynamicPage Footer -->
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button text="{i18n>Indietro}" press="onDialogBackButton"/>
+                <Button text="{i18n>Avanti}" type="Emphasized" press="onDialogNextButton"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+
+</core:FragmentDefinition>

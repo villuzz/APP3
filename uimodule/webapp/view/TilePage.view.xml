@@ -4,8 +4,7 @@
             <f:DynamicPageTitle>
                 <f:content>
                     <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                        <Button type="Transparent" icon="sap-icon://nav-back" press="onBack" class="sapUiTinyMarginEnd"></Button>
-                        <Title text="{i18n>Piani}"/>
+                        <Title text="{i18n>Piani}" class="sapUiTinyMarginTop"/>
                     </HBox>
                 </f:content>
                 <f:actions></f:actions>
@@ -16,14 +15,15 @@
         </f:title>
         <f:content>
             <HBox height="100%" >
-                <GenericTile class="sapUiTinyMargin" header="{i18n>CreaN}" subheader="{i18n>Piani}" press="onCrea">
-                    <TileContent>
-                        <ImageContent src="sap-icon://create"/>
-                    </TileContent>
-                </GenericTile>
+               
                 <GenericTile class="sapUiTinyMargin" header="{i18n>VisualM}" subheader="{i18n>Piani}" press="onVisualizza">
                     <TileContent>
                         <ImageContent src="sap-icon://edit"/>
+                    </TileContent>
+                </GenericTile>
+                 <GenericTile class="sapUiTinyMargin" header="{i18n>CreaN}" subheader="{i18n>Piani}" press="onCrea">
+                    <TileContent>
+                        <ImageContent src="sap-icon://create"/>
                     </TileContent>
                 </GenericTile>
             </HBox>

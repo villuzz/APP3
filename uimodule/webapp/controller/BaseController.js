@@ -8,20 +8,21 @@ sap.ui.define([
     "PM030/APP3/util/LocalFormatter",
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
-    'sap/ui/core/Fragment'
+    'sap/ui/core/Fragment',
+    "PM030/APP3/util/underscore-min",
 ],
 /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    * @param {typeof sap.ui.core.routing.History} History
    * @param {typeof sap.ui.core.UIComponent} UIComponent
    */
-    function (Controller, History, UIComponent, formatter, MessageBox, Sorter, LocalFormatter, Filter, FilterOperator, Fragment) {
+    function (Controller, History, UIComponent, formatter, MessageBox, Sorter, LocalFormatter, Filter, FilterOperator, Fragment, underscore) {
     "use strict";
 
     return Controller.extend("PM030.APP3.controller.BaseController", {
         formatter: formatter,
         LocalFormatter: LocalFormatter,
-
+        underscore: underscore,
         /**
              * Convenience method for getting the view model by name in every controller of the application.
              * @public
@@ -665,6 +666,24 @@ sap.ui.define([
                 });
             });
         },
+        _getTableNoError: function (Entity, Filters) {
+          var xsoDataModelReport = this.getView().getModel();
+          return new Promise(function (resolve, reject) {
+              xsoDataModelReport.read(Entity, {
+                  filters: Filters,
+                  success: function (oDataIn) {
+                      if (oDataIn.results !== undefined) {
+                          resolve(oDataIn.results);
+                      } else {
+                          resolve(oDataIn);
+                      }
+                  },
+                  error: function (err) {
+                    resolve([]);
+                  }
+              });
+          });
+      },
         _getTableDistinct: function (Entity, Filters, Columns) {
             var xsoDataModelReport = this.getView().getModel();
             return new Promise(function (resolve) {

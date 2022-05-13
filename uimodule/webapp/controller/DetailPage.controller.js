@@ -54,6 +54,20 @@ sap.ui.define([
 
             sap.ui.core.BusyIndicator.hide();
         },
+        handleSavePress: async function () {
+
+          //sap.ui.core.BusyIndicator.show();
+          //var sIndex = sap.ui.getCore().getModel("Piani");
+          MessageBox.warning("In lavorazione");
+          //(Divisioneu='ITZU',FineVal=datetime'9999-12-31T00%3A00%3A00',IndexPmo='000000000016',InizioVal=datetime'2016-08-10T00%3A00%3A00',Uzeit=time'PT00H00M00S')
+          ///catalog/T_PMO(Divisioneu='ITZU',FineVal=9999-12-31T00:00:00.000Z,IndexPmo='17',InizioVal=2016-08-10T00:00:00.000Z,Uzeit=00:00:00)
+
+          //var sURL = "/T_PMO(Divisioneu='" + sIndex.Divisioneu + "',FineVal=" + sIndex.FineVal + ",IndexPmo='" + sIndex.IndexPmo + "',InizioVal=" + sIndex.InizioVal + ",Uzeit=" + sIndex.Uzeit + ")";
+          //debugger;
+          //var results = await this._updateHana(sURL, sIndex);
+
+          //sap.ui.core.BusyIndicator.hide();
+        },
         onColumnAE: function () {
             this._oTPCAE.openDialog();
         },

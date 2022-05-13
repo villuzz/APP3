@@ -11,7 +11,7 @@ sap.ui.define([
     "sap/ui/export/library",
     "PM030/APP3/util/xlsx",
     "PM030/APP3/util/ExcelDownload",
-    'sap/m/MessageToast'
+    'sap/m/MessageToast',
 ], function (Controller, JSONModel, MessageBox, PianiTable, PianiTable2, TablePersoController, Filter, FilterOperator, Spreadsheet, exportLibrary, xlsx, UtilExcel, MessageToast) {
     "use strict";
 
@@ -22,45 +22,44 @@ sap.ui.define([
             this._oTPC2 = new TablePersoController({table: this.getView().byId("tbPiani2"), componentName: "Piani", persoService: PianiTable2}).activate();
             this._oTPC2.setHasGrouping(true);
             this.getOwnerComponent().getRouter().getRoute("WizardPage").attachPatternMatched(this._onObjectMatched, this);
-
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.attachRouteMatched(this.routeMatched, this);
         },
         _onObjectMatched: async function () {
-          
-          sap.ui.core.BusyIndicator.show(0);
-          this.byId("navCon").to(this.byId("Page1"));
 
-          var oModel = new sap.ui.model.json.JSONModel();
-          var sData = {};
-          oModel.setData(sData);
-          this.getView().setModel(oModel, "sSelect");
+            sap.ui.core.BusyIndicator.show(0);
+            this.byId("navCon").to(this.byId("Page1"));
 
-          var oModel1 = new sap.ui.model.json.JSONModel();
-          sData = {};
-          sData.DIVISIONE = await this._getTableDistinct("/Index_Azioni", [], "DIVISIONE");
-          sData.SEDE_TECNICA = await this._getTableDistinct("/Index_Azioni", [], "SEDE_TECNICA");
-          sData.CLASSE_SEDE = await this._getTableDistinct("/Index_Azioni", [], "CLASSE_SEDE");
-          sData.CARATT_SEDE = await this._getTableDistinct("/Index_Azioni", [], "CARATT_SEDE");
-          sData.ZBAU = await this._getTableDistinct("/Index_Azioni", [], "ZBAU");
-          sData.CLASSE = await this._getTableDistinct("/Index_Azioni", [], "CLASSE");
-          sData.PROGRES = await this._getTableDistinct("/Index_Azioni", [], "PROGRES");
-          sData.SISTEMA = await this._getTableDistinct("/Index_Azioni", [], "SISTEMA");
-          sData.FREQ_TEMPO = await this._getTableDistinct("/Index_Azioni", [], "FREQ_TEMPO");
-          sData.FREQ_CICLO = await this._getTableDistinct("/Index_Azioni", [], "FREQ_CICLO");
-          sData.EQUIPMENT = await this._getTableDistinct("/Index_Azioni", [], "EQUIPMENT");
-          sData.MPTYP = await this._getTableDistinct("/Index_Azioni", [], "MPTYP");
-          sData.OGGETTO_TECNICO = await this._getTableDistinct("/Index_Azioni", [], "OGGETTO_TECNICO");
-          sData.PROFILO = await this._getTableDistinct("/Index_Azioni", [], "PROFILO");
-          sData.TIPO_ATTIVITA = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ATTIVITA");
-          sData.TIPO_ORDINE = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ORDINE");
-          sData.VALORE = await this._getTableDistinct("/Index_Azioni", [], "VALORE");
+            var oModel = new sap.ui.model.json.JSONModel();
+            var sData = {};
+            oModel.setData(sData);
+            this.getView().setModel(oModel, "sSelect");
 
-          oModel1.setData(sData);
-          this.getView().setModel(oModel1, "sHelp");
+            var oModel1 = new sap.ui.model.json.JSONModel();
+            sData = {};
+            sData.DIVISIONE = await this._getTableDistinct("/Index_Azioni", [], "DIVISIONE");
+            sData.SEDE_TECNICA = await this._getTableDistinct("/Index_Azioni", [], "SEDE_TECNICA");
+            sData.CLASSE_SEDE = await this._getTableDistinct("/Index_Azioni", [], "CLASSE_SEDE");
+            sData.CARATT_SEDE = await this._getTableDistinct("/Index_Azioni", [], "CARATT_SEDE");
+            sData.ZBAU = await this._getTableDistinct("/Index_Azioni", [], "ZBAU");
+            sData.CLASSE = await this._getTableDistinct("/Index_Azioni", [], "CLASSE");
+            sData.PROGRES = await this._getTableDistinct("/Index_Azioni", [], "PROGRES");
+            sData.SISTEMA = await this._getTableDistinct("/Index_Azioni", [], "SISTEMA");
+            sData.FREQ_TEMPO = await this._getTableDistinct("/Index_Azioni", [], "FREQ_TEMPO");
+            sData.FREQ_CICLO = await this._getTableDistinct("/Index_Azioni", [], "FREQ_CICLO");
+            sData.EQUIPMENT = await this._getTableDistinct("/Index_Azioni", [], "EQUIPMENT");
+            sData.MPTYP = await this._getTableDistinct("/Index_Azioni", [], "MPTYP");
+            sData.OGGETTO_TECNICO = await this._getTableDistinct("/Index_Azioni", [], "OGGETTO_TECNICO");
+            sData.PROFILO = await this._getTableDistinct("/Index_Azioni", [], "PROFILO");
+            sData.TIPO_ATTIVITA = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ATTIVITA");
+            sData.TIPO_ORDINE = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ORDINE");
+            sData.VALORE = await this._getTableDistinct("/Index_Azioni", [], "VALORE");
 
-          sap.ui.core.BusyIndicator.hide();
-        },        
+            oModel1.setData(sData);
+            this.getView().setModel(oModel1, "sHelp");
+
+            sap.ui.core.BusyIndicator.hide();
+        },
         routeMatched: async function () {
             // this.getView().byId("tSedeTecnica").getModel().setSizeLimit(200);
             // this.getView().byId("selSede").getModel().setSizeLimit(500);
@@ -71,26 +70,222 @@ sap.ui.define([
             this.getView().byId("selLvl5").getModel().setSizeLimit(1000);
             this.getView().byId("selLvl6").getModel().setSizeLimit(1000);
         },
+        handleWizardSubmit: async function () {
+            sap.ui.core.BusyIndicator.show();
+            var that = this;
+            var allIndex2 = this.getView().getModel("allIndex2").getData();
+            var aIndex = [],
+                sIndex = {};
+            var ExtractionGrouped = _.groupBy(allIndex2, ele => ele.INDEX);
+            Object.keys(ExtractionGrouped).forEach(ele => {
+                let element = ExtractionGrouped[ele];
+                sIndex = this.formatIndex(element[0]);
+                element.forEach(row => {
+                    sIndex.T_ACT_ELSet.push(that.formatAzioni(row));
+                    sIndex.T_PMO_MSet = sIndex.T_PMO_MSet.concat(that.formatMaterial(row));
+                    sIndex.T_PMO_SSet = sIndex.T_PMO_SSet.concat(that.formatService(row));
+                });
+                // await that._saveHana("/T_PMO", sIndex);
+                aIndex.push(sIndex);
+            });
+            sap.ui.core.BusyIndicator.hide();
+        },
+        formatIndex: function (sRow) {
+            var sData = {
+                T_ACT_ELSet: [],
+                T_PMO_MSet: [],
+                T_PMO_SSet: [],
+                Divisioneu: sRow.DIVISIONE,
+                FineVal: sRow.FINEVAL,
+                IndexPmo: sRow.INDEX,
+                InizioVal: sRow.INIZIOVAL,
+                Uzeit: "00:00:00", // todo
+                // Appuntam	IN APP4
+                // Azione	Non li popoliamo
+                // Banfn	IN APP4
+                Cdl: sRow.CENTRO_LAVORO,
+                Cdl1: sRow.CENTRO_LAVORO,
+                Cdl2: sRow.CENTRO_LAVORO,
+                Cdl3: sRow.CENTRO_LAVORO,
+                Cdl4: sRow.CENTRO_LAVORO,
+                Cdl5: sRow.CENTRO_LAVORO,
+                CentroLavoro: sRow.CENTRO_LAVORO,
+                Ciclo: sRow.FREQ_CICLO,
+                Classe: sRow.CLASSE,
+                // CodAzione	Non li popoliamo
+                Collective: sRow.COLLECTIVE,
+                // Criticita	Non li popoliamo
+                // DataInizCiclo	Non li popoliamo
+                // Datum	Non li popoliamo
+                // Daune	Non li popoliamo
+                // DayAdv	Non li popoliamo
+                DesBreve: sRow.DESC_BREVE,
+                // DesComponente	Non li popoliamo
+                // DesEstesa	da visualizzare in APP4
+                Destinatario: sRow.DESTINATARIO,
+                // Determinanza	Non li popoliamo
+                // Differibile	Non li popoliamo
+                Divisionec: sRow.DIVISIONEC,
+                DurataCiclo: sRow.FREQ_TEMPO,
+                // EquipmentCompo	Non li popoliamo
+                // EquipmentOdm	Non li popoliamo
+                // FineCard	Non li popoliamo
+                FlagAttivo: sRow.ATTIVO,
+                // FlagInterc	Non li popoliamo
+                // FlagMateriali	Non li popoliamo
+                // FlagOdm	Non li popoliamo
+                // FlagPrestazioni	Non li popoliamo
+                // FlgMail	Non li popoliamo
+                Frequenza: sRow.UNITA_TEMPO,
+                Hper: sRow.HPER,
+                Hper1: sRow.HPER_1,
+                Hper2: sRow.HPER_2,
+                Hper3: sRow.HPER_3,
+                Hper4: sRow.HPER_4,
+                Hper5: sRow.HPER_5,
+                Indisponibilita: sRow.INDISPONIBILITA,
+                IntegTxtEsteso: (
+                (sRow.TESTO_ESTESO === undefined || sRow.TESTO_ESTESO === "") ? "" : "X"
+            ),
+                Lstar: sRow.LSTAR,
+                Lstar1: sRow.LSTAR_1,
+                Lstar2: sRow.LSTAR_2,
+                Lstar3: sRow.LSTAR_3,
+                Lstar4: sRow.LSTAR_4,
+                Lstar5: sRow.LSTAR_5,
+                Num: sRow.NUM,
+                Num1: sRow.NUM_1,
+                Num2: sRow.NUM_2,
+                Num3: sRow.NUM_3,
+                Num4: sRow.NUM_4,
+                Num5: sRow.NUM_5,
+                Percorso: sRow.PERCORSO,
+                Persone: sRow.PERSONE,
+                Persone1: sRow.PERSONE_1,
+                Persone2: sRow.PERSONE_2,
+                Persone3: sRow.PERSONE_3,
+                Persone4: sRow.PERSONE_4,
+                Persone5: sRow.PERSONE_5,
+                Point: sRow.POINT,
+                Priorita: sRow.PRIORITA,
+                Progres: sRow.PROGRES,
+                // Scostamento	IN APP4
+                // SedeTecOdm	Non li popoliamo
+                Sistema: sRow.SISTEMA,
+                // StComponente	Non li popoliamo
+                Steus: sRow.STEUS,
+                Steus1: sRow.STEUS_1,
+                Steus2: sRow.STEUS_2,
+                Steus3: sRow.STEUS_3,
+                Steus4: sRow.STEUS_4,
+                Steus5: sRow.STEUS_5,
+                // TipoAggr	Non li popoliamo
+                TipoAttivita: sRow.TIPO_ATTIVITA,
+                TipoGestione: sRow.TIPO_GESTIONE,
+                TipoGestione1: sRow.TIPO_GESTIONE_1,
+                TipoGestione2: sRow.TIPO_GESTIONE_2,
+                TipoOrdine: sRow.TIPO_ORDINE,
+                TipoPmo: sRow.TIPOFREQUENZA,
+                // Toth	  IN APP4
+                // Toth1	IN APP4
+                // Toth2	IN APP4
+                // Toth3	IN APP4
+                // Toth4	IN APP4
+                // Toth5	IN APP4
+                // TxtCiclo	Non li popoliamo
+                // UltimaEsecuz	Non li popoliamo
+                // Uname	Non li popoliamo
+                // UnitaCiclo	Non li popoliamo
+
+            };
+            return sData;
+        },
+        formatAzioni: function (sRow) {
+            var sData = {
+                IndexPmo: "",
+                Cont: "",
+                Sistem: sRow.SISTEMA,
+                Progres: sRow.PROGRES,
+                Classe: sRow.CLASSE,
+                DesComponente: sRow.DES_COMPONENTE,
+                Tplnr: sRow.SEDE_TECNICA_P,
+                Equipment: sRow.EQUIPMENT,
+                DesBreve: sRow.DESC_BREVE,
+                IntegTxtEsteso: (
+                (sRow.TESTO_ESTESO_P === undefined || sRow.TESTO_ESTESO_P === "") ? "" : "X"
+            ),
+                FlagAttivo: sRow.ATTIVO,
+                Datum: new Date,
+                Uname: "AE82826", // todo
+                Uzeit: "00:00:00" // todo
+            };
+            return sData;
+        },
+        formatMaterial: function (sRow) {
+            if (sRow.Material !== undefined) {
+                var sData = [];
+                for (var i = 0; i < sRow.Material.length; i++) {
+                    var sLine = {
+                        IndexPmo: "",
+                        Cont: "",
+                        Matnr: sRow.Material[i].MATNR,
+                        Maktx: sRow.Material[i].MAKTX,
+                        Menge: sRow.Material[i].MENGE,
+                        Meins: sRow.Material[i].MEINS,
+                        Lgort: sRow.Material[i].LGORT,
+                        Werks: sRow.Material[i].WERKS,
+                        Tbtwr: sRow.Material[i].TBTWR
+                    };
+                    sData.push(sLine);
+                }
+                return sData;
+            } else {
+                return [];
+            }
+        },
+        formatService: function (sRow) {
+            if (sRow.Servizi !== undefined) {
+                var sData = [];
+                for (var i = 0; i < sRow.Servizi.length; i++) {
+                    var sLine = {
+                        IndexPmo: "",
+                        Cont: "",
+                        Asnum: sRow.Servizi[i].N_ATT,
+                        Asktx: sRow.Servizi[i].DESC_SERVIZI,
+                        Menge: sRow.Servizi[i].MENGE,
+                        Meins: sRow.Servizi[i].MEINS,
+                        Tbtwr: sRow.Servizi[i].TBTWR,
+                        Ekgrp: sRow.Servizi[i].EKGRP,
+                        Ekorg: sRow.Servizi[i].EKORG
+                    };
+                    sData.push(sLine);
+                }
+                return sData;
+            } else {
+                return [];
+            }
+        },
         onRefresh: async function () {
             sap.ui.core.BusyIndicator.show();
             await this.onStep3Extract();
             sap.ui.core.BusyIndicator.hide();
         },
         onPersoButtonRefresh: function () {
-          var that = this;
-          MessageBox.confirm("Con il Refresh eliminerai le modifiche, Confermi?", {
-            styleClass: "sapUiSizeCompact",
-            actions: ["Si", sap.m.MessageBox.Action.NO],
-            emphasizedAction: "Si",
-            initialFocus: sap.m.MessageBox.Action.NO,
-            onClose: function (oAction) {
-              if (oAction === "NO") {
-                //that.cancel();
-              } else if (oAction === "Si") {
-                that.onRefresh();
-              }
-            }
-          });
+            var that = this;
+            MessageBox.confirm("Con il Refresh eliminerai le modifiche, Confermi?", {
+                styleClass: "sapUiSizeCompact",
+                actions: [
+                    "Si", sap.m.MessageBox.Action.NO
+                ],
+                emphasizedAction: "Si",
+                initialFocus: sap.m.MessageBox.Action.NO,
+                onClose: function (oAction) {
+                    if (oAction === "NO") { // that.cancel();
+                    } else if (oAction === "Si") {
+                        that.onRefresh();
+                    }
+                }
+            });
         },
         onPersoButtonPressed: function () {
             this._oTPC.openDialog();
@@ -183,7 +378,15 @@ sap.ui.define([
         },
         onHelpMatnr: function () {},
         initMaterial: function () {
-            return {MATNR: "", MAKTX: "", WERKS: "", LGORT: "", MENGE: "", MEINS: "", TBTWR: ""};
+            return {
+                MATNR: "",
+                MAKTX: "",
+                WERKS: "",
+                LGORT: "",
+                MENGE: "",
+                MEINS: "",
+                TBTWR: ""
+            };
         },
         handleServizi: function (oEvent) {
             this.lineSelected = oEvent.getSource().getBindingContext("allIndex").getObject();
@@ -221,7 +424,15 @@ sap.ui.define([
         },
         onHelpServizi: function () {},
         initServizi: function () {
-            return {N_ATT: "", DESC_SERVIZI: "", MENGE: "", MEINS: "", TBTWR: "", EKGRP: "", EKORG: ""};
+            return {
+                N_ATT: "",
+                DESC_SERVIZI: "",
+                MENGE: "",
+                MEINS: "",
+                TBTWR: "",
+                EKGRP: "",
+                EKORG: ""
+            };
 
         },
         handleTesto: function (oEvent) {
@@ -241,15 +452,15 @@ sap.ui.define([
         },
 
         handleTestoView: function (oEvent) {
-          this.lineSelected = oEvent.getSource().getBindingContext("allIndex2").getObject();
-          this.getView().byId("vTextAreaView").setText(this.lineSelected.TESTO_ESTESO_P);
-          this.byId("popTestoView").open();
+            this.lineSelected = oEvent.getSource().getBindingContext("allIndex2").getObject();
+            this.getView().byId("vTextAreaView").setText(this.lineSelected.TESTO_ESTESO_P);
+            this.byId("popTestoView").open();
         },
         handleTesto2View: function (oEvent) {
             this.lineSelected = oEvent.getSource().getBindingContext("allIndex2").getObject();
             this.getView().byId("vTextAreaView").setText(this.lineSelected.TESTO_ESTESO);
             this.byId("popTestoView").open();
-          },
+        },
         onCloseTestoView: function () {
             this.byId("popTestoView").close();
         },
@@ -266,7 +477,7 @@ sap.ui.define([
         },
         onPressSedeTecnica: function (oEvent) {
             var sel = oEvent.getSource().getBindingContext().getObject();
-            //var selConcat = sel.SEDE_TECNICA + '-' + sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
+            // var selConcat = sel.SEDE_TECNICA + '-' + sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
             var selConcat = sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
             // Evita i - in eccesso in fondo
             selConcat = selConcat.replaceAll("--", "");
@@ -304,35 +515,32 @@ sap.ui.define([
             var error = true;
             var navTo = this.byId("navCon").getCurrentPage().getId().split("-").pop();
             switch (navTo) {
-              case "Page1":
-                  error = this.checkInformazioni();
-                  if (error){
-                  this.byId("navCon").to(this.byId("Page2"));
-                  }
-                  break;
-              case "Page2":
-                  error = this.checkSpecifiche();
-                  if (error){
-                  await this.onStep3Extract();
-                  this.byId("navCon").to(this.byId("Page3"));
-                  }
-                  break;
-              case "Page3":
-                  error = this.checkInterventi();
-                  if (error){
-                  await this.onStep4Extract();
-                  this.byId("navCon").to(this.byId("Page4"));
-                  }
-                  break;
-              case "Page4":
-                  break;
-              default:
-                  break;
-          }
-          sap.ui.core.BusyIndicator.hide();
+                case "Page1": error = this.checkInformazioni();
+                    if (error) {
+                        this.byId("navCon").to(this.byId("Page2"));
+                    }
+                    break;
+                case "Page2": error = this.checkSpecifiche();
+                    if (error) {
+                        await this.onStep3Extract();
+                        this.byId("navCon").to(this.byId("Page3"));
+                    }
+                    break;
+                case "Page3": error = this.checkInterventi();
+                    if (error) {
+                        await this.onStep4Extract();
+                        this.byId("navCon").to(this.byId("Page4"));
+                    }
+                    break;
+                case "Page4":
+                    break;
+                default:
+                    break;
+            }
+            sap.ui.core.BusyIndicator.hide();
         },
         onDialogBackButton: function () {
-          this.byId("navCon").back();
+            this.byId("navCon").back();
         },
         onStep4Extract: async function () {
 
@@ -348,7 +556,7 @@ sap.ui.define([
                 ItemsSel.push(aItems[i].getBindingContext("allIndex").getObject());
             }
             await ItemsSel.sort(function (a, b) {
-              return a.INDEX - b.INDEX;
+                return a.INDEX - b.INDEX;
             });
 
             for (i = 0; i < ItemsSel.length; i++) {
@@ -363,18 +571,18 @@ sap.ui.define([
                     if (control === actual) {
                         trovata = true;
                         if (lastIndex !== Number(line.INDEX)) {
-                            ItemAccorpate[j].INDEX++;
+                            ItemAccorpate[j].INDEX ++;
                         }
-                        ItemAccorpate[j].CONTATORE++;
+                        ItemAccorpate[j].CONTATORE ++;
                         if (line.Servizi !== undefined) {
-                          ItemAccorpate[j].Servizi = ItemAccorpate[j].Servizi.concat(line.Servizi);
+                            ItemAccorpate[j].Servizi = ItemAccorpate[j].Servizi.concat(line.Servizi);
                         }
                         if (line.Material !== undefined) {
-                          ItemAccorpate[j].Material = ItemAccorpate[j].Material.concat(line.Material);
+                            ItemAccorpate[j].Material = ItemAccorpate[j].Material.concat(line.Material);
                         }
                     }
                 }
-                if (!trovata) {
+                if (! trovata) {
                     control = {
                         INDEX: 1,
                         CONTATORE: 1,
@@ -383,8 +591,12 @@ sap.ui.define([
                         DESC_SEDE: line.DESC_SEDE,
                         CENTRO_LAVORO: line.CENTRO_LAVORO,
                         STRATEGIA: line.STRATEGIA,
-                        Servizi: ((line.Servizi === undefined) ? [] : line.Servizi),
-                        Material: ((line.Material === undefined) ? [] : line.Material),
+                        Servizi: (
+                        (line.Servizi === undefined) ? [] : line.Servizi
+                    ),
+                        Material: (
+                        (line.Material === undefined) ? [] : line.Material
+                    )
                     };
                     ItemAccorpate.push(control);
                 }
@@ -443,27 +655,27 @@ sap.ui.define([
                     aFilters.push(oFilter);
                 }
             }
-            oFilter = new Filter("ATTIVO", FilterOperator.EQ, true);
-            aFilters.push(oFilter);
+            // oFilter = new Filter("ATTIVO", FilterOperator.EQ, true);
+            // aFilters.push(oFilter);
 
             if (sFilter.CARATT_SEDE !== "" && sFilter.CARATT_SEDE !== undefined) {
                 oFilter = new Filter("CARATT_SEDE", FilterOperator.EQ, sFilter.CARATT_SEDE);
                 aFilters.push(oFilter);
             }
             if (sFilter.VALORE !== "" && sFilter.VALORE !== undefined) {
-              oFilter = new Filter("VALORE", FilterOperator.EQ, sFilter.VALORE);
-              aFilters.push(oFilter);
+                oFilter = new Filter("VALORE", FilterOperator.EQ, sFilter.VALORE);
+                aFilters.push(oFilter);
             }
             if (sFilter.CLASSE_SEDE !== "" && sFilter.CLASSE_SEDE !== undefined) {
                 oFilter = new Filter("CLASSE_SEDE", FilterOperator.EQ, sFilter.CLASSE_SEDE);
                 aFilters.push(oFilter);
             }
             if (sFilter.DIVISIONE !== undefined) {
-              if (sFilter.DIVISIONE.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.DIVISIONE, "DIVISIONE");
-                aFilters = aFilters.concat(tempFilter);
-              }
-             }
+                if (sFilter.DIVISIONE.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.DIVISIONE, "DIVISIONE");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
             /*
             if (sFilter.DIVISIONE !== "" && sFilter.DIVISIONE !== undefined) {
                 oFilter = new Filter("DIVISIONE", FilterOperator.EQ, sFilter.DIVISIONE);
@@ -473,7 +685,7 @@ sap.ui.define([
                 oFilter = new Filter("EQUIPMENT", FilterOperator.EQ, sFilter.EQUIPMENT);
                 aFilters.push(oFilter);
             }*/
-            if (sFilter.MPTYP !== "" && sFilter.MPTYP !== undefined) {
+            /*if (sFilter.MPTYP !== "" && sFilter.MPTYP !== undefined) {
                 oFilter = new Filter("MPTYP", FilterOperator.EQ, sFilter.MPTYP);
                 aFilters.push(oFilter);
             }
@@ -484,7 +696,7 @@ sap.ui.define([
             if (sFilter.PROFILO !== "" && sFilter.PROFILO !== undefined) {
                 oFilter = new Filter("PROFILO", FilterOperator.EQ, sFilter.PROFILO);
                 aFilters.push(oFilter);
-            }
+            }*/
             /*
             if (sFilter.PROGRES !== "" && sFilter.PROGRES !== undefined) {
                 oFilter = new Filter("PROGRES", FilterOperator.EQ, sFilter.PROGRES);
@@ -504,43 +716,43 @@ sap.ui.define([
           }*/
 
             if (sFilter.CLASSE !== undefined) {
-              if (sFilter.CLASSE.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.CLASSE, "CLASSE");
-                aFilters = aFilters.concat(tempFilter);
-              }
-             }
-             if (sFilter.PROGRES !== undefined) {
-              if (sFilter.PROGRES.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.PROGRES, "PROGRES");
-                aFilters = aFilters.concat(tempFilter);
-              }
-             }
-             if (sFilter.SISTEMA !== undefined) {
-              if (sFilter.SISTEMA.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.SISTEMA, "SISTEMA");
-                aFilters = aFilters.concat(tempFilter);
-              }
-             }
+                if (sFilter.CLASSE.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.CLASSE, "CLASSE");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
+            if (sFilter.PROGRES !== undefined) {
+                if (sFilter.PROGRES.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.PROGRES, "PROGRES");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
+            if (sFilter.SISTEMA !== undefined) {
+                if (sFilter.SISTEMA.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.SISTEMA, "SISTEMA");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
             if (sFilter.ZBAU !== undefined) {
-              if (sFilter.ZBAU.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.ZBAU, "ZBAU");
-                aFilters = aFilters.concat(tempFilter);
-              }
-             }
+                if (sFilter.ZBAU.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.ZBAU, "ZBAU");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
             if (sFilter.TIPO_ATTIVITA !== "" && sFilter.TIPO_ATTIVITA !== undefined) {
-              oFilter = new Filter("TIPO_ATTIVITA", FilterOperator.EQ, sFilter.TIPO_ATTIVITA);
-              aFilters.push(oFilter);
+                oFilter = new Filter("TIPO_ATTIVITA", FilterOperator.EQ, sFilter.TIPO_ATTIVITA);
+                aFilters.push(oFilter);
             }
             if (sFilter.TIPO_ORDINE !== "" && sFilter.TIPO_ORDINE !== undefined) {
-              oFilter = new Filter("TIPO_ORDINE", FilterOperator.EQ, sFilter.TIPO_ORDINE);
-              aFilters.push(oFilter);
+                oFilter = new Filter("TIPO_ORDINE", FilterOperator.EQ, sFilter.TIPO_ORDINE);
+                aFilters.push(oFilter);
             }
             if (sFilter.STRATEGIA !== undefined) {
-              if (sFilter.STRATEGIA.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.STRATEGIA, "STRATEGIA");
-                aFilters = aFilters.concat(tempFilter);
-              }
-             }
+                if (sFilter.STRATEGIA.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.STRATEGIA, "STRATEGIA");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
             if (sFilter.TIPOFREQUENZA === "C") {
                 sFilter.FREQ_TEMPO = "";
                 if (sFilter.FREQ_CICLO !== "" && sFilter.FREQ_CICLO !== undefined) {
@@ -566,7 +778,7 @@ sap.ui.define([
             var allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);
             if (allIndex.length > 0) {
                 aFilters = [];
-                for (var i = 0; i < allIndex.length; i++) {
+                /*for (var i = 0; i < allIndex.length; i++) {
                     if (allIndex[i].INDEX !== vIndex) {
                         oFilter = new Filter("INDEX", FilterOperator.EQ, allIndex[i].INDEX);
                         tempFilter.push(oFilter);
@@ -575,15 +787,56 @@ sap.ui.define([
                 }
                 oFilter = new sap.ui.model.Filter({filters: tempFilter, and: false});
                 aFilters.push(oFilter);
-                oFilter = new Filter("ATTIVO", FilterOperator.EQ, true);
-                aFilters.push(oFilter);
+                //oFilter = new Filter("ATTIVO", FilterOperator.EQ, true);
+                //aFilters.push(oFilter);
 
-                allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);
-
+                allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);*/
                 vIndex = "";
-                for (i = 0; i < allIndex.length; i++) {
-                    allIndex[i].CHECK_CHECKBOX = false;
-                    allIndex[i].DISPLAY_CHECKBOX = true;
+                for (var i = 0; i < allIndex.length; i++) { // PreCompila con i dati inseriti
+                    if (sFilter.EQUIPMENT !== undefined) {
+                        allIndex[i].EQUIPMENT = sFilter.EQUIPMENT;
+                    }
+                    if (sFilter.FINEVAL !== undefined) {
+                        allIndex[i].FINEVAL = sFilter.FINEVAL;
+                    }
+                    if (sFilter.INIZIOVAL !== undefined) {
+                        allIndex[i].INIZIOVAL = sFilter.INIZIOVAL;
+                    }
+                    if (sFilter.MPTYP !== undefined) {
+                        allIndex[i].MPTYP = sFilter.MPTYP;
+                    }
+                    if (sFilter.OGGETTO_TECNICO !== undefined) {
+                        allIndex[i].OGGETTO_TECNICO = sFilter.OGGETTO_TECNICO;
+                    }
+                    if (sFilter.PROFILO !== undefined) {
+                        allIndex[i].PROFILO = sFilter.PROFILO;
+                    }
+                    if (sFilter.SEDE_TECNICA_ECC !== undefined) {
+                        allIndex[i].SEDE_TECNICA_P = sFilter.SEDE_TECNICA_ECC;
+                    } else {
+                        var selConcat = allIndex[i].LIVELLO1 + '-' + allIndex[i].LIVELLO2 + '-' + allIndex[i].LIVELLO3 + '-' + allIndex[i].LIVELLO4 + '-' + allIndex[i].LIVELLO5 + '-' + allIndex[i].LIVELLO6;
+                        // Evita i - in eccesso in fondo
+                        selConcat = selConcat.replaceAll("--", "");
+                        if (selConcat[selConcat.length - 1] === "-") {
+                            selConcat = selConcat.substring(0, (selConcat.length - 1));
+                        }
+                        allIndex[i].SEDE_TECNICA_P = selConcat;
+
+                    }
+
+                    // Gestione Materiali e Servizi
+                    if (allIndex[i].MATNR !== "" && allIndex[i].MATNR !== undefined) {
+                        var sMatnr = this.initMaterial();
+                        sMatnr.MATNR = allIndex[i].MATNR;
+                        allIndex[i].Material = [sMatnr];
+                    }
+                    if (allIndex[i].ASNUM !== "" && allIndex[i].ASNUM !== undefined) {
+                        allIndex[i].Servizi = [{}];
+                        var sServizi = this.initServizi();
+                        sServizi.N_ATT = allIndex[i].ASNUM;
+                        allIndex[i].Servizi = [sServizi];
+                    }
+                    // Gestione Colore
                     if (allIndex[i].ID !== vIndex && vIndex !== "") {
                         if (colorToSet === "W") {
                             colorToSet = String("G");
@@ -600,18 +853,18 @@ sap.ui.define([
         },
         multiFilterText: function (aArray, vName) {
 
-          var aFilter = [];
-          if (aArray.length === 0) {
-              return new Filter(vName, FilterOperator.EQ, "");
-          } else if (aArray.length === 1) {
-              return new Filter(vName, FilterOperator.EQ, aArray[0]);
-          } else {
-              for (var i = 0; i < aArray.length; i++) {
-                  aFilter.push(new Filter(vName, FilterOperator.EQ, aArray[i]));
-              }
-              return aFilter;
-          }
-      },
+            var aFilter = [];
+            if (aArray.length === 0) {
+                return new Filter(vName, FilterOperator.EQ, "");
+            } else if (aArray.length === 1) {
+                return new Filter(vName, FilterOperator.EQ, aArray[0]);
+            } else {
+                for (var i = 0; i < aArray.length; i++) {
+                    aFilter.push(new Filter(vName, FilterOperator.EQ, aArray[i]));
+                }
+                return aFilter;
+            }
+        },
         multiFilterNumber: function (aArray, vName) {
 
             var aFilter = [];
@@ -631,20 +884,21 @@ sap.ui.define([
             sap.ui.core.UIComponent.getRouterFor(this).navTo("TilePage");
         },
         onBack: function () {
-          var that = this;
-          MessageBox.confirm("Tornando indietro perderai le modifiche, Confermi?", {
-            styleClass: "sapUiSizeCompact",
-            actions: ["Si", sap.m.MessageBox.Action.NO],
-            emphasizedAction: "Si",
-            initialFocus: sap.m.MessageBox.Action.NO,
-            onClose: function (oAction) {
-              if (oAction === "NO") {
-                //that.cancel();
-              } else if (oAction === "Si") {
-                that.onTileBack();
-              }
-            }
-          });
+            var that = this;
+            MessageBox.confirm("Tornando indietro perderai le modifiche, Confermi?", {
+                styleClass: "sapUiSizeCompact",
+                actions: [
+                    "Si", sap.m.MessageBox.Action.NO
+                ],
+                emphasizedAction: "Si",
+                initialFocus: sap.m.MessageBox.Action.NO,
+                onClose: function (oAction) {
+                    if (oAction === "NO") { // that.cancel();
+                    } else if (oAction === "Si") {
+                        that.onTileBack();
+                    }
+                }
+            });
         },
 
         checkInformazioni: function () { // Selezione Modelli

@@ -7,10 +7,10 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
         oData: {
             _persoSchemaVersion: "1.0", 
             aColumns: [
-            //  {id: "Piani-tbPiani-col3", order: 1, text: oResource.getText("ATTIVO"), visible: true},
+              {id: "Piani-tbPiani-col3", order: 1, text: oResource.getText("ATTIVO"), visible: true},
               {id: "Piani-tbPiani-col2", order: 2, text: oResource.getText("CONTATORE"), visible: true},
-              {id: "Piani-tbPiani-col104", order: 3, text: oResource.getText("CONTATORE"), visible: true},
-              {id: "Piani-tbPiani-col105", order: 4, text: oResource.getText("CONTATORE"), visible: true},
+              {id: "Piani-tbPiani-col104", order: 3, text: oResource.getText("MATNR"), visible: true},
+              {id: "Piani-tbPiani-col105", order: 4, text: oResource.getText("ASNUM"), visible: true},
               {id: "Piani-tbPiani-col5", order: 5, text: oResource.getText("SISTEMA"), visible: true},
               {id: "Piani-tbPiani-col8", order: 6, text: oResource.getText("CLASSE"), visible: true},
               {id: "Piani-tbPiani-col6", order: 7, text: oResource.getText("PROGRES"), visible: true},
@@ -27,6 +27,13 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col34", order: 25, text: oResource.getText("ZBAU"), visible: true},
               {id: "Piani-tbPiani-col28", order: 26, text: oResource.getText("EQUIPMENT"), visible: true},
               {id: "Piani-tbPiani-col9", order: 27, text: oResource.getText("DES_COMPONENTE"), visible: true},
+
+              {id: "Piani-tbPiani-col106", order: 28, text: oResource.getText("COLLECTIVE"), visible: true},
+              {id: "Piani-tbPiani-col107", order: 29, text: oResource.getText("PERCORSO"), visible: true},
+              {id: "Piani-tbPiani-col108", order: 32, text: oResource.getText("FINEVAL"), visible: true},
+              {id: "Piani-tbPiani-col109", order: 31, text: oResource.getText("INIZIOVAL"), visible: true},
+              {id: "Piani-tbPiani-col110", order: 33, text: oResource.getText("DESTINATARIO"), visible: true},
+
               {id: "Piani-tbPiani-col1", order: 40, text: oResource.getText("INDEX"), visible: true},
               {id: "Piani-tbPiani-col37", order: 41, text: oResource.getText("STRATEGIA"), visible: true},
               {id: "Piani-tbPiani-col38", order: 42, text: oResource.getText("STRATEGIA_DESC"), visible: true},
@@ -86,8 +93,7 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col99", order: 100, text: oResource.getText("FREQ_CICLO"), visible: false},
               {id: "Piani-tbPiani-col100", order: 101, text: oResource.getText("UNITA_CICLO"), visible: false},
               {id: "Piani-tbPiani-col101", order: 102, text: oResource.getText("POINT"), visible: false},
-              {id: "Piani-tbPiani-col102", order: 103, text: oResource.getText("MPTYP"), visible: false},
-
+              {id: "Piani-tbPiani-col102", order: 103, text: oResource.getText("MPTYP"), visible: false}
             ]
         },
 

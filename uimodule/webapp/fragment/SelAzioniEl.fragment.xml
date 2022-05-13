@@ -22,6 +22,7 @@
           <Table id="tbPiani" items="{ path: 'allIndex>/' }" class="" showNoData="false" mode="MultiSelect" sticky="HeaderToolbar,ColumnHeaders">
             <columns>
               <Column width="10em" id="col1"><Text text="{i18n>INDEX}"/></Column>
+              <Column width="10em" id="col3"><Text text="{i18n>ATTIVO}"/></Column>              
               <Column width="10em" id="col2"><Text text="{i18n>CONTATORE}"/></Column>
               <Column width="5em" id="col104"><Text text="{i18n>Materiali}"/></Column>
               <Column width="5em" id="col105"><Text text="{i18n>Servizi}"/></Column>
@@ -105,6 +106,12 @@
               <Column width="10em" id="col102"><Text text="{i18n>MPTYP}"/></Column>
               <Column width="10em" id="col103"><Text text="{i18n>TIPOFREQUENZA}"/></Column>
 
+              <Column width="10em" id="col106"><Text text="{i18n>COLLECTIVE}"/></Column>
+              <Column width="10em" id="col107"><Text text="{i18n>PERCORSO}"/></Column>
+              <Column width="10em" id="col108"><Text text="{i18n>FINEVAL}"/></Column>
+              <Column width="10em" id="col109"><Text text="{i18n>INIZIOVAL}"/></Column>
+              <Column width="10em" id="col110"><Text text="{i18n>DESTINATARIO}"/></Column>
+
             </columns>
             <items>
               <ColumnListItem vAlign="Middle" type="Active">
@@ -113,6 +120,7 @@
                 </customData>
                 <cells>
                   <Input value="{allIndex>INDEX}"/>
+                  <Switch type="AcceptReject" state="{allIndex>ATTIVO}" ></Switch>
                   <Text text="{allIndex>CONTATORE} " />
                   <Button icon="sap-icon://activity-2" type="Transparent" press="handleMaterial"/>
                   <Button icon="sap-icon://crm-service-manager" type="Transparent" press="handleServizi"/>
@@ -197,7 +205,14 @@
                           <core:ListItem xmlns:core="sap.ui.core" key="C" text="C"/>
                           <core:ListItem xmlns:core="sap.ui.core" key="T" text="T"/>
                       </items>
-                  </Select>
+                  </Select> 
+
+                  <Input value="{allIndex>COLLECTIVE}" />
+                  <Input value="{allIndex>PERCORSO}" />
+                  <Text text="{ parts:[{path:'allIndex>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
+                  <Text text="{ parts:[{path:'allIndex>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
+                  <Input value="{allIndex>DESTINATARIO}" />
+
                 </cells>
               </ColumnListItem>
             </items>

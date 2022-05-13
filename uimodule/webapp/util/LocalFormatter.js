@@ -2,6 +2,22 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function (DateFormat) {
     "use strict";
 
     return {
+      formatDate3: function (sValue) {
+        if (sValue === "" || sValue === undefined || sValue === null) {
+          return "";
+        } else {
+          var vDate = new Date();
+          vDate.setMonth(sValue.split("/")[1] - 1);
+
+          var options = {
+            style: 'medium'
+          };
+          var df = DateFormat.getDateInstance(options);
+          return df.format(vDate);
+
+        }
+      },
+
       formatDate2: function (sValue) {
 
         if (sValue === "" || sValue === undefined || sValue === null) {
@@ -29,7 +45,7 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function (DateFormat) {
         }
       },
       UzeitFormatter: function (sUzeit) {
-        if (sUzeit !== undefined){
+        if (sUzeit !== undefined && sUzeit !== null){
         if (sUzeit.ms !== undefined){
           return sUzeit.ms;
         } else {
@@ -37,7 +53,7 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function (DateFormat) {
         }
       } else {
         return "";
-      }        
+      }
       },
       formatAttivo: function (Attivo) {
         if (Attivo === "X"){

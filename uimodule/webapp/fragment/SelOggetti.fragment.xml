@@ -26,7 +26,7 @@
                         <form:formElements>
                             <form:FormElement visible="true">
                                 <form:label>
-                                    <Label text="{i18n>SedeTecnica}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Label text="{i18n>SedeTecnicaEcc}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
                                     <Input id="iSedeTecnicaECC" value="{sSelect>/SEDE_TECNICA_ECC}" type="Text" showValueHelp="true" valueHelpRequest="handleSedeTecnicaECC"/>
@@ -70,6 +70,22 @@
                                     <ComboBox value="{sSelect>/PROFILO}" items="{ path: 'sHelp>/PROFILO', sorter: { path: 'PROFILO' } }">
                                         <core:ListItem key="{sHelp>PROFILO}" text="{sHelp>PROFILO}"/>
                                     </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>INIZIOVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <DatePicker  placeholder="Inserisci Inizio Validità" dateValue="{sSelect>/INIZIOVAL}" />
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>FINEVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    	<DatePicker  placeholder="Inserisci Fine Validità" dateValue="{sSelect>/FINEVAL}"  />
                                 </form:fields>
                             </form:FormElement>
                         </form:formElements>

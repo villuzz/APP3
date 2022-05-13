@@ -200,6 +200,7 @@
             <columns>
               <Column width="10em" id="vCol1"><Text text="{i18n>INDEX}"/></Column>
               <Column width="10em" id="vCol2"><Text text="{i18n>CONTATORE}"/></Column>
+              <Column width="10em" id="vCol3"><Text text="{i18n>ATTIVO}"/></Column>
               <Column width="5em" id="vCol104"><Text text="{i18n>Materiali}"/></Column>
               <Column width="5em" id="vCol105"><Text text="{i18n>Servizi}"/></Column>
               <Column width="10em" id="vCol5"><Text text="{i18n>SISTEMA}"/></Column>
@@ -282,12 +283,19 @@
               <Column width="10em" id="vCol102"><Text text="{i18n>MPTYP}"/></Column>
               <Column width="10em" id="vCol103"><Text text="{i18n>TIPOFREQUENZA}"/></Column>
 
+              <Column width="10em" id="vCol106"><Text text="{i18n>COLLECTIVE}"/></Column>
+              <Column width="10em" id="vCol107"><Text text="{i18n>PERCORSO}"/></Column>
+              <Column width="10em" id="vCol108"><Text text="{i18n>FINEVAL}"/></Column>
+              <Column width="10em" id="vCol109"><Text text="{i18n>INIZIOVAL}"/></Column>
+              <Column width="10em" id="vCol110"><Text text="{i18n>DESTINATARIO}"/></Column>
+
             </columns>
             <items>
               <ColumnListItem vAlign="Middle" type="Active">
                 <cells>
                   <Text text="{allIndex2>INDEX}"/>
                   <Text text="{allIndex2>CONTATORE} " />
+                  <Switch type="AcceptReject" state="{allIndex2>ATTIVO}" enabled="false"></Switch>
                   <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
                   <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
 
@@ -366,6 +374,12 @@
                   <Text text="{allIndex2>POINT}" />
                   <Text text="{allIndex2>MPTYP}" />
                   <Text text="{allIndex2>TIPOFREQUENZA}" />
+
+                  <Text text="{allIndex>COLLECTIVE}" />
+                  <Text text="{allIndex>PERCORSO}" />
+                  <Text text="{ parts:[{path:'allIndex>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
+                  <Text text="{ parts:[{path:'allIndex>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
+                  <Text text="{allIndex>DESTINATARIO}" />
                   
                 </cells>
               </ColumnListItem>

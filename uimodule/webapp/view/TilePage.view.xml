@@ -1,10 +1,13 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:f="sap.f" controllerName="PM030.APP3.controller.TilePage">
     <f:DynamicPage id="dynamicPageId" preserveHeaderStateOnScroll="true" showFooter="false" fitContent="true" class="sapUiContentPadding">
+    <f:landmarkInfo>
+            <f:DynamicPageAccessibleLandmarkInfo rootRole="Region" contentRole="Main" headerRole="Banner" rootLabel="{i18n>Overview_rootLabel}" contentLabel="{i18n>Overview_contentLabel}" headerLabel="{i18n>Overview_headerLabel}"/>
+          </f:landmarkInfo>
         <f:title>
             <f:DynamicPageTitle>
                 <f:content>
                     <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                        <Title text="{i18n>Piani}" class="sapUiTinyMarginTop"/>
+                       <Title text="{i18n>Piani}" class="sapUiTinyMarginTop titleTile"/>
                     </HBox>
                 </f:content>
                 <f:actions></f:actions>

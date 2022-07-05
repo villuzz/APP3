@@ -18,7 +18,20 @@
             <MessageStrip id="Strip2" class="sapUiSmallMarginBottom" visible="false" type="Error" showIcon="true"/>
             <form:Form width="80%" editable="true" visible="true">
                 <form:layout>
-                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                    <form:ResponsiveGridLayout
+					labelSpanXL="4"
+					labelSpanL="3"
+					labelSpanM="4"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="0"
+					emptySpanL="4"
+					emptySpanM="0"
+					emptySpanS="0"
+					columnsXL="1"
+					columnsL="1"
+					columnsM="1"
+					singleContainerFullSize="false" />
                 </form:layout>
                 <form:title/>
                 <form:formContainers>
@@ -29,7 +42,15 @@
                                     <Label text="{i18n>SedeTecnicaEcc}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input id="iSedeTecnicaECC" value="{sSelect>/SEDE_TECNICA_ECC}" type="Text" showValueHelp="true" valueHelpRequest="handleSedeTecnicaECC"/>
+                                     <MultiComboBox id="cbSEDEECC" selectedKeys="{sSelect>/SEDE_ECC}"  items="{ path: 'sHelp>/SEDEECC' }" >
+                                    <core:ListItem key="{sHelp>Functlocation}" text="{sHelp>Functlocation}"/>
+                                  </MultiComboBox>
+                                  <Button type="Emphasized" icon="sap-icon://value-help" press="handleSedeTecnicaECC">
+                                  <layoutData>
+                                    <l:GridData span="L1 M1 S3" />
+                                  </layoutData>
+                                  </Button>
+
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -37,9 +58,25 @@
                                     <Label text="{i18n>Equipment}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <ComboBox value="{sSelect>/EQUIPMENT}" items="{ path: 'sHelp>/EQUIPMENT', sorter: { path: 'EQUIPMENT' } }">
-                                        <core:ListItem key="{sHelp>EQUIPMENT}" text="{sHelp>EQUIPMENT}"/>
-                                    </ComboBox>
+                                    <!--<ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>EQUIPMENT}" showSecondaryValues= "true" items="{ path: 'sHelp>/EQUIPMENT2', sorter: { path: 'EQUIPMENT' }, length:2000 }" selectedKey="{sSelect>/EQUIPMENT2}">
+                                      <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname3}"/>
+                                    </ComboBox>-->
+                                    <Input showSuggestion="true" value="{sSelect>/EQUIPMENT2}" suggestionRows="{sHelp>/EQUIPMENT2}" suggest=".onSuggestEquipment" >
+                                        <suggestionColumns>
+                                          <Column>
+                                            <Label text="{i18n>Equipment}" />
+                                          </Column>
+                                          <Column hAlign="End">
+                                            <Label text="{i18n>Description}" />
+                                          </Column>
+                                        </suggestionColumns>
+                                        <suggestionRows>
+                                          <ColumnListItem>
+                                            <Label text="{sHelp>Fieldname1}" />
+                                            <Label text="{sHelp>Fieldname3}" />
+                                          </ColumnListItem>
+                                        </suggestionRows>
+                                      </Input>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -47,9 +84,26 @@
                                     <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <ComboBox value="{sSelect>/MPTYP}" items="{ path: 'sHelp>/MPTYP', sorter: { path: 'MPTYP' } }">
-                                        <core:ListItem key="{sHelp>MPTYP}" text="{sHelp>MPTYP}"/>
-                                    </ComboBox>
+                                    <!--<ComboBox value="{sSelect>/MPTYP}" items="{ path: 'sHelp>/MPTYP', sorter: { path: 'Fieldname1' }, length:2000 }" showSecondaryValues= "true"  >
+                                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                    </ComboBox>-->
+                                    <Input showSuggestion="true" value="{sSelect>/MPTYP}" suggestionRows="{sHelp>/MPTYP}" suggest=".onSuggestMPTYP" >
+                                        <suggestionColumns>
+                                          <Column>
+                                            <Label text="{i18n>MPTYP}" />
+                                          </Column>
+                                          <Column
+                                            hAlign="End">
+                                            <Label text="{i18n>Description}" />
+                                          </Column>
+                                        </suggestionColumns>
+                                        <suggestionRows>
+                                          <ColumnListItem>
+                                            <Label text="{sHelp>Fieldname1}" />
+                                            <Label text="{sHelp>Fieldname2}" />
+                                          </ColumnListItem>
+                                        </suggestionRows>
+                                      </Input>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -57,12 +111,13 @@
                                     <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <ComboBox value="{sSelect>/OGGETTO_TECNICO}" items="{ path: 'sHelp>/OGGETTO_TECNICO', sorter: { path: 'OGGETTO_TECNICO' } }">
-                                        <core:ListItem key="{sHelp>OGGETTO_TECNICO}" text="{sHelp>OGGETTO_TECNICO}"/>
+                                    <ComboBox value="{sSelect>/OGGETTO_TECNICO}" showSecondaryValues="true" items="{ path: 'sHelp>/OGGETTO_TECNICO', sorter: { path: 'OGGETTO_TECNICO' } }">
+                                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                                     </ComboBox>
+                                 
                                 </form:fields>
                             </form:FormElement>
-                            <form:FormElement visible="true">
+                            <!--<form:FormElement visible="true">
                                 <form:label>
                                     <Label text="{i18n>ProfiloCatalogo}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
@@ -71,13 +126,13 @@
                                         <core:ListItem key="{sHelp>PROFILO}" text="{sHelp>PROFILO}"/>
                                     </ComboBox>
                                 </form:fields>
-                            </form:FormElement>
+                            </form:FormElement>-->
                             <form:FormElement visible="true">
                                 <form:label>
                                     <Label text="{i18n>INIZIOVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <DatePicker  placeholder="Inserisci Inizio Validità" dateValue="{sSelect>/INIZIOVAL}" />
+                                    <DatePicker  placeholder="Inserisci Inizio Validità" displayFormat="dd-MM-YYYY" dateValue="{sSelect>/INIZIOVAL}" />
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -85,7 +140,7 @@
                                     <Label text="{i18n>FINEVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    	<DatePicker  placeholder="Inserisci Fine Validità" dateValue="{sSelect>/FINEVAL}"  />
+                                    	<DatePicker  placeholder="Inserisci Fine Validità" displayFormat="dd-MM-YYYY" dateValue="{sSelect>/FINEVAL}"  />
                                 </form:fields>
                             </form:FormElement>
                         </form:formElements>
@@ -95,6 +150,9 @@
             </form:Form>
         </f:content>
         <!-- DynamicPage Footer -->
+        <f:dependents>
+            <core:Fragment fragmentName="PM030.APP3.fragment.SedeTecnicaReale" type="XML"></core:Fragment>
+        </f:dependents>
         <f:footer>
             <OverflowToolbar>
                 <ToolbarSpacer/>

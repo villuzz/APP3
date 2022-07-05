@@ -11,33 +11,32 @@
                 <f:actions></f:actions>
                 <f:navigationActions>
                     <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin"/>
-                    <Button icon="sap-icon://action-settings" text="Colonne" press="onPersoButtonPressed" class="sapUiTinyMarginBegin"/>
-                    <Button icon="sap-icon://download" text="Scarica" press="onDataExport" class="sapUiTinyMarginBegin"/>
+                    <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin"/>
+                    <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin"/>
+
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar search="onSearch" clear="onClearFilter" showClearOnFB="true" showRestoreButton="true" showClearButton="true">
+                    <fb:FilterBar search="onSearchFilters" clear="onClearFilter" showClearOnFB="true" showRestoreButton="true" showClearButton="true">
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem id="FIINDEX" visible="true" groupName="__$INTERNAL$" name="FYINDEX" label="{i18n>INDEX}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIINDEX" visible="true" groupName="__$INTERNAL$" name="FYINDEX" label="{i18n>IndexPmo}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiComboBox items="{ path: 'sHelp>/INDEX' }">
-                                        <core:Item key="{sHelp>IndexPmo}" text="{sHelp>IndexPmo}"/>
-                                    </MultiComboBox>
+                                    <MultiInput id="inIndex" type="Number" showValueHelp="false"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem mandatory="true" id="FIDivisioneu" visible="true" groupName="__$INTERNAL$" name="FYDivisione" label="{i18n>Divisioneu}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIDivisioneu" visible="true" groupName="__$INTERNAL$" name="FYDivisione" label="{i18n>Divisioneu}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/DIVISIONEC', length:2000 }" selectedKeys="{sFilter>/DIVISIONEC}" selectionChange="onFilterHelp">
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/IDivisioneu', length:2000 }" selectedKeys="{sFilter>/IDivisioneu}" selectionChange="onFilterHelp">
                                     <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2} - {sHelp>Fieldname3}"/>
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FITIPO_SCHED" visible="true" groupName="__$INTERNAL$" name="FYTIPO_SCHED" label="{i18n>TIPO_SCHED}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIITipoPmo" visible="true" groupName="__$INTERNAL$" name="FYITipoPmo" label="{i18n>ITipoPmo}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                  <Select xmlns="sap.m" id="tipoFrequenza" selectedKey="{sFilter>/TIPOFREQUENZA}" change="onChangetipoFrequenza">
+                                  <Select xmlns="sap.m" id="tipoFrequenza" selectedKey="{sFilter>/ITipoPmo}" change="onChangetipoFrequenza">
                                       <items>
                                           <core:ListItem xmlns:core="sap.ui.core" key="" text=""/>
                                           <core:ListItem xmlns:core="sap.ui.core" key="C" text="C"/>
@@ -46,91 +45,297 @@
                                   </Select>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FITIPO_ORDINE" visible="true" groupName="__$INTERNAL$" name="FYTIPO_ORDINE" label="{i18n>TIPO_ORDINE}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIIPriorita" visible="true" groupName="__$INTERNAL$" name="FYIPriorita" label="{i18n>IPriorita}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/TIPO_ORDINE', length:2000 }" selectedKeys="{sFilter>/TIPO_ORDINE}">
-                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname3}"/>
-                                  </MultiComboBox>
-                                  </fb:control>
-                            </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FITIPO_ATTIVITA" visible="true" groupName="__$INTERNAL$" name="FYTIPO_ATTIVITA" label="{i18n>TIPO_ATTIVITA}" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/TIPO_ATTIVITA', length:2000 }" selectedKeys="{sFilter>/TIPO_ATTIVITA}">
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/IPriorita', length:2000 }" selectedKeys="{sFilter>/IPriorita}">
                                     <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FISISTEMA" visible="true" groupName="__$INTERNAL$" name="FYSISTEMA" label="{i18n>SISTEMA}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIITipoOrdine" visible="true" groupName="__$INTERNAL$" name="FYITipoOrdine" label="{i18n>ITipoOrdine}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                  <MultiComboBox selectionChange="onFilterHelp" showSecondaryValues= "true" items="{ path: 'sHelp>/SISTEMA', length:2000 }" selectedKeys="{sFilter>/SISTEMA}">
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ITipoOrdine', length:2000 }" selectedKeys="{sFilter>/ITipoOrdine}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname3}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIITipoAttivita" visible="true" groupName="__$INTERNAL$" name="FYITipoAttivita" label="{i18n>ITipoAttivita}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ITipoAttivita', length:2000 }" selectedKeys="{sFilter>/ITipoAttivita}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIIndisponibilita" visible="true" groupName="__$INTERNAL$" name="FYIIndisponibilita" label="{i18n>IIndisponibilita}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/IIndisponibilita', length:2000 }" selectedKeys="{sFilter>/IIndisponibilita}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIISistema" visible="true" groupName="__$INTERNAL$" name="FYISistema" label="{i18n>ISistema}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox selectionChange="onFilterHelp" showSecondaryValues= "true" items="{ path: 'sHelp>/SISTEMA', length:2000 }" selectedKeys="{sFilter>/ISistema}">
                                     <core:ListItem key="{sHelp>Sistema}" text="{sHelp>Sistema}" additionalText="{sHelp>Txt}"/>
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FICLASSE" visible="true" groupName="__$INTERNAL$" name="FYCLASSE" label="{i18n>CLASSE}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIIClasse" visible="true" groupName="__$INTERNAL$" name="FYIClasse" label="{i18n>IClasse}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/CLASSE', length:2000 }" selectedKeys="{sFilter>/CLASSE}">
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/CLASSE', length:2000 }" selectedKeys="{sFilter>/IClasse}">
                                     <core:ListItem key="{sHelp>Classe}" text="{sHelp>Classe}" additionalText="{sHelp>Txt}"/>
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FIPROGRES" visible="true" groupName="__$INTERNAL$" name="FYPROGRES" label="{i18n>PROGRES}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIIProgres" visible="true" groupName="__$INTERNAL$" name="FYIProgres" label="{i18n>IProgres}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/PROGRES', length:2000 }" selectedKeys="{sFilter>/PROGRES}">
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/PROGRES', length:2000 }" selectedKeys="{sFilter>/IProgres}">
                                     <core:ListItem key="{sHelp>Progres}" text="{sHelp>Progres}" additionalText="{sHelp>Txt}"/>
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FISedeTecnica" visible="true" groupName="__$INTERNAL$" name="FYSedeTecnica" label="{i18n>SedeTecnica}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIIDesBreve" visible="true" groupName="__$INTERNAL$" name="FYIDesBreve" label="{i18n>IDesBreve}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <Input value="{sFilter>/IDesBreve}" />
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIAzione" visible="true" groupName="__$INTERNAL$" name="FYIAzione" label="{i18n>IAzione}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <Input value="{sFilter>/IAzione}" />
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIICriticita" visible="true" groupName="__$INTERNAL$" name="FYICriticita" label="{i18n>ICriticita}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <Select selectedKey="{sFilter>/ICriticita}">
+                                <items>
+                                <core:ListItem xmlns:core="sap.ui.core" key="" text=""  />
+                                <core:ListItem xmlns:core="sap.ui.core" key="X" icon="sap-icon://accept" text="Si"  />
+                                <core:ListItem xmlns:core="sap.ui.core" key="0" icon="sap-icon://decline" text="No" />
+                                </items>
+                              </Select>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIDeterminanza" visible="true" groupName="__$INTERNAL$" name="FYIDeterminanza" label="{i18n>IDeterminanza}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <Select selectedKey="{sFilter>/IDeterminanza}">
+                                <items>
+                                <core:ListItem xmlns:core="sap.ui.core" key="" text=""  />
+                                <core:ListItem xmlns:core="sap.ui.core" key="X" icon="sap-icon://accept" text="Si"  />
+                                <core:ListItem xmlns:core="sap.ui.core" key="0" icon="sap-icon://decline" text="No" />
+                                </items>
+                              </Select>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIDifferibile" visible="true" groupName="__$INTERNAL$" name="FYIDifferibile" label="{i18n>IDifferibile}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <Select selectedKey="{sFilter>/IDifferibile}">
+                                <items>
+                                <core:ListItem xmlns:core="sap.ui.core" key="" text=""  />
+                                <core:ListItem xmlns:core="sap.ui.core" key="X" icon="sap-icon://accept" text="Si"  />
+                                <core:ListItem xmlns:core="sap.ui.core" key="0" icon="sap-icon://decline" text="No" />
+                                </items>
+                              </Select>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIFrequenza" visible="true" groupName="__$INTERNAL$" name="FYIFrequenza" label="{i18n>IFrequenza}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/IFrequenza', length:2000 }" selectedKeys="{sFilter>/IFrequenza}">
+                                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname3}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            
+                             <fb:FilterGroupItem id="FIIDurataCiclo" visible="true" groupName="__$INTERNAL$" name="FYIDurataCiclo" label="{i18n>IDurataCiclo}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <Input value="{sFilter>/IDurataCiclo}" type="Number" />
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FISedeTecnica" visible="true" groupName="__$INTERNAL$" name="FYSedeTecnica" label="{i18n>SedeTecnica2}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input value="{sFilter>/SedeTecnica}" />
+                                <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/SedeTecnica}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
+                                                <suggestionColumns>
+                                                    <Column>
+                                                        <Label text="{i18n>Functlocation}"/>
+                                                    </Column>
+                                                    <Column hAlign="Center">
+                                                        <Label text="{i18n>Category}"/>
+                                                    </Column>
+                                                    <Column hAlign="End">
+                                                        <Label text="{i18n>Descript}"/>
+                                                    </Column>
+                                                </suggestionColumns>
+                                                <suggestionRows>
+                                                    <ColumnListItem>
+                                                        <Label text="{sHelp>Functlocation}"/>
+                                                        <Label text="{sHelp>Category}"/>
+                                                        <Label text="{sHelp>Descript}"/>
+                                                    </ColumnListItem>
+                                                </suggestionRows>
+                                            </Input>
                               </fb:control>
                             </fb:FilterGroupItem>
+                            
 
                             <fb:FilterGroupItem id="FIEquipment" visible="true" groupName="__$INTERNAL$" name="FYEquipment" label="{i18n>Equipment}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input value="{sFilter>/Equipment}" />
+                                <Input showSuggestion="true" value="{sFilter>/IEquipmentCompo}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
+                                        <suggestionColumns>
+                                          <Column>
+                                            <Label text="{i18n>Equipment}" />
+                                          </Column>
+                                          <Column hAlign="End">
+                                            <Label text="{i18n>Description}" />
+                                          </Column>
+                                        </suggestionColumns>
+                                        <suggestionRows>
+                                          <ColumnListItem>
+                                            <Label text="{sHelp>Fieldname1}" />
+                                            <Label text="{sHelp>Fieldname3}" />
+                                          </ColumnListItem>
+                                        </suggestionRows>
+                                      </Input>
                               </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem id="FIZBAU" visible="true" groupName="__$INTERNAL$" name="FYZBAU" label="{i18n>ZBAU}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIICentroLavoro" visible="true" groupName="__$INTERNAL$" name="FYICentroLavoro" label="{i18n>ICentroLavoro}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input value="{sFilter>/ZBAU}" />
-                              </fb:control>
-                            </fb:FilterGroupItem>
-
-                            <fb:FilterGroupItem id="FICENTRO_LAVORO" visible="true" groupName="__$INTERNAL$" name="FYCENTRO_LAVORO" label="{i18n>CENTRO_LAVORO}" partOfCurrentVariant="true" visibleInFilterBar="true">
-                              <fb:control>
-                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/CENTRO_LAVORO', length:2500  }" selectedKeys="{sFilter>/CENTRO_LAVORO}">
+                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ICentroLavoro', length:2500  }" selectedKeys="{sFilter>/ICentroLavoro}">
                                   <core:ListItem key="{sHelp>Arbpl}" text="{sHelp>Arbpl}" additionalText="{sHelp>Werks} - {sHelp>Destinatario}"/>
+                                </MultiComboBox>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIDestinatario" visible="true" groupName="__$INTERNAL$" name="FYIDestinatario" label="{i18n>IDestinatario}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ICentroLavoro', length:2500  }" selectedKeys="{sFilter>/IDestinatario}">
+                                  <core:ListItem key="{sHelp>Destinatario}" text="{sHelp>Destinatario}" additionalText="{sHelp>Werks} - {sHelp>Arbpl}"/>
+                                </MultiComboBox>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FIITipoGestione" visible="true" groupName="__$INTERNAL$" name="FYITipoGestione" label="{i18n>ITipoGestione}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ITipoGestione', length:2500  }" selectedKeys="{sFilter>/ITipoGestione}">
+                                  <core:ListItem key="{sHelp>TipoGestione}" text="{sHelp>TipoGestione}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest}"/>
+                                </MultiComboBox>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIITipoGestione1" visible="true" groupName="__$INTERNAL$" name="FYITipoGestione1" label="{i18n>ITipoGestione1}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ITipoGestione1', length:2500  }" selectedKeys="{sFilter>/ITipoGestione1}">
+                                  <core:ListItem key="{sHelp>TipoGestione1}" text="{sHelp>TipoGestione1}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest1}"/>
+                                </MultiComboBox>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIITipoGestione2" visible="true" groupName="__$INTERNAL$" name="FYITipoGestione2" label="{i18n>ITipoGestione2}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ITipoGestione2', length:2500  }" selectedKeys="{sFilter>/ITipoGestione2}">
+                                  <core:ListItem key="{sHelp>TipoGestione2}" text="{sHelp>TipoGestione2}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest2}"/>
                                 </MultiComboBox>
                               </fb:control>
                             </fb:FilterGroupItem>
 
                             <fb:FilterGroupItem id="FIonlyActive" visible="true" groupName="__$INTERNAL$" name="onlyActive" label="{i18n>onlyActive}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                              <Select xmlns="sap.m" id="onlyActive" selectedKey="{sFilter>/ATTIVO}">
+                              <Select xmlns="sap.m" id="onlyActive" selectedKey="{sFilter>/IFlagAttivo}">
                                 <items>
-                                <core:ListItem xmlns:core="sap.ui.core" key="0" text="" />
-                                <core:ListItem xmlns:core="sap.ui.core" key="true" icon="sap-icon://accept" text="Attivo" />
-                                <core:ListItem xmlns:core="sap.ui.core" key="false" icon="sap-icon://decline" text="Disattivo"/>
+                                <core:ListItem xmlns:core="sap.ui.core" key="" icon="sap-icon://accept" text="Attivo" />
+                                <core:ListItem xmlns:core="sap.ui.core" key="X" icon="sap-icon://decline" text="Disattivo"/>
                                 </items>
                               </Select>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIPoint" visible="true" groupName="__$INTERNAL$" name="FYIPoint" label="{i18n>IPoint}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input showSuggestion="true" value="{sFilter>/IPoint}" suggestionRows="{sHelp>/POINT}" suggest=".onSuggestPoint" >
+                                  <suggestionColumns>
+                                    <Column>
+                                      <Label text="{i18n>IPoint}" />
+                                    </Column>
+                                    <Column hAlign="End">
+                                      <Label text="{i18n>Description}" />
+                                    </Column>
+                                  </suggestionColumns>
+                                  <suggestionRows>
+                                    <ColumnListItem>
+                                      <Label text="{sHelp>Fieldname1}" />
+                                      <Label text="{sHelp>Fieldname2}" />
+                                    </ColumnListItem>
+                                  </suggestionRows>
+                                </Input>
                               </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem id="FICollective" visible="true" groupName="__$INTERNAL$" name="Collective" label="{i18n>Collective}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIIContActEl" visible="true" groupName="__$INTERNAL$" name="FYIContActEl" label="{i18n>IContActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <MultiInput id="IContActEl" type="Number" showValueHelp="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            
+                            <fb:FilterGroupItem id="FIISistemActEl" visible="true" groupName="__$INTERNAL$" name="FYISistemActEl" label="{i18n>ISistemActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/SISTEMA', length:2000 }" selectedKeys="{sFilter>/ISistemActEl}">
+                                    <core:ListItem key="{sHelp>Sistema}" text="{sHelp>Sistema}" additionalText="{sHelp>Txt}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIClasseActEl" visible="true" groupName="__$INTERNAL$" name="FYIClasseActEl" label="{i18n>IClasseActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/CLASSE', length:2000 }" selectedKeys="{sFilter>/IClasseActEl}">
+                                    <core:ListItem key="{sHelp>Classe}" text="{sHelp>Classe}" additionalText="{sHelp>Txt}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FIIProgressActEl" visible="true" groupName="__$INTERNAL$" name="FYIProgressActEl" label="{i18n>IProgressActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                  <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/PROGRES', length:2000 }" selectedKeys="{sFilter>/IProgressActEl}">
+                                    <core:ListItem key="{sHelp>Progres}" text="{sHelp>Progres}" additionalText="{sHelp>Txt}"/>
+                                  </MultiComboBox>
+                                  </fb:control>
+                            </fb:FilterGroupItem>
+                            
+                            <fb:FilterGroupItem id="FIIEquipmentActEl" visible="true" groupName="__$INTERNAL$" name="FYIEquipmentActEl" label="{i18n>IEquipmentActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                              <Select xmlns="sap.m" id="Collective" selectedKey="{sFilter>/Collective}">
-                                <items>
-                                <core:ListItem xmlns:core="sap.ui.core" key="" text="" />
-                                <core:ListItem xmlns:core="sap.ui.core" key="X" text="X" />
-                                </items>
-                              </Select>
+                                <Input showSuggestion="true" value="{sFilter>/IEquipmentActEl}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
+                                        <suggestionColumns>
+                                          <Column>
+                                            <Label text="{i18n>Equipment}" />
+                                          </Column>
+                                          <Column hAlign="End">
+                                            <Label text="{i18n>Description}" />
+                                          </Column>
+                                        </suggestionColumns>
+                                        <suggestionRows>
+                                          <ColumnListItem>
+                                            <Label text="{sHelp>Fieldname1}" />
+                                            <Label text="{sHelp>Fieldname3}" />
+                                          </ColumnListItem>
+                                        </suggestionRows>
+                                      </Input>
                               </fb:control>
                             </fb:FilterGroupItem>
+                            
+                            <fb:FilterGroupItem id="FYIComponentTipoActEl" visible="true" groupName="__$INTERNAL$" name="FIIComponentTipoActEl" label="{i18n>IComponentTipoActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/IComponentTipoActEl}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FYIDesComponenteActEl" visible="true" groupName="__$INTERNAL$" name="FIIDesComponenteActEl" label="{i18n>IDesComponenteActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/IDesComponenteActEl}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                           
                         </fb:filterGroupItems>
                     </fb:FilterBar>
+                    <OverflowToolbar class="sapUiSmallMarginTop" style="Clear">
+                      <Button type="Default" text="{i18n>ListVar}" icon="sap-icon://activity-items" press="onListVariant" tooltip="{i18n>List}" ariaLabelledBy="ActionListVariant" ariaDescribedBy="ButtonVariant"/>
+                      <Button type="Default" text="{i18n>SalvaVar}" icon="sap-icon://save" press="onPressVariant" tooltip="{i18n>SaveVar}" ariaLabelledBy="ActionSaveVariant" ariaDescribedBy="ButtonSave"/>
+                      <ToolbarSpacer/>
+                      <Button text="Scarica" icon="sap-icon://download" press="onDataExport" class="sapUiTinyMarginBegin" tooltip="{i18n>Download}" ariaLabelledBy="ActionDownload" ariaDescribedBy="ButtonDownload"/>
+                      <Button text="Carica"  icon="sap-icon://upload" press="handleUploadPiani" class="sapUiTinyMarginBegin" tooltip="{i18n>Upload}" ariaLabelledBy="ActionUpload" ariaDescribedBy="ButtonUpload"/>
+                      <Button text="Colonne" icon="sap-icon://action-settings" press="onPersoButtonPressed" class="sapUiTinyMarginBegin" tooltip="{i18n>Columns}" ariaLabelledBy="ActionColumns" ariaDescribedBy="ButtonColumns"/>
+                    </OverflowToolbar>
                 </f:content>
             </f:DynamicPageHeader>
         </f:header>
@@ -219,7 +424,7 @@
                         <Column width="10em" id="col79"><Text text="{i18n>DesEstesa}"/></Column>
                         <Column width="10em" id="col80"><Text text="{i18n>Determinanza}"/></Column>
                         <Column width="10em" id="col81"><Text text="{i18n>Differibile}"/></Column>
-                        <Column width="10em" id="col82"><Text text="{i18n>Divisionec}"/></Column>
+                        <Column width="10em" id="col82"><Text text="{i18n>IDivisioneu}"/></Column>
                         <Column width="10em" id="col83"><Text text="{i18n>EquipmentCompo}"/></Column>
                         <Column width="10em" id="col84"><Text text="{i18n>EquipmentOdm}"/></Column>
                         <Column width="10em" id="col85"><Text text="{i18n>FineCard}"/></Column>
@@ -231,8 +436,7 @@
                         <Column width="10em" id="col91"><Text text="{i18n>FlgMail}"/></Column>
                         <Column width="10em" id="col92"><Text text="{i18n>Point}"/></Column>
                         <Column width="10em" id="col93"><Text text="{i18n>Scostamento}"/></Column>
-                        <Column width="10em" id="col94"><Text text="{i18n>SedeTecOdm}"/></Column>
-                        <Column width="10em" id="col95"><Text text="{i18n>StComponente}"/></Column>
+                        <Column width="15em" id="col95"><Text text="{i18n>StComponente}"/></Column>
                         <Column width="10em" id="col96"><Text text="{i18n>TipoAggr}"/></Column>
                         <Column width="10em" id="col97"><Text text="{i18n>TxtCiclo}"/></Column>
                         <Column width="10em" id="col98"><Text text="{i18n>Uname}"/></Column>
@@ -258,7 +462,7 @@
                                 <Text text="{mPiani>TipoGestione1}"/>
                                 <Text text="{mPiani>TipoGestione2}"/>
                                 <Text text="{mPiani>Collective}"/>
-                                <Text text="{mPiani>IntegTxtEsteso}"/>
+                                <Button icon="sap-icon://document-text" visible="{mPiani>Esteso}" type="Transparent" press="handleTestoView" />
                                 <Text text="{mPiani>DurataCiclo}"/>
                                 <Text text="{mPiani>Frequenza}"/>
                                 <Text text="{ parts:[{path:'mPiani>UltimaEsecuz'}], formatter: '.LocalFormatter.formatDate'}"/>
@@ -322,11 +526,11 @@
                                 <Text text="{mPiani>DesEstesa}"/>
                                 <Text text="{mPiani>Determinanza}"/>
                                 <Text text="{mPiani>Differibile}"/>
-                                <Text text="{mPiani>Divisionec}"/>
+                                <Text text="{mPiani>IDivisioneu}"/>
                                 <Text text="{mPiani>EquipmentCompo}"/>
                                 <Text text="{mPiani>EquipmentOdm}"/>
                                 <Text text="{mPiani>FineCard}"/>
-                                <Text text="{mPiani>FlagAttivo}"/>
+                                <Switch type="AcceptReject" state="{mPiani>FlagAttivo}" customTextOn="Attivo" customTextOff="Disattivo" change="onChangeAttivo" ></Switch>
                                 <Text text="{mPiani>FlagInterc}"/>
                                 <Text text="{mPiani>FlagMateriali}"/>
                                 <Text text="{mPiani>FlagOdm}"/>
@@ -334,7 +538,6 @@
                                 <Text text="{mPiani>FlgMail}"/>
                                 <Text text="{mPiani>Point}"/>
                                 <Text text="{mPiani>Scostamento}"/>
-                                <Text text="{mPiani>SedeTecOdm}"/>
                                 <Text text="{mPiani>StComponente}"/>
                                 <Text text="{mPiani>TipoAggr}"/>
                                 <Text text="{mPiani>TxtCiclo}"/>
@@ -352,5 +555,11 @@
                 <ToolbarSpacer/>
             </OverflowToolbar>
         </f:footer>
+        <f:dependents>
+        <core:Fragment fragmentName="PM030.APP3.fragment.popTestoEstesoView" type="XML"></core:Fragment>
+          <core:Fragment fragmentName="PM030.APP3.fragment.Variant" type="XML"></core:Fragment>
+          <core:Fragment fragmentName="PM030.APP3.fragment.SaveVariant" type="XML"></core:Fragment>
+      <core:Fragment fragmentName="PM030.APP3.fragment.UploadTable" type="XML"></core:Fragment>
+    </f:dependents>
     </f:DynamicPage>
 </mvc:View>

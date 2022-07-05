@@ -7,6 +7,7 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
         oData: {
             _persoSchemaVersion: "1.0",
             aColumns: [
+              {id: "Piani-tbPiani-col86", order: 0, text: oResource.getText("FlagAttivo"), visible: true},
               {id: "Piani-tbPiani-col1", order: 1, text: oResource.getText("IndexPmo"), visible: true},
               {id: "Piani-tbPiani-col2", order: 2, text: oResource.getText("InizioVal"), visible: true},
               {id: "Piani-tbPiani-col3", order: 3, text: oResource.getText("FineVal"), visible: true},
@@ -92,7 +93,7 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col83", order: 83, text: oResource.getText("EquipmentCompo"), visible: false},
               {id: "Piani-tbPiani-col84", order: 84, text: oResource.getText("EquipmentOdm"), visible: false},
               {id: "Piani-tbPiani-col85", order: 85, text: oResource.getText("FineCard"), visible: false},
-              {id: "Piani-tbPiani-col86", order: 86, text: oResource.getText("FlagAttivo"), visible: false},
+              
               {id: "Piani-tbPiani-col87", order: 87, text: oResource.getText("FlagInterc"), visible: false},
               {id: "Piani-tbPiani-col88", order: 88, text: oResource.getText("FlagMateriali"), visible: false},
               {id: "Piani-tbPiani-col89", order: 89, text: oResource.getText("FlagOdm"), visible: false},
@@ -100,7 +101,7 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col91", order: 91, text: oResource.getText("FlgMail"), visible: false},
               {id: "Piani-tbPiani-col92", order: 92, text: oResource.getText("Point"), visible: false},
               {id: "Piani-tbPiani-col93", order: 93, text: oResource.getText("Scostamento"), visible: false},
-              {id: "Piani-tbPiani-col94", order: 94, text: oResource.getText("SedeTecOdm"), visible: false},
+             //{id: "Piani-tbPiani-col94", order: 94, text: oResource.getText("SedeTecOdm"), visible: false},
               {id: "Piani-tbPiani-col95", order: 95, text: oResource.getText("StComponente"), visible: false},
               {id: "Piani-tbPiani-col96", order: 96, text: oResource.getText("TipoAggr"), visible: false},
               {id: "Piani-tbPiani-col97", order: 97, text: oResource.getText("TxtCiclo"), visible: false},

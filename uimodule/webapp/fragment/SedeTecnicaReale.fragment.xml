@@ -1,0 +1,89 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:dnd="sap.ui.core.dnd" xmlns:ui="sap.ui.table">
+    <Dialog contentHeight="500px" id="DialogSedeReale" resizable="true" draggable="true" title="{i18n>SelezionaSedeTecnica}" verticalScrolling="false" horizontalScrolling="false">
+        <customHeader>
+            <Bar>
+                <contentLeft></contentLeft>
+                <contentMiddle>
+                    <Title text="{i18n>SelezionaSedeTecnica}"/>
+                </contentMiddle>
+                <contentRight>
+                	  <Input value="{sSedeTecnicaReale>/SEDE_TECNICA}" width="18em" class="sapUiTinyMarginBegin Uppercase" />
+                 <Button icon="sap-icon://search" type="Emphasized" class="sapUiTinyMarginBegin" press="onFilterSedeTecnicaReale"/>
+                  <Button icon="sap-icon://synchronize" type="Transparent" class="sapUiTinyMarginBegin" press="onResetSedeTecnicaReale"/>
+                   
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <HBox renderType="Bare" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" alignContent="Center" alignItems="Center" justifyContent="Center">
+                <ui:Table id="tSedeTecnicaReale" selectionMode="Single" ariaLabelledBy="title" rows="{ path: 'SedeReale>/' }" visibleRowCount="12" width="47.5%">
+                    <ui:extension>
+                        <OverflowToolbar id="infobarReale" style="Clear">
+                            <Title id="titleReale" text="Sedi disponibili"/>
+                        </OverflowToolbar>
+                    </ui:extension>
+                    <ui:columns>
+                     <ui:Column width="17%">
+                            <Text text="{i18n>Category}"/>
+                            <ui:template>
+                                <Text text="{SedeReale>Category}" wrapping="false"/>
+                            </ui:template>
+                        </ui:Column>
+                        <ui:Column width="35%">
+                            <Text text="{i18n>Functlocation}"/>
+                            <ui:template>
+                                <Text text="{SedeReale>Functlocation}" wrapping="false"/>
+                            </ui:template>
+                        </ui:Column>
+                        <ui:Column width="48%">
+                            <Text text="{i18n>Descript}"/>
+                            <ui:template>
+                                <Text text="{SedeReale>Descript}" wrapping="false"/>
+                            </ui:template>
+                        </ui:Column>
+                       
+                    </ui:columns>
+                </ui:Table>
+                <VBox width="5%" justifyContent="Center" alignItems="Center" alignContent="Center">
+                <Button icon="sap-icon://navigation-right-arrow" tooltip="passare a Sedi selezionate" press="moveToTable2Reale" class="sapUiTinyMarginBottom" />
+					      <Button icon="sap-icon://delete" tooltip="cancellare da Sedi selezionate" press="deleteFromTable2Reale"/>
+                </VBox>
+                <ui:Table id="tSelSedeTecnicaReale" width="47.5%" selectionMode="Single" rows="{ path: 'SelSedeReale>/'}" visibleRowCount="12" noData="Si prega di trascinare le Sedi qui.">
+                    <ui:extension>
+                        <OverflowToolbar style="Clear">
+                            <Title id="title2Reale" text="Sedi selezionate"/>
+                        </OverflowToolbar>
+                    </ui:extension>
+                    <ui:columns>
+                       <ui:Column width="17%">
+                            <Text text="{i18n>Category}"/>
+                            <ui:template>
+                                <Text text="{SelSedeReale>Category}" wrapping="false"/>
+                            </ui:template>
+                        </ui:Column>
+                        <ui:Column width="45%">
+                            <Text text="{i18n>Functlocation}"/>
+                            <ui:template>
+                                <Text text="{SelSedeReale>Functlocation}" wrapping="false"/>
+                            </ui:template>
+                        </ui:Column>
+                        <ui:Column width="48%">
+                            <Text text="{i18n>Descript}"/>
+                            <ui:template>
+                                <Text text="{SelSedeReale>Descript}" wrapping="false"/>
+                            </ui:template>
+                        </ui:Column>
+                     
+                    </ui:columns>
+                </ui:Table>
+            </HBox>
+        </content>
+        
+        <beginButton>
+            <Button text="{i18n>Conferma}" type="Emphasized" press="onConfirmSedeTecnicaReale"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>Annulla}" type="Emphasized" press="onCloseSedeTecnicaReale"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

@@ -22,7 +22,20 @@
             <form:Form width="80%" editable="true" visible="true">
                 <form:title/>
                 <form:layout>
-                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                    <form:ResponsiveGridLayout
+					labelSpanXL="4"
+					labelSpanL="3"
+					labelSpanM="4"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="0"
+					emptySpanL="4"
+					emptySpanM="0"
+					emptySpanS="0"
+					columnsXL="1"
+					columnsL="1"
+					columnsM="1"
+					singleContainerFullSize="false" />
                 </form:layout>
                 <form:formContainers>
                     <form:FormContainer visible="true">
@@ -52,7 +65,16 @@
                                     <Label text="{i18n>SedeTT}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input id="iSedeTecnica" value="{sSelect>/SEDE}" type="Text" showValueHelp="true" valueHelpRequest="handleSedeTecnica"/>
+                           
+                                     <MultiComboBox id="cbSEDE" selectedKeys="{sSelect>/SEDE}"  items="{ path: 'sHelp>/SEDE' }" >
+                                    <core:ListItem key="{sHelp>SEDECONCAT}" text="{sHelp>SEDECONCAT}"/>
+                                  </MultiComboBox>
+                                  <Button type="Emphasized" icon="sap-icon://value-help" press="handleSedeTecnica">
+                                  <layoutData>
+                                    <l:GridData span="L1 M1 S3" />
+                                  </layoutData>
+                                  </Button>
+                           
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -91,18 +113,28 @@
                                     <Label text="{i18n>Strategia}" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                   <MultiComboBox id="cbSTRATEGIA" selectedKeys="{sSelect>/STRATEGIA}"  items="{ path: '/Strategia', filters: [{ path: 'ID', operator: 'NE', value1: 0 }]}" showSecondaryValues="true">
+                                   <MultiComboBox id="cbSTRATEGIA" selectedKeys="{sSelect>/STRATEGIA}"  items="{ path: '/Strategia' }" showSecondaryValues="true">
                                     <core:ListItem key="{STRATEGIA}" text="{STRATEGIA}" additionalText="{STRATEGIA_DESC}"/>
                                   </MultiComboBox>
                                 </form:fields>
                             </form:FormElement>
-                            <form:FormElement visible="true">
+                            <!--<form:FormElement visible="true">
                                 <form:label>
                                     <Label text="{i18n>ZBAU}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
                                   <MultiComboBox id="cbZBAU" selectedKeys="{sSelect>/ZBAU}"  items="{ path: 'sHelp>/ZBAU', filters: [{ path: 'ZBAU', operator: 'NE', value1: '' }]}" >
                                     <core:ListItem key="{sHelp>ZBAU}" text="{sHelp>ZBAU}"/>
+                                  </MultiComboBox>
+                                </form:fields>
+                            </form:FormElement>-->
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="{i18n>Equipment}" design="Standard" width="100%" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <MultiComboBox id="cbEQUIPMENT" selectedKeys="{sSelect>/EQUIPMENT}"  items="{ path: 'sHelp>/EQUIPMENT', sorter: { path: 'EQUIPMENT' }, filters: [{ path: 'EQUIPMENT', operator: 'NE', value1: 0 }] }" >
+                                    <core:ListItem key="{sHelp>EQUIPMENT}" text="{sHelp>EQUIPMENT}"/>
                                   </MultiComboBox>
                                 </form:fields>
                             </form:FormElement>
@@ -141,9 +173,9 @@
                                     <Label text="{i18n>TIPO_ATTIVITA}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <ComboBox id="cbTIPO_ATTIVITA" value="{sSelect>/TIPO_ATTIVITA}" items="{ path: 'sHelp>/TIPO_ATTIVITA', sorter: { path: 'TIPO_ATTIVITA' } }">
-                                        <core:ListItem key="{sHelp>TIPO_ATTIVITA}" text="{sHelp>TIPO_ATTIVITA}"/>
-                                    </ComboBox>
+                                    <MultiComboBox id="cbTIPO_ATTIVITA" selectedKeys="{sSelect>/TIPO_ATTIVITA}"  items="{ path: 'sHelp>/TIPO_ATTIVITA', sorter: { path: 'TIPO_ATTIVITA' }, filters: [{ path: 'TIPO_ATTIVITA', operator: 'NE', value1: 0 }] }" >
+                                    <core:ListItem key="{sHelp>TIPO_ATTIVITA}" text="{sHelp>TIPO_ATTIVITA}"/>
+                                  </MultiComboBox>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement id="frTIPO_ORDINE">
@@ -151,9 +183,19 @@
                                     <Label text="{i18n>TIPO_ORDINE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <ComboBox id="cbTIPO_ORDINE" value="{sSelect>/TIPO_ORDINE}" items="{ path: 'sHelp>/TIPO_ORDINE', sorter: { path: 'TIPO_ORDINE' } }">
-                                        <core:ListItem key="{sHelp>TIPO_ORDINE}" text="{sHelp>TIPO_ORDINE}"/>
-                                    </ComboBox>
+                                     <MultiComboBox id="cbTIPO_ORDINE" selectedKeys="{sSelect>/TIPO_ORDINE}"  items="{ path: 'sHelp>/TIPO_ORDINE', sorter: { path: 'TIPO_ORDINE' }, filters: [{ path: 'TIPO_ORDINE', operator: 'NE', value1: 0 }] }" >
+                                    <core:ListItem key="{sHelp>TIPO_ORDINE}" text="{sHelp>TIPO_ORDINE}"/>
+                                  </MultiComboBox>
+                                </form:fields>
+                            </form:FormElement>  
+                            <form:FormElement id="frAZIONE">
+                                <form:label>
+                                    <Label text="{i18n>AZIONE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                     <MultiComboBox id="cbAZIONE" selectedKeys="{sSelect>/AZIONE}"  items="{ path: 'sHelp>/AZIONE', sorter: { path: 'AZIONE' }, filters: [{ path: 'AZIONE', operator: 'NE', value1: null }] }" >
+                                    <core:ListItem key="{sHelp>AZIONE}" text="{sHelp>AZIONE}"/>
+                                  </MultiComboBox>
                                 </form:fields>
                             </form:FormElement>  
                             <form:FormElement visible="true">

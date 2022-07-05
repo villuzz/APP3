@@ -16,3 +16,6 @@ tr[data-mydata="G"] {
   height: 100%;
   width: 100%;
 }
+.sapMInput.Uppercase .sapMInputBaseInner {
+  text-transform: uppercase;
+}

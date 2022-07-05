@@ -31,9 +31,22 @@ sap.ui.define([
             this.byId("navCon").to(this.byId("Page1"));
 
             var oModel = new sap.ui.model.json.JSONModel();
-            var sData = {};
+            var sData = {
+                INIZIOVAL: new Date(),
+                FINEVAL: new Date()
+            };
             oModel.setData(sData);
             this.getView().setModel(oModel, "sSelect");
+
+            var oModel2 = new sap.ui.model.json.JSONModel();
+            var sDataSel = [];
+            oModel2.setData(sDataSel);
+            this.getView().setModel(oModel2, "SelSede");
+
+            var oModel3 = new sap.ui.model.json.JSONModel();
+            var sDataSel = [];
+            oModel3.setData(sDataSel);
+            this.getView().setModel(oModel3, "SelSedeReale");
 
             var oModel1 = new sap.ui.model.json.JSONModel();
             sData = {};
@@ -48,13 +61,15 @@ sap.ui.define([
             sData.FREQ_TEMPO = await this._getTableDistinct("/Index_Azioni", [], "FREQ_TEMPO");
             sData.FREQ_CICLO = await this._getTableDistinct("/Index_Azioni", [], "FREQ_CICLO");
             sData.EQUIPMENT = await this._getTableDistinct("/Index_Azioni", [], "EQUIPMENT");
-            sData.MPTYP = await this._getTableDistinct("/Index_Azioni", [], "MPTYP");
+            // sData.MPTYP = await this._getTableDistinct("/Index_Azioni", [], "MPTYP");
             sData.OGGETTO_TECNICO = await this._getTableDistinct("/Index_Azioni", [], "OGGETTO_TECNICO");
             sData.PROFILO = await this._getTableDistinct("/Index_Azioni", [], "PROFILO");
             sData.TIPO_ATTIVITA = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ATTIVITA");
             sData.TIPO_ORDINE = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ORDINE");
             sData.VALORE = await this._getTableDistinct("/Index_Azioni", [], "VALORE");
+            sData.AZIONE = await this._getTableDistinct("/Index_Azioni", [], "AZIONE");
 
+            // sData.INDEX = await this._getTableDistinct("/Index_Azioni", [], "INDEX");
             oModel1.setData(sData);
             this.getView().setModel(oModel1, "sHelp");
 
@@ -70,36 +85,70 @@ sap.ui.define([
             this.getView().byId("selLvl5").getModel().setSizeLimit(1000);
             this.getView().byId("selLvl6").getModel().setSizeLimit(1000);
         },
+        onChangeStat: function (oEvent) {
+          debugger
+          var sData = this.getModel("allIndex").getData();
+          sData.Toth = Number(sData.Num) * Number(sData.Persone) * Number(sData.Hper);
+          sData.Toth1 = Number(sData.Num1) * Number(sData.Persone1) * Number(sData.Hper1);
+          sData.Toth2 = Number(sData.Num2) * Number(sData.Persone2) * Number(sData.Hper2);
+          sData.Toth3 = Number(sData.Num3) * Number(sData.Persone3) * Number(sData.Hper3);
+          sData.Toth4 = Number(sData.Num4) * Number(sData.Persone4) * Number(sData.Hper4);
+          sData.Toth5 = Number(sData.Num5) * Number(sData.Persone5) * Number(sData.Hper5);
+          this.getView().getModel("allIndex").refresh();
+        },
         handleWizardSubmit: async function () {
             sap.ui.core.BusyIndicator.show();
             var that = this;
             var allIndex2 = this.getView().getModel("allIndex2").getData();
-            var aIndex = [],
-                sIndex = {};
+            var msg = "";
             var ExtractionGrouped = _.groupBy(allIndex2, ele => ele.INDEX);
-            Object.keys(ExtractionGrouped).forEach(ele => {
+
+            var aIndex = [];
+            for (var i = 0; i < allIndex2.length; i++) {
+                if (!aIndex.includes(allIndex2[i].INDEX)) {
+                    aIndex.push(allIndex2[i].INDEX);
+                }
+            }
+
+            for (i = 0; i < aIndex.length; i++) {
+                var element = ExtractionGrouped[aIndex[i]];
+                var vIndex = await that.saveIndex(element[0]);
+                for (var j = 0; j < element.length; j++) {
+                    var vContatore = await that.saveAzioni(element[j], vIndex);
+                    await that.saveMaterial(element[j], vIndex, vContatore);
+                    await that.saveService(element[j], vIndex, vContatore);
+                }
+                msg = msg + " " + Number(vIndex).toFixed();
+            }
+            /*Object.keys(ExtractionGrouped).forEach(ele => {
+
                 let element = ExtractionGrouped[ele];
-                sIndex = this.formatIndex(element[0]);
+                let vIndex = that.formatIndex(element[0]);
+
                 element.forEach(row => {
-                    sIndex.T_ACT_ELSet.push(that.formatAzioni(row));
-                    sIndex.T_PMO_MSet = sIndex.T_PMO_MSet.concat(that.formatMaterial(row));
-                    sIndex.T_PMO_SSet = sIndex.T_PMO_SSet.concat(that.formatService(row));
+
+                  let vContatore = that.saveAzioni(row, vIndex);
+                  that.saveMaterial(row, vIndex, vContatore);
+                  that.saveService(row, vIndex, vContatore);
+
                 });
-                // await that._saveHana("/T_PMO", sIndex);
-                aIndex.push(sIndex);
-            });
+
+                msg = msg + vIndex;
+
+            });*/
+
+            MessageBox.success("Indici creati con successo: " + msg);
+            this.byId("navCon").to(this.byId("Page1"));
             sap.ui.core.BusyIndicator.hide();
         },
-        formatIndex: function (sRow) {
+
+        saveIndex: async function (sRow) {
             var sData = {
-                T_ACT_ELSet: [],
-                T_PMO_MSet: [],
-                T_PMO_SSet: [],
                 Divisioneu: sRow.DIVISIONE,
                 FineVal: sRow.FINEVAL,
-                IndexPmo: sRow.INDEX,
+                IndexPmo: "",
                 InizioVal: sRow.INIZIOVAL,
-                Uzeit: "00:00:00", // todo
+                // Uzeit: "000000",
                 // Appuntam	IN APP4
                 // Azione	Non li popoliamo
                 // Banfn	IN APP4
@@ -130,19 +179,33 @@ sap.ui.define([
                 // EquipmentCompo	Non li popoliamo
                 // EquipmentOdm	Non li popoliamo
                 // FineCard	Non li popoliamo
-                FlagAttivo: sRow.ATTIVO,
+                FlagAttivo: (
+                (sRow.ATTIVO === false) ? "" : "X"
+            ),
                 // FlagInterc	Non li popoliamo
                 // FlagMateriali	Non li popoliamo
                 // FlagOdm	Non li popoliamo
                 // FlagPrestazioni	Non li popoliamo
                 // FlgMail	Non li popoliamo
                 Frequenza: sRow.UNITA_TEMPO,
-                Hper: sRow.HPER,
-                Hper1: sRow.HPER_1,
-                Hper2: sRow.HPER_2,
-                Hper3: sRow.HPER_3,
-                Hper4: sRow.HPER_4,
-                Hper5: sRow.HPER_5,
+                Hper: (
+                (sRow.HPER === undefined || sRow.HPER === "") ? undefined : Number(sRow.HPER)
+            ),
+                Hper1: (
+                (sRow.HPER_1 === undefined || sRow.HPER_1 === "") ? undefined : Number(sRow.HPER_1)
+            ),
+                Hper2: (
+                (sRow.HPER_2 === undefined || sRow.HPER_2 === "") ? undefined : Number(sRow.HPER_2)
+            ),
+                Hper3: (
+                (sRow.HPER_3 === undefined || sRow.HPER_3 === "") ? undefined : Number(sRow.HPER_3)
+            ),
+                Hper4: (
+                (sRow.HPER_4 === undefined || sRow.HPER_4 === "") ? undefined : Number(sRow.HPER_4)
+            ),
+                Hper5: (
+                (sRow.HPER_5 === undefined || sRow.HPER_5 === "") ? undefined : Number(sRow.HPER_5)
+            ),
                 Indisponibilita: sRow.INDISPONIBILITA,
                 IntegTxtEsteso: (
                 (sRow.TESTO_ESTESO === undefined || sRow.TESTO_ESTESO === "") ? "" : "X"
@@ -153,19 +216,43 @@ sap.ui.define([
                 Lstar3: sRow.LSTAR_3,
                 Lstar4: sRow.LSTAR_4,
                 Lstar5: sRow.LSTAR_5,
-                Num: sRow.NUM,
-                Num1: sRow.NUM_1,
-                Num2: sRow.NUM_2,
-                Num3: sRow.NUM_3,
-                Num4: sRow.NUM_4,
-                Num5: sRow.NUM_5,
+                Num: (
+                (sRow.NUM === undefined || sRow.NUM === "") ? undefined : Number(sRow.NUM)
+            ),
+                Num1: (
+                (sRow.NUM_1 === undefined || sRow.NUM_1 === "") ? undefined : Number(sRow.NUM_1)
+            ),
+                Num2: (
+                (sRow.NUM_2 === undefined || sRow.NUM_2 === "") ? undefined : Number(sRow.NUM_2)
+            ),
+                Num3: (
+                (sRow.NUM_3 === undefined || sRow.NUM_3 === "") ? undefined : Number(sRow.NUM_3)
+            ),
+                Num4: (
+                (sRow.NUM_4 === undefined || sRow.NUM_4 === "") ? undefined : Number(sRow.NUM_4)
+            ),
+                Num5: (
+                (sRow.NUM_5 === undefined || sRow.NUM_5 === "") ? undefined : Number(sRow.NUM_5)
+            ),
                 Percorso: sRow.PERCORSO,
-                Persone: sRow.PERSONE,
-                Persone1: sRow.PERSONE_1,
-                Persone2: sRow.PERSONE_2,
-                Persone3: sRow.PERSONE_3,
-                Persone4: sRow.PERSONE_4,
-                Persone5: sRow.PERSONE_5,
+                Persone: (
+                (sRow.PERSONE === undefined || sRow.PERSONE === "") ? undefined : Number(sRow.PERSONE)
+            ),
+                Persone1: (
+                (sRow.PERSONE_1 === undefined || sRow.PERSONE_1 === "") ? undefined : Number(sRow.PERSONE_1)
+            ),
+                Persone2: (
+                (sRow.PERSONE_2 === undefined || sRow.PERSONE_2 === "") ? undefined : Number(sRow.PERSONE_2)
+            ),
+                Persone3: (
+                (sRow.PERSONE_3 === undefined || sRow.PERSONE_3 === "") ? undefined : Number(sRow.PERSONE_3)
+            ),
+                Persone4: (
+                (sRow.PERSONE_4 === undefined || sRow.PERSONE_4 === "") ? undefined : Number(sRow.PERSONE_4)
+            ),
+                Persone5: (
+                (sRow.PERSONE_5 === undefined || sRow.PERSONE_5 === "") ? undefined : Number(sRow.PERSONE_5)
+            ),
                 Point: sRow.POINT,
                 Priorita: sRow.PRIORITA,
                 Progres: sRow.PROGRES,
@@ -198,71 +285,106 @@ sap.ui.define([
                 // UnitaCiclo	Non li popoliamo
 
             };
-            return sData;
+
+            var sIndex = await this._saveHana("/T_PMO", sData);
+
+            return sIndex.IndexPmo;
         },
-        formatAzioni: function (sRow) {
+        saveAzioni: async function (sRow, vINDEX) {
             var sData = {
-                IndexPmo: "",
+                IndexPmo: vINDEX,
                 Cont: "",
                 Sistem: sRow.SISTEMA,
                 Progres: sRow.PROGRES,
                 Classe: sRow.CLASSE,
                 DesComponente: sRow.DES_COMPONENTE,
-                Tplnr: sRow.SEDE_TECNICA_P,
+                Tplnr: (
+                  (sRow.SEDE_ECC === undefined || sRow.SEDE_ECC === "") ? "" : sRow.SEDE_ECC
+              ),
                 Equipment: sRow.EQUIPMENT,
                 DesBreve: sRow.DESC_BREVE,
                 IntegTxtEsteso: (
                 (sRow.TESTO_ESTESO_P === undefined || sRow.TESTO_ESTESO_P === "") ? "" : "X"
             ),
-                FlagAttivo: sRow.ATTIVO,
+                FlagAttivo: (
+                (sRow.ATTIVO === false) ? "" : "X"
+            ),
                 Datum: new Date,
-                Uname: "AE82826", // todo
-                Uzeit: "00:00:00" // todo
+                Uname: "AE82826",
+                // todo
+                // Uzeit: "00:00:00" // todo
             };
-            return sData;
+
+            var sAzione = await this._saveHana("/T_ACT_EL", sData);
+
+            if (sAzione.TESTO_ESTESO_P !== undefined && sAzione.TESTO_ESTESO_P !== null && sAzione.TESTO_ESTESO_P !== ""){
+
+              /*CONCATENATE 'Z'
+                     zpm4r_t_act_type-inizio_val
+                     zpm4r_t_act_type-fine_val
+                     zpm4r_t_act_type-divisione
+                     zpm4r_t_act_type-sistema
+                     zpm4r_t_act_type-progres
+                     zpm4r_t_act_type-classe
+                     zpm4r_t_act_type-uzeit */
+
+              var Tdname = "ZI" + sAzione.IndexPmo.padStart(18, "0") + sAzione.INIZIOVAL + sAzione.FINEVAL + "000000";
+              var sTestoAzioni = {
+                "Tdname": Tdname,
+                "Tdid": "ST",
+                "Tdspras": "I",
+                "Tdobject": "TEXT",
+                "Overwrite": "X",
+                "Testo": sAzione.TESTO_ESTESO_P
+                };
+              var result = await this._saveHanaNoError("/TestiEstesi", sTestoAzioni);
+              if (result !== ""){
+                var sUrl = "/TestiEstesi(Testo=" + sAzione.TESTO_ESTESO_P + ")";
+                delete sTestoAzioni.Testo;
+                await this._updateHanaNoError(sUrl, sTestoAzioni);
+              }
+            }
+
+            return sAzione.Cont;
         },
-        formatMaterial: function (sRow) {
+        saveMaterial: async function (sRow, vINDEX, vCONTATORE) {
             if (sRow.Material !== undefined) {
-                var sData = [];
                 for (var i = 0; i < sRow.Material.length; i++) {
                     var sLine = {
-                        IndexPmo: "",
-                        Cont: "",
+                        IndexPmo: vINDEX,
+                        Cont: vCONTATORE,
                         Matnr: sRow.Material[i].MATNR,
                         Maktx: sRow.Material[i].MAKTX,
                         Menge: sRow.Material[i].MENGE,
                         Meins: sRow.Material[i].MEINS,
                         Lgort: sRow.Material[i].LGORT,
                         Werks: sRow.Material[i].WERKS,
-                        Tbtwr: sRow.Material[i].TBTWR
+                        Ekgrp: sRow.Material[i].EKGRP,
+                        Ekorg: sRow.Material[i].EKORG,
+                        Afnam: sRow.Material[i].AFNAM,
+                        Matkl: sRow.Material[i].MATKL
                     };
-                    sData.push(sLine);
+                    await this._saveHana("/T_PMO_M", sLine);
                 }
-                return sData;
-            } else {
-                return [];
             }
         },
-        formatService: function (sRow) {
+        saveService: async function (sRow, vINDEX, vCONTATORE) {
             if (sRow.Servizi !== undefined) {
-                var sData = [];
                 for (var i = 0; i < sRow.Servizi.length; i++) {
                     var sLine = {
-                        IndexPmo: "",
-                        Cont: "",
-                        Asnum: sRow.Servizi[i].N_ATT,
-                        Asktx: sRow.Servizi[i].DESC_SERVIZI,
+                        IndexPmo: vINDEX,
+                        Cont: vCONTATORE,
+                        Asnum: sRow.Servizi[i].ASNUM,
+                        Asktx: sRow.Servizi[i].ASKTX,
                         Menge: sRow.Servizi[i].MENGE,
                         Meins: sRow.Servizi[i].MEINS,
-                        Tbtwr: sRow.Servizi[i].TBTWR,
                         Ekgrp: sRow.Servizi[i].EKGRP,
-                        Ekorg: sRow.Servizi[i].EKORG
+                        Ekorg: sRow.Servizi[i].EKORG,
+                        Afnam: sRow.Servizi[i].AFNAM,
+                        Matkl: sRow.Servizi[i].MATKL
                     };
-                    sData.push(sLine);
+                    await this._saveHana("/T_PMO_S", sLine);
                 }
-                return sData;
-            } else {
-                return [];
             }
         },
         onRefresh: async function () {
@@ -342,17 +464,110 @@ sap.ui.define([
         onCloseServiziView: function () {
             this.byId("popServiziView").close();
         },
-        handleMaterial: function (oEvent) {
+        handleMaterial: async function (oEvent) {
             this.lineSelected = oEvent.getSource().getBindingContext("allIndex").getObject();
             if (this.lineSelected.Material === undefined) {
                 this.lineSelected.Material = [];
             }
+            for (var i = 0; i < this.lineSelected.Material.length; i++) {
+              var matnr = this.lineSelected.Material[i].MATNR;
+              this.lineSelected.Material[i].MATNR = ( matnr !== undefined && matnr !== null ) ? matnr.replace(/^0+/, "") : matnr;
+            } 
             var oModel = new sap.ui.model.json.JSONModel();
             oModel.setData(this.lineSelected.Material);
             this.setModel(oModel, "aMaterial");
 
+            await this.ExtractHelpMS();
+
             this.byId("popMateriali").open();
         },
+        ExtractHelpMS: async function () {
+          sap.ui.core.BusyIndicator.show();          
+          var sHelp = this.getView().getModel("sHelp").getData();
+          if (sHelp.MEINS === undefined){
+            sHelp.MEINS = await this.Shpl("H_T006", "SH");
+            // sData.LGORT = await this._getTableNoError("/StorageList");
+            sHelp.EKGRP = await this.Shpl("H_T024", "SH");
+            sHelp.EKORG = await this.Shpl("H_T024E", "SH");
+            sHelp.AFNAM = await this.Shpl("ZSKSE_MMREQUNITS", "SH");
+            sHelp.MATKL = await this.Shpl("H_T023", "SH");
+            //DIVISIONE2 gia estratta
+            this.getView().getModel("sHelp").refresh();
+          }
+          sap.ui.core.BusyIndicator.hide();
+        },
+        onSuggestLgort: async function (oEvent) {
+          var sSelect = oEvent.getSource().getBindingContext("aMaterial").getObject();
+          if (oEvent.getParameter("suggestValue").length >= 0 || (sSelect.WERKS !== "" && sSelect.WERKS !== undefined && sSelect.WERKS !== null)) {
+
+              var aFilter = [];
+              if (sSelect.WERKS !== "" && sSelect.WERKS !== undefined && sSelect.WERKS !== null) {
+                  aFilter.push(new Filter("Werks", FilterOperator.EQ, sSelect.WERKS));
+              }
+              if (oEvent.getParameter("suggestValue").length >= 0) {
+                  aFilter.push(new Filter("Code", FilterOperator.EQ, sSelect.LGORT));
+              }
+
+              var sHelp = this.getView().getModel("sHelp").getData();
+              sHelp.LGORT = await this._getTableNoError("/StorageList", aFilter);
+              this.getView().getModel("sHelp").refresh();
+          }
+      },
+      onSuggestMatnrSelect: function (oEvent) {
+        var sel = this.getView().getModel("sHelp").getData().MATNR[oEvent.getSource().getSelectedItem().split("-").pop()];
+        var sSelect = oEvent.getSource().getBindingContext("aMaterial").getObject();
+        sSelect.MAKTX = sel.Fieldname4;
+        this.getView().getModel("aMaterial").refresh();        
+      },
+      onSuggestMatnr: async function (oEvent) {
+        if (oEvent.getParameter("suggestValue").length >= 7) {
+
+            var sSelect = oEvent.getSource().getBindingContext("aMaterial").getObject();
+
+            var aFilter = [];
+            if (sSelect.WERKS !== "" && sSelect.WERKS !== undefined && sSelect.WERKS !== null) {
+                aFilter.push({
+                    "Shlpname": "ZPM4R_SH_MATNR",
+                    "Shlpfield": "WERKS",
+                    "Sign": "I",
+                    "Option": "EQ",
+                    "Low": sSelect.WERKS
+                });
+            }
+            aFilter.push({
+                "Shlpname": "ZPM4R_SH_MATNR",
+                "Shlpfield": "SPRAS",
+                "Sign": "I",
+                "Option": "EQ",
+                "Low": "IT"
+            });
+            aFilter.push({
+                "Shlpname": "ZPM4R_SH_MATNR",
+                "Shlpfield": "MATNR",
+                "Sign": "I",
+                "Option": "CP",
+                "Low": oEvent.getParameter("suggestValue") + "*"
+            });
+            var sHelp = this.getView().getModel("sHelp").getData();
+            sHelp.MATNR = await this.Shpl("ZPM4R_SH_MATNR", "SH", aFilter);
+            this.getView().getModel("sHelp").refresh();
+        }
+    },
+    onSuggestAsnum: async function (oEvent) {
+      if (oEvent.getParameter("suggestValue").length >= 5) {
+          var aFilter = [];
+          aFilter.push({
+              "Shlpname": "ZPM4R_SH_ASNUM",
+              "Shlpfield": "ASNUM",
+              "Sign": "I",
+              "Option": "CP",
+              "Low": oEvent.getParameter("suggestValue") + "*"
+          });
+          var sHelp = this.getView().getModel("sHelp").getData();
+          sHelp.ASNUM = await this.Shpl("ZPM4R_SH_ASNUM", "SH", aFilter);
+          this.getView().getModel("sHelp").refresh(true);
+      }
+  },
         onConfirmMatnr: function () {
             this.lineSelected.Material = this.getView().getModel("aMaterial").getData();
             this.getView().getModel("allIndex").refresh();
@@ -385,10 +600,13 @@ sap.ui.define([
                 LGORT: "",
                 MENGE: "",
                 MEINS: "",
-                TBTWR: ""
+                EKGRP: "",
+                EKORG: "",
+                AFNAM: "",
+                MATKL: ""
             };
         },
-        handleServizi: function (oEvent) {
+        handleServizi: async function (oEvent) {
             this.lineSelected = oEvent.getSource().getBindingContext("allIndex").getObject();
             if (this.lineSelected.Servizi === undefined) {
                 this.lineSelected.Servizi = [];
@@ -396,6 +614,8 @@ sap.ui.define([
             var oModel = new sap.ui.model.json.JSONModel();
             oModel.setData(this.lineSelected.Servizi);
             this.setModel(oModel, "aServizi");
+
+            await this.ExtractHelpMS();
 
             this.byId("popServizi").open();
         },
@@ -425,13 +645,14 @@ sap.ui.define([
         onHelpServizi: function () {},
         initServizi: function () {
             return {
-                N_ATT: "",
-                DESC_SERVIZI: "",
+                ASNUM: "",
+                ASKTX: "",
                 MENGE: "",
                 MEINS: "",
-                TBTWR: "",
                 EKGRP: "",
-                EKORG: ""
+                EKORG: "",
+                AFNAM: "",
+                MATKL: ""
             };
 
         },
@@ -464,30 +685,8 @@ sap.ui.define([
         onCloseTestoView: function () {
             this.byId("popTestoView").close();
         },
-        handleSedeTecnica: function (oEvent) {
 
-            this.onResetSedeTecnica();
-            this._sInputId = oEvent.getSource();
-            this.byId("DialogSede").open();
 
-        },
-        onCloseSedeTecnica: function () {
-            this._sInputId.setValue(null);
-            this.byId("DialogSede").close();
-        },
-        onPressSedeTecnica: function (oEvent) {
-            var sel = oEvent.getSource().getBindingContext().getObject();
-            // var selConcat = sel.SEDE_TECNICA + '-' + sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
-            var selConcat = sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
-            // Evita i - in eccesso in fondo
-            selConcat = selConcat.replaceAll("--", "");
-            if (selConcat[selConcat.length - 1] === "-") {
-                selConcat = selConcat.substring(0, (selConcat.length - 1));
-            }
-            this.getModel("sSelect").getData().SEDE_TECNICA = sel.SEDE_TECNICA;
-            this._sInputId.setValue(selConcat);
-            this.byId("DialogSede").close();
-        },
         onChangetipoFrequenza: function (oEvent) {
 
             this.byId("cbFREQ_TEMPO").setValue("");
@@ -517,11 +716,13 @@ sap.ui.define([
             switch (navTo) {
                 case "Page1": error = this.checkInformazioni();
                     if (error) {
+                        await this.addHelpSearch();
                         this.byId("navCon").to(this.byId("Page2"));
                     }
                     break;
                 case "Page2": error = this.checkSpecifiche();
                     if (error) {
+
                         await this.onStep3Extract();
                         this.byId("navCon").to(this.byId("Page3"));
                     }
@@ -538,6 +739,30 @@ sap.ui.define([
                     break;
             }
             sap.ui.core.BusyIndicator.hide();
+        },
+
+        addHelpSearch: async function () {
+            var sData = this.getView().getModel("sHelp").getData();
+            if (sData.DIVISIONE2 === undefined) {
+                sData.DIVISIONE2 = await this.Shpl("H_T001W", "SH");
+                sData.SISTEMA2 = await this._getTableNoError("/T_ACT_SYST");
+                sData.PROGRES2 = await this._getTableNoError("/T_ACT_PROG");
+                sData.CLASSE2 = await this._getTableNoError("/T_ACT_CL");
+                sData.TIPO_GESTIONE = await this._getTableNoError("/T_TP_MAN");
+                sData.TIPO_GESTIONE_1 = await this._getTableNoError("/T_TP_MAN1");
+                sData.TIPO_GESTIONE_2 = await this._getTableNoError("/T_TP_MAN2");
+                sData.CENTRO_LAVORO = await this._getTableNoError("/T_DEST");
+                var aFilter = [];
+                aFilter.push({
+                    "Shlpname": "EHFND_ELM_EQART_T370K",
+                    "Shlpfield": "SPRAS",
+                    "Sign": "I",
+                    "Option": "EQ",
+                    "Low": "IT"
+                }); // todo
+                sData.OGGETTO_TECNICO = await this.Shpl("EHFND_ELM_EQART_T370K", "SH", aFilter);
+                this.getView().getModel("sHelp").refresh(true);
+            }
         },
         onDialogBackButton: function () {
             this.byId("navCon").back();
@@ -614,9 +839,10 @@ sap.ui.define([
 
         },
         onStep3Extract: async function () { // this.byId("dynamicPage").setShowFooter(false);
+            sap.ui.core.BusyIndicator.show();
             var aFilters = [];
             var oFilter = {};
-
+            var tempFilter = [];
             var sFilter = this.getView().getModel("sSelect").getData();
             // this.getView().getModel("sFilter").getData();
             // var aSede = sFilter.SEDE.split("-");
@@ -625,11 +851,26 @@ sap.ui.define([
                 aFilters.push(oFilter);
             }
             if (sFilter.SEDE != "" && sFilter.SEDE != null) {
+                var aFilterSedeTipo = [];
+                for (var j = 0; j < sFilter.SEDE.length; j++) {
+                    var SedeEcc = {};
+                    var aSede = sFilter.SEDE[j].split("-");
+                    SedeEcc.LIVELLO1 = (aSede[0] === undefined ? "" : aSede[0]);
+                    SedeEcc.LIVELLO2 = (aSede[1] === undefined ? "" : aSede[1]);
+                    SedeEcc.LIVELLO3 = (aSede[2] === undefined ? "" : aSede[2]);
+                    SedeEcc.LIVELLO4 = (aSede[3] === undefined ? "" : aSede[3]);
+                    SedeEcc.LIVELLO5 = (aSede[4] === undefined ? "" : aSede[4]);
+                    SedeEcc.LIVELLO6 = (aSede[5] === undefined ? "" : aSede[5]);
+
+                    // Popola Filtri da Sede Tipo
+                    var sFilterSedeTipo = await this.filtriSedeReale(SedeEcc);
+                    aFilterSedeTipo.push(new sap.ui.model.Filter({filters: sFilterSedeTipo, and: true}));
+                }
+
+                aFilterSedeTipo = new sap.ui.model.Filter({filters: aFilterSedeTipo, and: false});
+                aFilters = aFilters.concat(aFilterSedeTipo);
+                /*
                 var aSede = sFilter.SEDE.split("-");
-                /*if (aSede[0] !== undefined && aSede[0] !== "" && (sFilter.SEDE_TECNICA === undefined || sFilter.SEDE_TECNICA === "")) {
-                    oFilter = new Filter("SEDE_TECNICA", FilterOperator.EQ, aSede[0]);
-                    aFilters.push(oFilter);
-                }*/
                 if (aSede[0] !== undefined && aSede[0] !== "") {
                     oFilter = new Filter("LIVELLO1", FilterOperator.EQ, aSede[0]);
                     aFilters.push(oFilter);
@@ -653,7 +894,7 @@ sap.ui.define([
                 if (aSede[5] !== undefined && aSede[5] !== "") {
                     oFilter = new Filter("LIVELLO6", FilterOperator.EQ, aSede[5]);
                     aFilters.push(oFilter);
-                }
+                }*/
             }
             // oFilter = new Filter("ATTIVO", FilterOperator.EQ, true);
             // aFilters.push(oFilter);
@@ -676,15 +917,27 @@ sap.ui.define([
                     aFilters = aFilters.concat(tempFilter);
                 }
             }
+            if (sFilter.AZIONE !== undefined) {
+                if (sFilter.AZIONE.length !== 0) {
+                    tempFilter = this.multiFilterNumber(sFilter.AZIONE, "AZIONE");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
             /*
             if (sFilter.DIVISIONE !== "" && sFilter.DIVISIONE !== undefined) {
                 oFilter = new Filter("DIVISIONE", FilterOperator.EQ, sFilter.DIVISIONE);
                 aFilters.push(oFilter);
-            }
-            if (sFilter.EQUIPMENT !== "" && sFilter.EQUIPMENT !== undefined) {
-                oFilter = new Filter("EQUIPMENT", FilterOperator.EQ, sFilter.EQUIPMENT);
-                aFilters.push(oFilter);
             }*/
+            if (sFilter.EQUIPMENT !== undefined) {
+                if (sFilter.EQUIPMENT.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.EQUIPMENT, "EQUIPMENT");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
+            if (sFilter.EQUIPMENT2 !== undefined) {
+                oFilter = new Filter("EQUIPMENT", FilterOperator.EQ, sFilter.EQUIPMENT2);
+                aFilters.push(oFilter);
+            }
             /*if (sFilter.MPTYP !== "" && sFilter.MPTYP !== undefined) {
                 oFilter = new Filter("MPTYP", FilterOperator.EQ, sFilter.MPTYP);
                 aFilters.push(oFilter);
@@ -733,19 +986,24 @@ sap.ui.define([
                     aFilters = aFilters.concat(tempFilter);
                 }
             }
-            if (sFilter.ZBAU !== undefined) {
+            /*if (sFilter.ZBAU !== undefined) {
                 if (sFilter.ZBAU.length !== 0) {
                     tempFilter = this.multiFilterText(sFilter.ZBAU, "ZBAU");
                     aFilters = aFilters.concat(tempFilter);
                 }
+            }*/
+
+            if (sFilter.TIPO_ATTIVITA !== undefined) {
+                if (sFilter.TIPO_ATTIVITA.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.TIPO_ATTIVITA, "TIPO_ATTIVITA");
+                    aFilters = aFilters.concat(tempFilter);
+                }
             }
-            if (sFilter.TIPO_ATTIVITA !== "" && sFilter.TIPO_ATTIVITA !== undefined) {
-                oFilter = new Filter("TIPO_ATTIVITA", FilterOperator.EQ, sFilter.TIPO_ATTIVITA);
-                aFilters.push(oFilter);
-            }
-            if (sFilter.TIPO_ORDINE !== "" && sFilter.TIPO_ORDINE !== undefined) {
-                oFilter = new Filter("TIPO_ORDINE", FilterOperator.EQ, sFilter.TIPO_ORDINE);
-                aFilters.push(oFilter);
+            if (sFilter.TIPO_ORDINE !== undefined) {
+                if (sFilter.TIPO_ORDINE.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.TIPO_ORDINE, "TIPO_ORDINE");
+                    aFilters = aFilters.concat(tempFilter);
+                }
             }
             if (sFilter.STRATEGIA !== undefined) {
                 if (sFilter.STRATEGIA.length !== 0) {
@@ -769,29 +1027,117 @@ sap.ui.define([
                 }
             }
 
-            // SEDE_TECNICA_ECC
-            var colorToSet = "W",
-                vIndex = "";
-            var oModel = new sap.ui.model.json.JSONModel(),
-                tempFilter = [];
 
-            var allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);
-            if (allIndex.length > 0) {
-                aFilters = [];
-                /*for (var i = 0; i < allIndex.length; i++) {
-                    if (allIndex[i].INDEX !== vIndex) {
-                        oFilter = new Filter("INDEX", FilterOperator.EQ, allIndex[i].INDEX);
-                        tempFilter.push(oFilter);
-                    }
-                    vIndex = allIndex[i].INDEX;
+            var allIndex = [],
+                aIndex = [],
+                sIndex = {},
+                aTempIndex = [];
+            var that = this;
+
+            if (sFilter.SEDE_ECC !== undefined && sFilter.SEDE_ECC !== []) {
+                for (var j = 0; j < sFilter.SEDE_ECC.length; j++) {
+
+                    var SedeEcc = {};
+                    var aSede = sFilter.SEDE_ECC[j].split("-");
+                    SedeEcc.LIVELLO1 = (aSede[0] === undefined ? "" : aSede[0]);
+                    SedeEcc.LIVELLO2 = (aSede[1] === undefined ? "" : aSede[1]);
+                    SedeEcc.LIVELLO3 = (aSede[2] === undefined ? "" : aSede[2]);
+                    SedeEcc.LIVELLO4 = (aSede[3] === undefined ? "" : aSede[3]);
+                    SedeEcc.LIVELLO5 = (aSede[4] === undefined ? "" : aSede[4]);
+                    SedeEcc.LIVELLO6 = (aSede[5] === undefined ? "" : aSede[5]);
+
+                    // Popola Filtri da Sede Reale
+                    var aFilterSedeReale = await this.filtriSedeReale(SedeEcc);
+                    aFilterSedeReale = aFilterSedeReale.concat(aFilters);
+                    // concatena gli altri filtri
+
+                    // Estrazione per ogni sede tecnica Reale Inserita + Altri Filtri Sel Modelli
+                    aIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilterSedeReale);
+                    aIndex = await this.compilaIndice(aIndex, sFilter, sFilter.SEDE_ECC[j]);
+                    allIndex = allIndex.concat(aIndex);
                 }
-                oFilter = new sap.ui.model.Filter({filters: tempFilter, and: false});
-                aFilters.push(oFilter);
-                //oFilter = new Filter("ATTIVO", FilterOperator.EQ, true);
-                //aFilters.push(oFilter);
+            } else {
+                allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);
+                allIndex = await this.compilaIndice(allIndex, sFilter);
+            } aIndex = [],
+            sIndex = {};
+            this.colorToSet = "G";
+            this.resetContatore = 0;
+            this.resetIndex = 0;
 
-                allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);*/
-                vIndex = "";
+            var ExtractionGrouped = _.groupBy(allIndex, ele => ele.INDEX);
+            Object.keys(ExtractionGrouped).forEach(ele => {
+                let element = ExtractionGrouped[ele];
+
+                // Cancella righe duplicate e prepara la sede tecnica formattata con il RIFERIMENTO
+                var sortElement = _.sortBy(element, "CONTATORE");
+                aTempIndex = [];
+                sortElement.forEach(row => {
+                    row.SEDE_RAGG = this.SedeRiferimento(row);
+
+                    // if (row.SEDE_RAGG !== sIndex.SEDE_RAGG || row.CONTATORE !== sIndex.CONTATORE ){
+                    if (row.SEDE_TECNICA_P !== sIndex.SEDE_TECNICA_P || row.CONTATORE !== sIndex.CONTATORE) {
+                        sIndex = row;
+                        aTempIndex.push(row);
+                    }
+                });
+
+                sIndex = {};
+
+                // Sorta per Sede Tecnica le Azioni per accorparle
+                sortElement = _.sortBy(aTempIndex, "SEDE_RAGG");
+                sortElement.forEach(row => {
+
+                    if ((row.SEDE_RAGG !== sIndex.SEDE_RAGG && row.RIFERIMENTO !== 0) || sIndex.RIFERIMENTO === undefined) { // Gestione Colore - Indice nuovo
+                        this.resetIndex = this.resetIndex + 1;
+                        if (this.colorToSet === "W") {
+                            this.colorToSet = String("G");
+                        } else {
+                            this.colorToSet = String("W");
+                        }
+                    }
+
+                    this.resetContatore = this.resetContatore + 1;
+                    row.CONTATORE = this.resetContatore;
+                    row.INDEX = this.resetIndex;
+                    row.COLORSET = this.colorToSet;
+
+                    sIndex = row;
+                    aIndex.push(row);
+
+                });
+            });
+
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setData(aIndex);
+            this.getView().setModel(oModel, "allIndex");
+            sap.ui.core.BusyIndicator.hide();
+        },
+        SedeRiferimento: function (sIndex) {
+
+            sIndex.SEDE_RAGG = sIndex.SEDE_TECNICA_P;
+            var i = 0;
+            if (sIndex.SEDE_TECNICA_P !== undefined) {
+                var aSede = sIndex.SEDE_TECNICA_P.split("-");
+                while (i < sIndex.RIFERIMENTO) {
+                    if (aSede[i] !== undefined) {
+                        if (i === 0) {
+                            sIndex.SEDE_RAGG = aSede[i];
+                        } else {
+                            sIndex.SEDE_RAGG = sIndex.SEDE_RAGG + '-' + aSede[i];
+                        }
+                    }
+                    i++;
+                }
+                // SEDE_TECNICA_P
+                return sIndex.SEDE_RAGG;
+            } else {
+                return "";
+            }
+        },
+        compilaIndice: async function (allIndex, sFilter, SEDE_ECC) {
+
+            if (allIndex.length > 0) {
                 for (var i = 0; i < allIndex.length; i++) { // PreCompila con i dati inseriti
                     if (sFilter.EQUIPMENT !== undefined) {
                         allIndex[i].EQUIPMENT = sFilter.EQUIPMENT;
@@ -811,21 +1157,12 @@ sap.ui.define([
                     if (sFilter.PROFILO !== undefined) {
                         allIndex[i].PROFILO = sFilter.PROFILO;
                     }
-                    if (sFilter.SEDE_TECNICA_ECC !== undefined) {
-                        allIndex[i].SEDE_TECNICA_P = sFilter.SEDE_TECNICA_ECC;
-                    } else {
-                        var selConcat = allIndex[i].LIVELLO1 + '-' + allIndex[i].LIVELLO2 + '-' + allIndex[i].LIVELLO3 + '-' + allIndex[i].LIVELLO4 + '-' + allIndex[i].LIVELLO5 + '-' + allIndex[i].LIVELLO6;
-                        // Evita i - in eccesso in fondo
-                        selConcat = selConcat.replaceAll("--", "");
-                        if (selConcat[selConcat.length - 1] === "-") {
-                            selConcat = selConcat.substring(0, (selConcat.length - 1));
-                        }
-                        allIndex[i].SEDE_TECNICA_P = selConcat;
-
+                    if (SEDE_ECC !== undefined) {
+                        allIndex[i].SEDE_ECC = SEDE_ECC;
                     }
 
                     // Gestione Materiali e Servizi
-                    if (allIndex[i].MATNR !== "" && allIndex[i].MATNR !== undefined) {
+                    /*if (allIndex[i].MATNR !== "" && allIndex[i].MATNR !== undefined) {
                         var sMatnr = this.initMaterial();
                         sMatnr.MATNR = allIndex[i].MATNR;
                         allIndex[i].Material = [sMatnr];
@@ -833,23 +1170,23 @@ sap.ui.define([
                     if (allIndex[i].ASNUM !== "" && allIndex[i].ASNUM !== undefined) {
                         allIndex[i].Servizi = [{}];
                         var sServizi = this.initServizi();
-                        sServizi.N_ATT = allIndex[i].ASNUM;
+                        sServizi.ASNUM = allIndex[i].ASNUM;
                         allIndex[i].Servizi = [sServizi];
-                    }
-                    // Gestione Colore
-                    if (allIndex[i].ID !== vIndex && vIndex !== "") {
-                        if (colorToSet === "W") {
-                            colorToSet = String("G");
-                        } else {
-                            colorToSet = String("W");
-                        }
-                    }
-                    allIndex[i].COLORSET = colorToSet;
-                    vIndex = allIndex[i].ID;
+                    }*/
+
+                    // Estrazione Materiali e Servizi
+                    var aFilter = [];
+                    aFilter.push(new Filter("INDEX", FilterOperator.EQ, allIndex[i].INDEX));
+                    aFilter.push(new Filter("CONTATORE", FilterOperator.EQ, allIndex[i].CONTATORE));
+                    allIndex[i].Servizi = await this._getTableNoError("/AzioniServizi", aFilter);
+                    allIndex[i].Material = await this._getTableNoError("/AzioniMateriali", aFilter);
+
                 }
+                return allIndex;
+            } else {
+                return [];
             }
-            oModel.setData(allIndex);
-            this.getView().setModel(oModel, "allIndex");
+
         },
         multiFilterText: function (aArray, vName) {
 
@@ -921,7 +1258,7 @@ sap.ui.define([
             var oModel = this.getModel("sSelect").getData();
             var msg = "Selezionare uno dei campi obbligatori: Sede Tecnica o Equipment";
 
-            if ((oModel.SEDE_TECNICA_ECC === "" || oModel.SEDE_TECNICA_ECC === null || oModel.SEDE_TECNICA_ECC === undefined) && (oModel.EQUIPMENT === "" || oModel.EQUIPMENT === null || oModel.EQUIPMENT === undefined)) {
+            if ((oModel.SEDE_ECC === "" || oModel.SEDE_ECC === null || oModel.SEDE_ECC === undefined) && (oModel.EQUIPMENT2 === "" || oModel.EQUIPMENT2 === null || oModel.EQUIPMENT2 === undefined)) {
                 MessageToast.show(msg);
                 return false;
             } else {
@@ -941,7 +1278,252 @@ sap.ui.define([
 
         completedHandler: function () {
             this._oNavContainer.to(this.byId("wizardBranchingReviewPage"));
+        },
+
+        handleSedeTecnica: function () {
+
+            this.onResetSedeTecnica();
+            // this._sInputId = oEvent.getSource();
+            var selItems = [];
+            var sSelect = this.getView().getModel("sSelect").getData();
+            if (sSelect.SEDE !== undefined) {
+
+                var aItems = this.byId("cbSEDE").getSelectedItems();
+                for (var i = 0; i < aItems.length; i++) {
+                    selItems.push(aItems[i].getBindingContext("sHelp").getObject());
+                }
+                this.getView().getModel("SelSede").setData(selItems);
+            } else {
+                this.getView().getModel("SelSede").setData([]);
+            }
+            this.getView().getModel("SelSede").refresh(true);
+            this.byId("DialogSede").open();
+
+        },
+        onConfirmSedeTecnica: function () { // this._sInputId.setValue(null);
+            var aSel = this.getView().getModel("SelSede").getData();
+            var sHelp = this.getView().getModel("sHelp").getData();
+            sHelp.SEDE = aSel;
+
+            this.getView().getModel("sHelp").refresh(true);
+            this.byId("cbSEDE").setSelectedKeys(this.byId("cbSEDE").getKeys());
+            this.byId("DialogSede").close();
+        },
+        onCloseSedeTecnica: function () { // this._sInputId.setValue(null);
+            this.byId("DialogSede").close();
+        },
+        /*onPressSedeTecnica: function (oEvent) {
+            var sel = oEvent.getSource().getBindingContext().getObject();
+            // var selConcat = sel.SEDE_TECNICA + '-' + sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
+            var selConcat = sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
+            // Evita i - in eccesso in fondo
+            selConcat = selConcat.replaceAll("--", "");
+            if (selConcat[selConcat.length - 1] === "-") {
+                selConcat = selConcat.substring(0, (selConcat.length - 1));
+            }
+            this.getModel("sSelect").getData().SEDE_TECNICA = sel.SEDE_TECNICA;
+            this._sInputId.setValue(selConcat);
+            this.byId("DialogSede").close();
+        },*/
+        moveToTable2: function (oEvent) {
+            if (this.byId("tSedeTecnica").getSelectedIndex() != -1) { // var sel = this.byId("tSedeTecnica").getRows()[this.byId("tSedeTecnica").getSelectedIndex()].getBindingContext().getObject();
+                var sel = this.getView().getModel("Sede").getData()[this.byId("tSedeTecnica").getSelectedIndex()];
+                sel.SEDECONCAT = sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
+                sel.SEDECONCAT = sel.SEDECONCAT.replaceAll("--", "");
+                if (sel.SEDECONCAT[sel.SEDECONCAT.length - 1] === "-") {
+                    sel.SEDECONCAT = sel.SEDECONCAT.substring(0, (sel.SEDECONCAT.length - 1));
+                }
+
+                var aSel = this.getView().getModel("SelSede").getData();
+                var control = true;
+                for (var i = 0; i < aSel.length; i++) {
+                    var selConcat = aSel[i].LIVELLO1 + '-' + aSel[i].LIVELLO2 + '-' + aSel[i].LIVELLO3 + '-' + aSel[i].LIVELLO4 + '-' + aSel[i].LIVELLO5 + '-' + aSel[i].LIVELLO6;
+                    selConcat = selConcat.replaceAll("--", "");
+                    if (selConcat[selConcat.length - 1] === "-") {
+                        selConcat = selConcat.substring(0, (selConcat.length - 1));
+                    }
+                    if (sel.SEDECONCAT === selConcat) {
+                        control = false;
+                        break;
+                    }
+                }
+                if (control) {
+                    aSel.push(sel);
+                    this.getView().getModel("SelSede").refresh(true);
+                }
+            }
+        },
+        deleteFromTable2: function () {
+            if (this.byId("tSelSedeTecnica").getSelectedIndex() != -1) {
+                this.getView().getModel("SelSede").getData().splice(this.byId("tSelSedeTecnica").getSelectedIndex(), 1);
+                this.getView().getModel("SelSede").refresh(true);
+            }
+        },
+        handleSedeTecnicaECC: function () {
+
+            this.onResetSedeTecnicaReale();
+            // this._sInputId = oEvent.getSource();
+            var selItems = [];
+            var sSelect = this.getView().getModel("sSelect").getData();
+            if (sSelect.SEDE_ECC !== undefined) {
+
+                var aItems = this.byId("cbSEDEECC").getSelectedItems();
+                for (var i = 0; i < aItems.length; i++) {
+                    selItems.push(aItems[i].getBindingContext("sHelp").getObject());
+                }
+                this.getView().getModel("SelSedeReale").setData(selItems);
+            } else {
+                this.getView().getModel("SelSede").setData([]);
+            }
+            this.getView().getModel("SelSedeReale").refresh(true);
+            this.byId("DialogSedeReale").open();
+
+        },
+        onConfirmSedeTecnicaReale: function () { // this._sInputId.setValue(null);
+            var aSel = this.getView().getModel("SelSedeReale").getData();
+            var sHelp = this.getView().getModel("sHelp").getData();
+            sHelp.SEDEECC = aSel;
+
+            this.getView().getModel("sHelp").refresh(true);
+            this.byId("cbSEDEECC").setSelectedKeys(this.byId("cbSEDEECC").getKeys());
+            this.byId("DialogSedeReale").close();
+        },
+        onCloseSedeTecnicaReale: function () { // this._sInputId.setValue(null);
+            this.byId("DialogSedeReale").close();
+        },
+
+        onResetSedeTecnicaReale: function () {
+            var oModel = new sap.ui.model.json.JSONModel();
+            var sData = {
+                SEDE_TECNICA: ""
+            };
+            oModel.setData(sData);
+            this.getView().setModel(oModel, "sSedeTecnicaReale");
+            this.onFilterSedeTecnicaReale();
+        },
+        onFilterSedeTecnicaReale: async function () {
+            sap.ui.core.BusyIndicator.show();
+            var sSedeTecnica = this.getView().getModel("sSedeTecnicaReale").getData();
+
+            var ListFl = {
+                Language: "IT",
+                GetDetails: "X",
+                N_FunclocList: [],
+                N_FunclocRa: [],
+                N_CategoryRa: []
+            }; // todo
+            if (sSedeTecnica.SEDE_TECNICA != "" && sSedeTecnica.SEDE_TECNICA != null) {
+                ListFl.N_FunclocRa.push({Sign: "I", Option: "CP", Low: sSedeTecnica.SEDE_TECNICA});
+            }
+            var sSelect = this.getView().getModel("sSelect").getData();
+            ListFl.N_CategoryRa = [{
+                    Sign: "I",
+                    Option: "EQ",
+                    Low: sSelect.SEDE_TECNICA
+                }];
+            if (sSelect.SEDE !== undefined) {
+                if (sSelect.SEDE.length !== 0) {
+
+                    for (var i = 0; i < sSelect.SEDE.length; i++) {
+
+                        var sSedeTipo = this.getView().getModel("sSelect").getData().SEDE[i];
+
+                        var countN = (sSedeTipo.indexOf("n") === -1) ? 50 : sSedeTipo.indexOf("n"),
+                            countK = (sSedeTipo.indexOf("k") === -1) ? 50 : sSedeTipo.indexOf("k"),
+                            countX = (sSedeTipo.indexOf("x") === -1) ? 50 : sSedeTipo.indexOf("x");
+
+                        if (countN < countK && countN < countX) {
+                            sSedeTipo = sSedeTipo.substring(0, countN) + "*";
+                        } else if (countK < countN && countK < countX) {
+                            sSedeTipo = sSedeTipo.substring(0, countK) + "*";
+                        } else if (countX < countN && countX < countK) {
+                            sSedeTipo = sSedeTipo.substring(0, countX) + "*";
+                        } else {
+                            sSedeTipo = sSedeTipo + "*";
+                        } ListFl.N_FunclocRa.push({Sign: "I", Option: "CP", Low: sSedeTipo});
+                    }
+                }
+            }
+
+            var oModel = new sap.ui.model.json.JSONModel(),
+                allSedi = [];
+            // In realtà fa una read, andava richiamato il metodo Post
+            allSedi = await this._saveHana("/ListFl", ListFl);
+            allSedi = allSedi.N_FunclocList.results;
+            oModel.setData(allSedi);
+            this.getView().setModel(oModel, "SedeReale");
+            sap.ui.core.BusyIndicator.hide();
+
+
+        },
+        moveToTable2Reale: function () {
+            if (this.byId("tSedeTecnicaReale").getSelectedIndex() != -1) { // var sel = this.byId("tSedeTecnicaReale").getRows()[this.byId("tSedeTecnicaReale").getSelectedIndex()].getBindingContext("SedeReale").getObject();
+                var sel = this.getView().getModel("SedeReale").getData()[this.byId("tSedeTecnicaReale").getSelectedIndex()];
+                var aSel = this.getView().getModel("SelSedeReale").getData();
+                var control = true;
+                for (var i = 0; i < aSel.length; i++) {
+
+                    if (sel.Functlocation === aSel[i].Functlocation) {
+                        control = false;
+                        break;
+                    }
+                }
+                if (control) {
+                    aSel.push(sel);
+                    this.getView().getModel("SelSedeReale").refresh(true);
+                }
+            }
+        },
+        deleteFromTable2Reale: function () {
+            if (this.byId("tSelSedeTecnicaReale").getSelectedIndex() != -1) {
+                this.getView().getModel("SelSedeReale").getData().splice(this.byId("tSelSedeTecnicaReale").getSelectedIndex(), 1);
+                this.getView().getModel("SelSedeReale").refresh(true);
+            }
+        },
+        onSuggestMPTYP: async function (oEvent) {
+          if (oEvent.getParameter("suggestValue").length >= 3) {
+          var aFilter = [];
+          aFilter.push({
+              "Shlpname": "ZPM4R_SH_IMPM",
+              "Shlpfield": "POINT",
+              "Sign": "I",
+              "Option": "CP",
+              "Low": oEvent.getParameter("suggestValue") + "*"
+          });
+          var sHelp = this.getView().getModel("sHelp").getData();
+          sHelp.MPTYP = await this.Shpl("ZPM4R_SH_IMPM", "SH", aFilter);
+          this.getView().getModel("sHelp").refresh(true);
         }
+      },
+      onSuggestEquipment: async function (oEvent) {
+          var sTerm = oEvent.getParameter("suggestValue");
+          if (sTerm.length >= 3) {
+              var aFilter = [];
+              aFilter.push({
+                  "Shlpname": "ZPM4R_SH_EQUI",
+                  "Shlpfield": "SPRAS",
+                  "Sign": "I",
+                  "Option": "EQ",
+                  "Low": "IT"
+              });
+              aFilter.push({
+                  "Shlpname": "ZPM4R_SH_EQUI",
+                  "Shlpfield": "EQUNR",
+                  "Sign": "I",
+                  "Option": "CP",
+                  "Low": oEvent.getParameter("suggestValue") + "*"
+              });
+              var sHelp = this.getView().getModel("sHelp").getData();
+              sHelp.EQUIPMENT2 = await this.Shpl("ZPM4R_SH_EQUI", "SH", aFilter);
+              this.getView().getModel("sHelp").refresh(true);
+          }
+      },
+      onChangeMatnr: function (oEvent) {
+        oEvent.getSource().getBindingContext("aMaterial").getObject().MAKTX = oEvent.getSource().getSelectedItem().getBindingContext().getObject().MAKTX;
+      },
+      onChangeServizi: function (oEvent) {
+        oEvent.getSource().getBindingContext("aServizi").getObject().ASKTX = oEvent.getSource().getSelectedItem().getBindingContext().getObject().ASKTX;
+      },
 
     });
 });

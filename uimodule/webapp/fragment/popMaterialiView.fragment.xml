@@ -3,13 +3,16 @@
     <content>
      <Table id="tMaterialView" items="{ path: 'aMaterial>/' }" sticky="ColumnHeaders" showNoData="false" mode="None">
           <columns>
-              <Column width="10em"><Text text="{i18n>MATNR}"/></Column>
-              <Column width="16em"><Text text="{i18n>MAKTX}"/></Column>
+              <Column width="12em"><Text text="{i18n>MATNR}"/></Column>
+              <Column width="14em"><Text text="{i18n>MAKTX}"/></Column>
               <Column width="6em"> <Text text="{i18n>WERKS}"/></Column>
               <Column width="6em"> <Text text="{i18n>LGORT}"/></Column>
               <Column width="6em"> <Text text="{i18n>MENGE}"/></Column>
               <Column width="6em"> <Text text="{i18n>MEINS}"/></Column>
-              <Column width="6em"> <Text text="{i18n>TBTWR}"/></Column>
+              <Column width="6em"> <Text text="{i18n>EKGRP}"/></Column>
+              <Column width="6em"> <Text text="{i18n>EKORG}"/></Column>
+              <Column width="6em"> <Text text="{i18n>AFNAM}"/></Column>
+              <Column width="6em"> <Text text="{i18n>MATKL}"/></Column>
           </columns>
           <items>
               <ColumnListItem vAlign="Middle">
@@ -20,7 +23,10 @@
                       <Text text="{aMaterial>LGORT}"/>
                       <Text text="{aMaterial>MENGE}" />
                       <Text text="{aMaterial>MEINS}"/>
-                      <Text text="{aMaterial>TBTWR}"/>
+                      <Text text="{aMaterial>EKGRP}"/>
+                      <Text text="{aMaterial>EKORG}"/>
+                      <Text text="{aMaterial>AFNAM}"/>
+                      <Text text="{aMaterial>MATKL}"/>
                   </cells>
               </ColumnListItem>
           </items>

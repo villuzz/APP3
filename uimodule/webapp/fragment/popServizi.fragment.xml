@@ -1,27 +1,50 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-  <Dialog id="popServizi" title="{i18n>Servizi}" showHeader="false" contentHeight="40%" contentWidth="60%">
+  <Dialog id="popServizi" title="{i18n>Servizi}" showHeader="false" contentHeight="40%" contentWidth="90%">
     <content>
      <Table id="tServizi" items="{ path: 'aServizi>/' }" sticky="ColumnHeaders" showNoData="false" mode="None">
           <columns>
-              <Column width="10em"><Text text="{i18n>N_ATT}"/></Column>
-              <Column width="16em"><Text text="{i18n>DESC_SERVIZI}"/></Column>
+              <Column width="10em"><Text text="{i18n>ASNUM}"/></Column>
+              <Column width="16em"><Text text="{i18n>ASKTX}"/></Column>
               <Column width="6em"><Text text="{i18n>MENGE}"/></Column>
               <Column width="6em"><Text text="{i18n>MEINS}"/></Column>
-              <Column width="6em"><Text text="{i18n>TBTWR}"/></Column>
               <Column width="6em"><Text text="{i18n>EKGRP}"/></Column>
               <Column width="6em"><Text text="{i18n>EKORG}"/></Column>
+              <Column width="6em"> <Text text="{i18n>AFNAM}"/></Column>
+              <Column width="6em"> <Text text="{i18n>MATKL}"/></Column>
               <Column width="5em"><Button icon="sap-icon://add" type="Transparent" press="onAddServizi"/></Column>
           </columns>
           <items>
               <ColumnListItem vAlign="Middle">
                   <cells>
-                      <Input id="idServizi" value="{aServizi>N_ATT}" type="Text" showValueHelp="true" valueHelpRequest="onHelpServizi" maxLength="10"/>
-                      <Input value="{aServizi>DESC_BREVE}" maxLength="50"/>
-                      <Input value="{aServizi>MENGE}" maxLength="10"/>
-                      <Input value="{aServizi>MEINS}" maxLength="4"/>
-                      <Input value="{aServizi>TBTWR}" maxLength="10"/>
-                      <Input value="{aServizi>EKGRP}" maxLength="10"/>
-                      <Input value="{aServizi>EKORG}" maxLength="10"/>
+                      <Input showSuggestion="true" value="{aServizi>ASNUM}" maxSuggestionWidth="30em" suggestionRows="{sHelp>/ASNUM}" suggest=".onSuggestAsnum" enabled="{ parts:[{path:'sSelect>/stato'}], formatter: '.LocalFormatter.statoEnabled'}"  >
+                      <suggestionColumns>
+                        <Column>
+                          <Label text="{i18n>Asnum}" />
+                        </Column>
+                      </suggestionColumns>
+                      <suggestionRows>
+                        <ColumnListItem>
+                          <Label text="{sHelp>Fieldname1}" />
+                        </ColumnListItem>
+                      </suggestionRows>
+                    </Input>
+                      <Input value="{aServizi>ASKTX}" maxLength="50"/>
+                      <Input value="{aServizi>MENGE}" maxLength="10" type="Number" />
+                      <ComboBox  selectedKey="{aServizi>MEINS}" valueStateText="{i18n>valueState} {i18n>MEINS}" items="{ path: 'sHelp>/MEINS' }" change="handleChangeCb" showSecondaryValues= "true" >
+                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                      </ComboBox>
+                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP' }" change="handleChangeCb" showSecondaryValues= "true" >
+                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                      </ComboBox>
+                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG' }" change="handleChangeCb" showSecondaryValues= "true" >
+                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                      </ComboBox>
+                      <ComboBox  selectedKey="{aServizi>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <core:ListItem key="{sHelp>Fieldname2}" text="{sHelp>Fieldname2}" additionalText="{sHelp>Fieldname3}"/>
+                    </ComboBox>
+                    <ComboBox  selectedKey="{aServizi>MATKL}" valueStateText="{i18n>valueState} {i18n>MATKL}" items="{ path: 'sHelp>/MATKL' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                    </ComboBox>
                       <Button icon="sap-icon://delete" type="Transparent" press="onCancelServizi"/>
                   </cells>
               </ColumnListItem>

@@ -1,27 +1,78 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-  <Dialog id="popMateriali" title="{i18n>Materiali}"  showHeader="false" contentHeight="40%" contentWidth="60%">
+  <Dialog id="popMateriali" title="{i18n>Materiali}"  showHeader="false" contentHeight="40%" contentWidth="90%">
     <content>
      <Table id="tMaterial" items="{ path: 'aMaterial>/' }" sticky="ColumnHeaders" showNoData="false" mode="None">
           <columns>
-              <Column width="10em"><Text text="{i18n>MATNR}"/></Column>
-              <Column width="16em"><Text text="{i18n>MAKTX}"/></Column>
+              <Column width="12em"><Text text="{i18n>MATNR}"/></Column>
+              <Column width="14em"><Text text="{i18n>MAKTX}"/></Column>
               <Column width="6em"> <Text text="{i18n>WERKS}"/></Column>
               <Column width="6em"> <Text text="{i18n>LGORT}"/></Column>
               <Column width="6em"> <Text text="{i18n>MENGE}"/></Column>
               <Column width="6em"> <Text text="{i18n>MEINS}"/></Column>
-              <Column width="6em"> <Text text="{i18n>TBTWR}"/></Column>
+              <Column width="6em"> <Text text="{i18n>EKGRP}"/></Column>
+              <Column width="6em"> <Text text="{i18n>EKORG}"/></Column>
+              <Column width="6em"> <Text text="{i18n>AFNAM}"/></Column>
+              <Column width="6em"> <Text text="{i18n>MATKL}"/></Column>
               <Column width="5em"><Button icon="sap-icon://add" type="Transparent" press="onAddMatnr"/></Column>
           </columns>
           <items>
               <ColumnListItem vAlign="Middle">
                   <cells>
-                      <Input id="idMatnr" value="{aMaterial>MATNR}" type="Text" showValueHelp="true" valueHelpRequest="onHelpMatnr" maxLength="10"/>
+                       <Input showSuggestion="true" maxSuggestionWidth="30em"  value="{aMaterial>MATNR}" suggestionItems="{sHelp>/MATNR}" suggest=".onSuggestMatnr" suggestionItemSelected="onSuggestMatnrSelect" enabled="{ parts:[{path:'sSelect>/stato'}], formatter: '.LocalFormatter.statoEnabled'}" >
+                      <!--<suggestionColumns>
+                              <Column>
+                                <Label text="{i18n>Materiale}" />
+                              </Column>
+                              <Column hAlign="End">
+                                <Label text="{i18n>Description}" />
+                              </Column>
+                            </suggestionColumns>
+                            <suggestionRows>
+                              <ColumnListItem>
+                                <Label text="{sHelp>Fieldname1}" />
+                                <Label text="{sHelp>Fieldname4}" />
+                              </ColumnListItem>
+                      </suggestionRows>-->
+                      <suggestionItems>
+                        <core:ListItem text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname4}" />
+                      </suggestionItems>
+                    </Input>
                       <Input value="{aMaterial>MAKTX}" maxLength="50"/>
-                      <Input value="{aMaterial>WERKS}" maxLength="4"/>
-                      <Input value="{aMaterial>LGORT}" maxLength="10"/>
+                      <ComboBox id="cbDivisione"  selectedKey="{aMaterial>WERKS}" change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>MENGE}" showSecondaryValues= "true" items="{ path: 'sHelp>/DIVISIONE2', length:4000 }">
+                      <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                    </ComboBox>
+                      <Input showSuggestion="true" value="{aMaterial>LGORT}" maxSuggestionWidth="30em" suggestionRows="{sHelp>/LGORT}" suggest=".onSuggestLgort" >
+                      <suggestionColumns>
+                              <Column>
+                                <Label text="{i18n>LGORT}" />
+                              </Column>
+                              <Column hAlign="End">
+                                <Label text="{i18n>Description}" />
+                              </Column>
+                            </suggestionColumns>
+                            <suggestionRows>
+                              <ColumnListItem>
+                                <Label text="{sHelp>Code}" />
+                                <Label text="{sHelp>Lgobe}" />
+                              </ColumnListItem>
+                      </suggestionRows>
+                    </Input>
                       <Input value="{aMaterial>MENGE}" maxLength="5" type="Number"/>
-                      <Input value="{aMaterial>MEINS}" maxLength="3"/>
-                      <Input value="{aMaterial>TBTWR}" type="Number" maxLength="10"/>
+                      <ComboBox  selectedKey="{aMaterial>MEINS}" valueStateText="{i18n>valueState} {i18n>MEINS}" items="{ path: 'sHelp>/MEINS' }" change="handleChangeCb" showSecondaryValues= "true" >
+                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                      </ComboBox>
+                      <ComboBox  selectedKey="{aMaterial>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP' }" change="handleChangeCb" showSecondaryValues= "true" >
+                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                      </ComboBox>
+                      <ComboBox  selectedKey="{aMaterial>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG' }" change="handleChangeCb" showSecondaryValues= "true" >
+                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                      </ComboBox>
+                      <ComboBox  selectedKey="{aMaterial>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <core:ListItem key="{sHelp>Fieldname2}" text="{sHelp>Fieldname2}" additionalText="{sHelp>Fieldname3}"/>
+                    </ComboBox>
+                    <ComboBox  selectedKey="{aMaterial>MATKL}" valueStateText="{i18n>valueState} {i18n>MATKL}" items="{ path: 'sHelp>/MATKL' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                    </ComboBox>
                       <Button icon="sap-icon://delete" type="Transparent" press="onCancelMatnr"/>
                   </cells>
               </ColumnListItem>
@@ -36,4 +87,15 @@
     </endButton>
 	</Dialog>
 </core:FragmentDefinition>
+
+                    
+
+
+                     
+
+                     
+
+                       
+
+                        
 

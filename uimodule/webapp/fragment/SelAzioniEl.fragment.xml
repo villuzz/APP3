@@ -34,8 +34,9 @@
               <Column width="10em" id="col10"><Text text="{i18n>DIVISIONE}"/></Column>
               <Column width="10em" id="col20"><Text text="{i18n>SEDE_TECNICA}"/></Column>
               <Column width="15em" id="col21"><Text text="{i18n>SEDE_TECNICA_P}"/></Column>
+              <Column width="15em" id="col22"><Text text="{i18n>SEDE_ECC}"/></Column>
               <Column width="18em" id="col27"><Text text="{i18n>DESC_SEDE}"/></Column>
-              <Column width="10em" id="col28"><Text text="{i18n>EQUIPMENT}"/></Column>
+              <Column width="15em" id="col28"><Text text="{i18n>EQUIPMENT}"/></Column>
               <Column width="10em" id="col29"><Text text="{i18n>TESTO_ESTESO_P}"/></Column>
               <Column width="16em" id="col30"><Text text="{i18n>CLASSE_SEDE}"/></Column>
               <Column width="16em" id="col31"><Text text="{i18n>CARATT_SEDE}"/></Column>
@@ -61,40 +62,42 @@
               <Column width="10em" id="col61"><Text text="{i18n>NUM}"/></Column>
               <Column width="10em" id="col62"><Text text="{i18n>PERSONE}"/></Column>
               <Column width="10em" id="col63"><Text text="{i18n>HPER}"/></Column>
+              <Column width="10em" visible="false" id="col120"><Text text="{i18n>Toth}"/></Column>
 
               <Column width="10em" id="col64"><Text text="{i18n>LSTAR_1}"/></Column>
               <Column width="12em" id="col65"><Text text="{i18n>STEUS_1}"/></Column>
               <Column width="10em" id="col66"><Text text="{i18n>NUM_1}"/></Column>
               <Column width="10em" id="col67"><Text text="{i18n>PERSONE_1}"/></Column>
               <Column width="10em" id="col68"><Text text="{i18n>HPER_1}"/></Column>
+              <Column width="10em" visible="false" id="col121"><Text text="{i18n>Toth1}"/></Column>
 
               <Column width="10em" id="col69"><Text text="{i18n>LSTAR_2}"/></Column>
               <Column width="12em" id="col70"><Text text="{i18n>STEUS_2}"/></Column>
               <Column width="10em" id="col71"><Text text="{i18n>NUM_2}"/></Column>
               <Column width="10em" id="col72"><Text text="{i18n>PERSONE_2}"/></Column>
               <Column width="10em" id="col73"><Text text="{i18n>HPER_2}"/></Column>
-
+              <Column width="10em" visible="false" id="col122"><Text text="{i18n>Toth2}"/></Column>
 
               <Column width="10em" id="col75"><Text text="{i18n>LSTAR_3}"/></Column>
               <Column width="12em" id="col76"><Text text="{i18n>STEUS_3}"/></Column>
               <Column width="10em" id="col77"><Text text="{i18n>NUM_3}"/></Column>
               <Column width="10em" id="col78"><Text text="{i18n>PERSONE_3}"/></Column>
               <Column width="10em" id="col79"><Text text="{i18n>HPER_3}"/></Column>
-
+              <Column width="10em" visible="false" id="col123"><Text text="{i18n>Toth3}"/></Column>
 
               <Column width="10em" id="col80"><Text text="{i18n>LSTAR_4}"/></Column>
               <Column width="12em" id="col81"><Text text="{i18n>STEUS_4}"/></Column>
               <Column width="10em" id="col82"><Text text="{i18n>NUM_4}"/></Column>
               <Column width="10em" id="col83"><Text text="{i18n>PERSONE_4}"/></Column>
               <Column width="10em" id="col84"><Text text="{i18n>HPER_4}"/></Column>
-
+              <Column width="10em" visible="false" id="col124"><Text text="{i18n>Toth4}"/></Column>
 
               <Column width="10em" id="col85"><Text text="{i18n>LSTAR_5}"/></Column>
               <Column width="12em" id="col86"><Text text="{i18n>STEUS_5}"/></Column>
               <Column width="10em" id="col87"><Text text="{i18n>NUM_5}"/></Column>
               <Column width="10em" id="col88"><Text text="{i18n>PERSONE_5}"/></Column>
               <Column width="10em" id="col89"><Text text="{i18n>HPER_5}"/></Column>
-
+              <Column width="10em" visible="false" id="col125"><Text text="{i18n>Toth5}"/></Column>
 
               <Column width="10em" id="col95"><Text text="{i18n>RISK}"/></Column>
               <Column width="10em" id="col96"><Text text="{i18n>LIMITE}"/></Column>
@@ -124,15 +127,23 @@
                   <Text text="{allIndex>CONTATORE} " />
                   <Button icon="sap-icon://activity-2" type="Transparent" press="handleMaterial"/>
                   <Button icon="sap-icon://crm-service-manager" type="Transparent" press="handleServizi"/>
-
-                  <Input value="{allIndex>SISTEMA} " />
-                  <Input value="{allIndex>PROGRES} " />
+                  <ComboBox valueStateText="{i18n>valueState} {i18n>SISTEMA}" showSecondaryValues= "true" items="{ path: 'sHelp>/SISTEMA2', length:2000 }" selectedKey="{allIndex>SISTEMA}">
+                    <core:ListItem key="{sHelp>Sistema}" text="{sHelp>Sistema}" additionalText="{sHelp>Txt}"/>
+                  </ComboBox>
+                  <ComboBox valueStateText="{i18n>valueState} {i18n>PROGRES}" showSecondaryValues= "true" items="{ path: 'sHelp>/PROGRES2', length:2000 }" selectedKey="{allIndex>PROGRES}">
+                    <core:ListItem key="{sHelp>Progres}" text="{sHelp>Progres}" additionalText="{sHelp>Txt}"/>
+                  </ComboBox>
                   <Text text="{allIndex>DESC_PROG} " />
-                  <Input value="{allIndex>CLASSE} " />
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>CLASSE}" showSecondaryValues= "true" items="{ path: 'sHelp>/CLASSE2', length:2000 }" selectedKey="{allIndex>CLASSE}">
+                    <core:ListItem key="{sHelp>Classe}" text="{sHelp>Classe}" additionalText="{sHelp>Txt}"/>
+                  </ComboBox>
                   <Text text="{allIndex>DES_COMPONENTE} " />
-                  <Input value="{allIndex>DIVISIONE} " />
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>DIVISIONE}" showSecondaryValues= "true" items="{ path: 'sHelp>/DIVISIONE2', length:2500 }" selectedKey="{allIndex>DIVISIONE}">
+                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                  </ComboBox>
                   <Text text="{allIndex>SEDE_TECNICA} " />
                   <Text text="{allIndex>SEDE_TECNICA_P} " />
+                  <Text text="{allIndex>SEDE_ECC} " />
                   <Text text="{allIndex>DESC_SEDE} " />
                   <Text text="{allIndex>EQUIPMENT} " />
                   <Button icon="sap-icon://document-text" tooltip="{allIndex>TESTO_ESTESO_P}" type="Transparent" press="handleTesto" />
@@ -144,11 +155,21 @@
                   <Text text="{allIndex>VALORE} " />
                   <Text text="{allIndex>STRATEGIA}" />
                   <Text text="{allIndex>STRATEGIA_DESC}" />
-                  <Input value="{allIndex>DIVISIONEC}" />
-                  <Input value="{allIndex>CENTRO_LAVORO}" />
-                  <Input value="{allIndex>TIPO_GESTIONE}" />
-                  <Input value="{allIndex>TIPO_GESTIONE_1}" />
-                  <Input value="{allIndex>TIPO_GESTIONE_2}" />
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>DIVISIONEC}" showSecondaryValues= "true" items="{ path: 'sHelp>/DIVISIONE2', length:2500 }" selectedKey="{allIndex>DIVISIONEC}">
+                    <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                  </ComboBox>
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>CENTRO_LAVORO}" showSecondaryValues= "true" items="{ path: 'sHelp>/CENTRO_LAVORO', length:2500 }" selectedKey="{allIndex>CENTRO_LAVORO}">
+                    <core:ListItem key="{sHelp>Arbpl}" text="{sHelp>Arbpl}" additionalText="{sHelp>Werks} - {sHelp>Destinatario}"/>
+                  </ComboBox>
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TIPO_GESTIONE}" showSecondaryValues= "true" required="true" items="{ path: 'sHelp>/TIPO_GESTIONE' }" selectedKey="{allIndex>TIPO_GESTIONE}">
+                      <core:ListItem key="{sHelp>TipoGestione}" text="{sHelp>TipoGestione}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest}"/>
+                  </ComboBox>
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TIPO_GESTIONE_1}" showSecondaryValues= "true" required="true" items="{ path: 'sHelp>/TIPO_GESTIONE_1' }" selectedKey="{allIndex>TIPO_GESTIONE_1}">
+                      <core:ListItem key="{sHelp>TipoGestione1}" text="{sHelp>TipoGestione1}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest1}"/>
+                  </ComboBox>
+                  <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TIPO_GESTIONE_2}" showSecondaryValues= "true" required="true" items="{ path: 'sHelp>/TIPO_GESTIONE_2' }" selectedKey="{allIndex>TIPO_GESTIONE_2}">
+                    <core:ListItem key="{sHelp>TipoGestione2}" text="{sHelp>TipoGestione2}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest2}"/>
+                  </ComboBox>
                   <Text text="{allIndex>PRIORITA}" />
                   <Text text="{allIndex>TIPO_ATTIVITA}" />
                   <Text text="{allIndex>DESC_BREVE}" />
@@ -157,39 +178,45 @@
                   <Text text="{allIndex>TIPO_ORDINE}" />
                   <Text text="{allIndex>LSTAR}" />
                   <Text text="{allIndex>STEUS}" />
-                  <Text text="{allIndex>NUM}" />
-                  <Input value="{allIndex>PERSONE}"/>
-                  <Input value="{allIndex>HPER}"/>
+                  <Input value="{allIndex>NUM}" type="Number" change="onChangeStat"  />
+                  <Input value="{allIndex>PERSONE}" type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>HPER}" type="Number" change="onChangeStat" />
+                  <Text text="{allIndex>Toth}" />
 
                   <Text text="{allIndex>LSTAR_1}" />
                   <Text text="{allIndex>STEUS_1}" />
-                  <Text text="{allIndex>NUM_1}" />
-                  <Input value="{allIndex>PERSONE_1}"/>
-                  <Input value="{allIndex>HPER_1}"/>
+                  <Input value="{allIndex>NUM_1}"  type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>PERSONE_1}" type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>HPER_1}" type="Number" change="onChangeStat" />
+                  <Text text="{allIndex>Toth1}" />
 
                   <Text text="{allIndex>LSTAR_2}" />
                   <Text text="{allIndex>STEUS_2}" />
-                  <Text text="{allIndex>NUM_2}" />
-                  <Input value="{allIndex>PERSONE_2}"/>
-                  <Input value="{allIndex>HPER_2}"/>
+                  <Input value="{allIndex>NUM_2}" type="Number" change="onChangeStat"  />
+                  <Input value="{allIndex>PERSONE_2}" type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>HPER_2}" type="Number" change="onChangeStat" />
+                  <Text text="{allIndex>Toth2}" />
 
                   <Text text="{allIndex>LSTAR_3}" />
                   <Text text="{allIndex>STEUS_3}" />
-                  <Text text="{allIndex>NUM_3}" />
-                  <Input value="{allIndex>PERSONE_3}"/>
-                  <Input value="{allIndex>HPER_3}"/>
+                  <Input value="{allIndex>NUM_3}"  type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>PERSONE_3}" type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>HPER_3}" type="Number" change="onChangeStat" />
+                  <Text text="{allIndex>Toth3}" />
 
                   <Text text="{allIndex>LSTAR_4}" />
                   <Text text="{allIndex>STEUS_4}" />
-                  <Text text="{allIndex>NUM_4}" />
-                  <Input value="{allIndex>PERSONE_4}"/>
-                  <Input value="{allIndex>HPER_4}"/>
+                  <Input value="{allIndex>NUM_4}" type="Number" change="onChangeStat"  />
+                  <Input value="{allIndex>PERSONE_4}" type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>HPER_4}" type="Number" change="onChangeStat" />
+                  <Text text="{allIndex>Toth4}" />
 
                   <Text text="{allIndex>LSTAR_5}" />
                   <Text text="{allIndex>STEUS_5}" />
-                  <Text text="{allIndex>NUM_5}" />
-                  <Input value="{allIndex>PERSONE_5}"/>
-                  <Input value="{allIndex>HPER_5}"/>
+                  <Input value="{allIndex>NUM_5}"  type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>PERSONE_5}" type="Number" change="onChangeStat" />
+                  <Input value="{allIndex>HPER_5}" type="Number" change="onChangeStat" />
+                  <Text text="{allIndex>Toth5}" />
 
                   <Text text="{allIndex>RISK}" />
                   <Input value="{allIndex>LIMITE}" />
@@ -207,7 +234,12 @@
                       </items>
                   </Select> 
 
-                  <Input value="{allIndex>COLLECTIVE}" />
+                  <Select selectedKey="{allIndex>COLLECTIVE}">
+                      <items>
+                          <core:ListItem xmlns:core="sap.ui.core" key="" text=""/>
+                          <core:ListItem xmlns:core="sap.ui.core" key="X" text="X"/>
+                      </items>
+                  </Select> 
                   <Input value="{allIndex>PERCORSO}" />
                   <Text text="{ parts:[{path:'allIndex>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Text text="{ parts:[{path:'allIndex>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>

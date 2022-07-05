@@ -101,14 +101,14 @@
 					]
 				},  
         {
-					"pattern": "ViewPage",
+					"pattern": "ViewPage/:ret:",
 					"name": "ViewPage",
 					"target": [
 						"ViewPage"
 					]
 				},
         {
-					"pattern": "DetailPage",
+          "pattern": "DetailPage/:INDEX::COPY:",
 					"name": "DetailPage",
 					"target": [
 						"DetailPage"
@@ -159,11 +159,11 @@
 					"transition": "slide"
 				},
         "DetailPage": {
-					"controlAggregation": "pages",
-					"viewName": "DetailPage",
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
 					"viewId": "DetailPage",
-					"viewLevel": 1,
-					"transition": "slide"
+					"viewName": "DetailPage"
 				}
       }
     },

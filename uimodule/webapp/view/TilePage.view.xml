@@ -12,6 +12,7 @@
                 </f:content>
                 <f:actions></f:actions>
                 <f:navigationActions>
+                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
                     <Image src="./img/logo.png" width="5rem"/>
                 </f:navigationActions>
             </f:DynamicPageTitle>

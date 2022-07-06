@@ -1,13 +1,14 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:dnd="sap.ui.core.dnd" xmlns:ui="sap.ui.table">
-    <Dialog contentHeight="500px" id="DialogSedeReale" resizable="true" draggable="true" title="{i18n>SelezionaSedeTecnica}" verticalScrolling="false" horizontalScrolling="false">
+    <Dialog contentHeight="500px" id="DialogSedeReale" draggable="true" title="{i18n>SelezionaSedeTecnica}" verticalScrolling="false" horizontalScrolling="false">
         <customHeader>
             <Bar>
                 <contentLeft></contentLeft>
                 <contentMiddle>
-                    <Title text="{i18n>SelezionaSedeTecnica}"/>
+                    <Label wrapping="true" labelFor="inputSearch" text="{i18n>SelezionaSedeTecnica}"/>
                 </contentMiddle>
                 <contentRight>
-                	  <Input value="{sSedeTecnicaReale>/SEDE_TECNICA}" width="18em" class="sapUiTinyMarginBegin Uppercase" />
+                
+                	<Input id="inputSearch" value="{sSedeTecnicaReale>/SEDE_TECNICA}" width="18em" class="sapUiTinyMarginBegin Uppercase" />
                  <Button icon="sap-icon://search" type="Emphasized" class="sapUiTinyMarginBegin" press="onFilterSedeTecnicaReale"/>
                   <Button icon="sap-icon://synchronize" type="Transparent" class="sapUiTinyMarginBegin" press="onResetSedeTecnicaReale"/>
                    
@@ -19,7 +20,7 @@
                 <ui:Table id="tSedeTecnicaReale" selectionMode="Single" ariaLabelledBy="title" rows="{ path: 'SedeReale>/' }" visibleRowCount="12" width="47.5%">
                     <ui:extension>
                         <OverflowToolbar id="infobarReale" style="Clear">
-                            <Title id="titleReale" text="Sedi disponibili"/>
+                             <Text id="titleReale" class="titleInfo" text="Sedi disponibili" />
                         </OverflowToolbar>
                     </ui:extension>
                     <ui:columns>
@@ -51,7 +52,7 @@
                 <ui:Table id="tSelSedeTecnicaReale" width="47.5%" selectionMode="Single" rows="{ path: 'SelSedeReale>/'}" visibleRowCount="12" noData="Si prega di trascinare le Sedi qui.">
                     <ui:extension>
                         <OverflowToolbar style="Clear">
-                            <Title id="title2Reale" text="Sedi selezionate"/>
+                          <Text id="title2Reale" class="titleInfo" text="Sedi selezionate"/>
                         </OverflowToolbar>
                     </ui:extension>
                     <ui:columns>

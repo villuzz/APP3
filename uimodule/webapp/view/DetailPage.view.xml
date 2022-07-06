@@ -12,6 +12,7 @@
                     </HBox>
                 </f:content>
                 <f:navigationActions>
+                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
                     <Button id="save" text="Save" type="Emphasized" press="handleSavePress"/>
                 </f:navigationActions>
             </f:DynamicPageTitle>
@@ -207,7 +208,10 @@
                                     <form:ColumnLayout columnsM="2" columnsL="3" columnsXL="6"/>
                                 </form:layout>
                                 <form:formContainers>
-                                    <form:FormContainer title="Attività 1">
+                                    <form:FormContainer>
+                                     <form:title>
+                                      <core:Title text="Attività 1" level="H1"/>
+                                    </form:title>
                                         <form:formElements>
                                             <form:FormElement label="{i18n>LSTAR}">
                                                 <form:fields>
@@ -237,7 +241,10 @@
                                             </form:FormElement>
                                         </form:formElements>
                                     </form:FormContainer>
-                                    <form:FormContainer title="Attività 2">
+                                    <form:FormContainer>
+                                     <form:title>
+                                      <core:Title text="Attività 2" level="H1"/>
+                                    </form:title>
                                         <form:formElements>
                                             <form:FormElement label="{i18n>LSTAR_1}">
                                                 <form:fields>
@@ -267,7 +274,10 @@
                                             </form:FormElement>
                                         </form:formElements>
                                     </form:FormContainer>
-                                    <form:FormContainer title="Attività 3">
+                                    <form:FormContainer>
+                                     <form:title>
+                                      <core:Title text="Attività 3" level="H1"/>
+                                    </form:title>
                                         <form:formElements>
                                             <form:FormElement label="{i18n>LSTAR_2}">
                                                 <form:fields>
@@ -297,7 +307,10 @@
                                             </form:FormElement>
                                         </form:formElements>
                                     </form:FormContainer>
-                                    <form:FormContainer title="Attività 4">
+                                    <form:FormContainer>
+                                     <form:title>
+                                      <core:Title text="Attività 4" level="H1"/>
+                                    </form:title>
                                         <form:formElements>
                                             <form:FormElement label="{i18n>LSTAR_3}">
                                                 <form:fields>
@@ -327,7 +340,10 @@
                                             </form:FormElement>
                                         </form:formElements>
                                     </form:FormContainer>
-                                    <form:FormContainer title="Attività 5">
+                                    <form:FormContainer>
+                                     <form:title>
+                                      <core:Title text="Attività 5" level="H1"/>
+                                    </form:title>
                                         <form:formElements>
                                             <form:FormElement label="{i18n>LSTAR_4}">
                                                 <form:fields>
@@ -357,7 +373,10 @@
                                             </form:FormElement>
                                         </form:formElements>
                                     </form:FormContainer>
-                                    <form:FormContainer title="Attività 6">
+                                    <form:FormContainer>
+                                     <form:title>
+                                      <core:Title text="Attività 6" level="H1"/>
+                                    </form:title>
                                         <form:formElements>
                                             <form:FormElement label="{i18n>LSTAR_5}">
                                                 <form:fields>

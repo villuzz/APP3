@@ -13,10 +13,10 @@
                 </f:content>
                 <f:actions></f:actions>
                 <f:navigationActions>
+                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
                     <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin"/>
                     <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin"/>
                     <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin"/>
-
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>
@@ -27,7 +27,7 @@
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem id="FIINDEX" visible="true" groupName="__$INTERNAL$" name="FYINDEX" label="{i18n>IndexPmo}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiInput id="inIndex" type="Number" showValueHelp="false"/>
+                                    <MultiInput id="inIndex" showValueHelp="false"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIDivisioneu" visible="true" groupName="__$INTERNAL$" name="FYDivisione" label="{i18n>Divisioneu}" partOfCurrentVariant="true" visibleInFilterBar="true">
@@ -271,7 +271,7 @@
 
                             <fb:FilterGroupItem id="FIIContActEl" visible="true" groupName="__$INTERNAL$" name="FYIContActEl" label="{i18n>IContActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiInput id="IContActEl" type="Number" showValueHelp="false"/>
+                                    <MultiInput id="IContActEl" showValueHelp="false"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
                             

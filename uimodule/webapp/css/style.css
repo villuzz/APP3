@@ -22,7 +22,9 @@ tr[data-mydata="G"] {
   overflow: hidden !important;
 }
 
-
+.titleInfo{
+font-size: medium;
+}
 
 /* Intestazioni colonne */
 .sapMLabel, .sapMLabelTextWrapper {
@@ -90,4 +92,23 @@ tr[data-mydata="G"] {
 
 .block{
   display: block;
+}
+
+.sapMDialogScroll{
+height: 100% !important;
+}
+/* 
+.sapFDynamicPageTitleMain>.sapFDynamicPageTitleMainInner .sapFDynamicPageTitleMainContent{
+  width: 100% !important;
+}  */
+
+
+
+/* Header */
+.sapFDynamicPageTitleMain>.sapFDynamicPageTitleMainInner .sapFDynamicPageTitleMainContent.sapFDynamicPageTitleMainContentHasContent {
+  width: 100% !important;
+}
+
+.sapFDynamicPageTitle .sapFDynamicPageTitleMain>.sapFDynamicPageTitleMainInner .sapFDynamicPageTitleMainContent .sapMTB {
+  justify-content: space-between !important;
 }

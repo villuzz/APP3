@@ -16,7 +16,6 @@
                     <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin"/>
                     <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin"/>
                     <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin"/>
-
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>
@@ -182,7 +181,7 @@
 
                             <fb:FilterGroupItem id="FIEquipment" visible="true" groupName="__$INTERNAL$" name="FYEquipment" label="{i18n>Equipment}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" value="{sFilter>/IEquipmentCompo}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
+                                <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentCompo}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
                                         <suggestionColumns>
                                           <Column>
                                             <Label text="{i18n>Equipment}" />
@@ -250,7 +249,7 @@
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIIPoint" visible="true" groupName="__$INTERNAL$" name="FYIPoint" label="{i18n>IPoint}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" value="{sFilter>/IPoint}" suggestionRows="{sHelp>/POINT}" suggest=".onSuggestPoint" >
+                                <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IPoint}" suggestionRows="{sHelp>/POINT}" suggest=".onSuggestPoint" >
                                   <suggestionColumns>
                                     <Column>
                                       <Label text="{i18n>IPoint}" />
@@ -299,7 +298,7 @@
                             
                             <fb:FilterGroupItem id="FIIEquipmentActEl" visible="true" groupName="__$INTERNAL$" name="FYIEquipmentActEl" label="{i18n>IEquipmentActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" value="{sFilter>/IEquipmentActEl}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
+                                <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentActEl}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
                                         <suggestionColumns>
                                           <Column>
                                             <Label text="{i18n>Equipment}" />

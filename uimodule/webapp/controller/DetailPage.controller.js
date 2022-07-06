@@ -181,6 +181,13 @@ sap.ui.define([
             var i,
                 sURL;
 
+            //Righe Spostate 
+            this.spostaAzioni
+            for (i = 0; i < this.spostaAzioni.length; i++) {
+              this.spostaAzioni[i].Uzeit = this.createUzeit();
+              result = await this._saveHana("/T_ACT_EL", this.compilaAzione(this.spostaAzioni[i]));
+            }
+
             // Righe Rimosse
             for (i = 0; i < this.delAzioni.length; i++) {
                 if (this.delAzioni[i].Create !== "X") {

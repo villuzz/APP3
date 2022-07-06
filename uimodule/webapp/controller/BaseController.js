@@ -59,7 +59,73 @@ sap.ui.define([
           return hours + ":" + minutes + ":" + seconds;
           }
       },
-      
+      handleOpenDialogMsg: async function (aData) {
+        if (this.oMessageView === undefined) {
+            await this.handleSetDialog();
+        }
+        var oModel = new sap.ui.model.json.JSONModel();
+        oModel.setData(aData);
+        this.oMessageView.setModel(oModel);
+
+        this.oMessageView.navigateBack();
+        this.oDialog.open();
+    },
+    handleSetDialog: function (oEvent) {
+      var that = this;
+
+      var oMessageTemplate = new sap.m.MessageItem({
+          type: "{type}",
+          title: "{title}",
+          description: "{description}",
+          subtitle: "{subtitle}",
+          // counter: "{counter}",
+          markupDescription: "{markupDescription}"
+      });
+
+      this.oMessageView = new sap.m.MessageView({
+          showDetailsPageHeader: false,
+          itemSelect: function () {
+              oBackButton.setVisible(true);
+          },
+          items: {
+              path: "/",
+              template: oMessageTemplate
+          }
+      });
+      var oBackButton = new sap.m.Button({
+          icon: sap.ui.core.IconPool.getIconURI("nav-back"),
+          visible: false,
+          press: function () {
+              that.oMessageView.navigateBack();
+              this.setVisible(false);
+          }
+      });
+
+      this.oDialog = new sap.m.Dialog({
+          resizable: true,
+          content: this.oMessageView,
+          state: "Information",
+          beginButton: new sap.m.Button(
+              {
+                  press: function () {
+                      this.getParent().close();
+                  },
+                  text: "Close"
+              }
+          ),
+          customHeader: new sap.m.Bar(
+              {
+                  contentLeft: [oBackButton],
+                  contentMiddle: [new sap.m.Title(
+                          {text: "Upload"}
+                      )]
+              }
+          ),
+          contentHeight: "50%",
+          contentWidth: "50%",
+          verticalScrolling: true
+      });
+  },
       onListVariant: function () {
         var aFilters = [];
         aFilters.push(new Filter("APP", FilterOperator.EQ, "1"));
@@ -719,6 +785,20 @@ sap.ui.define([
                 });
             });
         },
+        _removeHanaShowError: function (URL) {
+          var xsoDataModelReport = this.getView().getModel();
+          return new Promise(function (resolve) {
+              xsoDataModelReport.remove(URL, {
+                  success: function () {
+                      resolve("");
+                  },
+                  error: function (err) {
+                      var responseObject = JSON.parse(err.responseText);
+                      resolve(responseObject.error.message.value);
+                  }
+              });
+          });
+      },
         _updateHanaShowError: function (sURL, oEntry) {
           var xsoDataModelReport = this.getOwnerComponent().getModel();
           return new Promise(function (resolve, reject) {

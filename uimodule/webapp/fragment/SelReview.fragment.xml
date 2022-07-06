@@ -2,16 +2,24 @@
     <f:DynamicPage
         id="Page4" showFooter="true" preserveHeaderStateOnScroll="true" fitContent="true" class="sapUiContentPadding">
         <!-- DynamicPage Title -->
+        <f:landmarkInfo>
+            <f:DynamicPageAccessibleLandmarkInfo rootRole="Region" contentRole="Main" headerRole="Banner" rootLabel="{i18n>Overview_rootLabel}" contentLabel="{i18n>Overview_contentLabel}" headerLabel="{i18n>Overview_headerLabel}"/>
+          </f:landmarkInfo>
         <f:title>
             <f:DynamicPageTitle>
-                <f:heading>
+                <f:content>
+                 <OverflowToolbar>
                     <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
                         <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
                         <Title text="{i18n>Review}" class="sapUiTinyMarginTop"/>
                     </HBox>
 
-
-                </f:heading>
+                     <ToolbarSpacer/>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" >
+                     <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
+                    </HBox>
+                </OverflowToolbar>
+                </f:content>
                 <f:navigationActions>
                   <Button text="" icon="sap-icon://action-settings" press="onPersoButtonPressed2" class="sapUiTinyMarginBegin"/>
                 </f:navigationActions>
@@ -26,7 +34,7 @@
                     <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
                 </form:layout>
                 <form:title>
-                    <core:Title text="1. {i18n>InformazioniDivisione}" level="Auto"/>
+                    <core:Title text="1. {i18n>InformazioniDivisione}" level="H1"/>
                 </form:title>
                 <form:formContainers>
                     <form:FormContainer visible="true">
@@ -130,7 +138,7 @@
                     <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
                 </form:layout>
                 <form:title>
-                    <core:Title text="2. {i18n>Specifiche}" level="Auto"/>
+                    <core:Title text="2. {i18n>Specifiche}" level="H1"/>
                 </form:title>
                 <form:formContainers>
                     <form:FormContainer visible="true">
@@ -186,7 +194,7 @@
                     <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
                 </form:layout>
                 <form:title>
-                    <core:Title text="3. {i18n>Interventi}" level="Auto"/>
+                    <core:Title text="3. {i18n>Interventi}" level="H1"/>
                 </form:title>
                 <form:formContainers/>
 
@@ -391,7 +399,7 @@
                     <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
                 </form:layout>
                 <form:title>
-                    <core:Title text="4. {i18n>InterventiAcc}" level="Auto"/>
+                    <core:Title text="4. {i18n>InterventiAcc}" level="H1"/>
                 </form:title>
                 <form:formContainers/>
 

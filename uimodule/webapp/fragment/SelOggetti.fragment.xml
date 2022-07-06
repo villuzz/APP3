@@ -2,14 +2,23 @@
     <f:DynamicPage
         id="Page2" showFooter="true">
         <!-- DynamicPage Title -->
+           <f:landmarkInfo>
+            <f:DynamicPageAccessibleLandmarkInfo rootRole="Region" contentRole="Main" headerRole="Banner" rootLabel="{i18n>Overview_rootLabel}" contentLabel="{i18n>Overview_contentLabel}" headerLabel="{i18n>Overview_headerLabel}"/>
+          </f:landmarkInfo>
         <f:title>
             <f:DynamicPageTitle>
-                <f:heading>
-                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                        <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
-                        <Title text="{i18n>Specifiche}" class="sapUiTinyMarginTop"/>
+              <f:content>
+                <OverflowToolbar>
+                    <HBox height="100%" alignItems="Center" alignContent="Center">
+                      <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
+                      <Title text="{i18n>Specifiche}" class="sapUiTinyMarginTop"/>
                     </HBox>
-                </f:heading>
+                    <ToolbarSpacer/>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" >
+                     <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
+                    </HBox>
+                </OverflowToolbar>
+              </f:content>
                 <f:navigationActions></f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>

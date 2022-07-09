@@ -102,8 +102,8 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col92", order: 92, text: oResource.getText("Point"), visible: false},
               {id: "Piani-tbPiani-col93", order: 93, text: oResource.getText("Scostamento"), visible: false},
              //{id: "Piani-tbPiani-col94", order: 94, text: oResource.getText("SedeTecOdm"), visible: false},
-              {id: "Piani-tbPiani-col95", order: 95, text: oResource.getText("StComponente"), visible: false},
-              {id: "Piani-tbPiani-col96", order: 96, text: oResource.getText("TipoAggr"), visible: false},
+              {id: "Piani-tbPiani-col95", order: 95, text: oResource.getText("StComponente"), visible: true},
+              {id: "Piani-tbPiani-col96", order: 96, text: oResource.getText("TipoAggr"), visible: true},
               {id: "Piani-tbPiani-col97", order: 97, text: oResource.getText("TxtCiclo"), visible: false},
               {id: "Piani-tbPiani-col98", order: 98, text: oResource.getText("Uname"), visible: false},
               {id: "Piani-tbPiani-col99", order: 99, text: oResource.getText("UnitaCiclo"), visible: false}

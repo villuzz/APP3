@@ -16,7 +16,7 @@
           <items>
               <ColumnListItem vAlign="Middle">
                   <cells>
-                      <Input showSuggestion="true" value="{aServizi>ASNUM}" maxSuggestionWidth="30em" suggestionRows="{sHelp>/ASNUM}" suggest=".onSuggestAsnum" enabled="{ parts:[{path:'sSelect>/stato'}], formatter: '.LocalFormatter.statoEnabled'}"  >
+                      <Input showSuggestion="true" value="{aServizi>ASNUM}" maxSuggestionWidth="30em" suggestionRows="{sHelp>/ASNUM}" suggest=".onSuggestAsnum"  >
                       <suggestionColumns>
                         <Column>
                           <Label text="{i18n>Asnum}" />
@@ -30,19 +30,19 @@
                     </Input>
                       <Input value="{aServizi>ASKTX}" maxLength="50"/>
                       <Input value="{aServizi>MENGE}" maxLength="10" type="Number" />
-                      <ComboBox  selectedKey="{aServizi>MEINS}" valueStateText="{i18n>valueState} {i18n>MEINS}" items="{ path: 'sHelp>/MEINS' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aServizi>MEINS}" valueStateText="{i18n>valueState} {i18n>MEINS}" items="{ path: 'sHelp>/MEINS', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aServizi>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aServizi>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                       <core:ListItem key="{sHelp>Fieldname2}" text="{sHelp>Fieldname2}" additionalText="{sHelp>Fieldname3}"/>
                     </ComboBox>
-                    <ComboBox  selectedKey="{aServizi>MATKL}" valueStateText="{i18n>valueState} {i18n>MATKL}" items="{ path: 'sHelp>/MATKL' }" change="handleChangeCb" showSecondaryValues= "true" >
+                    <ComboBox  selectedKey="{aServizi>MATKL}" valueStateText="{i18n>valueState} {i18n>MATKL}" items="{ path: 'sHelp>/MATKL', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                       <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                     </ComboBox>
                       <Button icon="sap-icon://delete" type="Transparent" press="onCancelServizi"/>

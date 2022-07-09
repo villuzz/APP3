@@ -44,199 +44,268 @@ sap.ui.define([
         setModel: function (oModel, sName) {
             return this.getView().setModel(oModel, sName);
         },
-        formatUzeit: function (duration) {
-          if (duration === undefined){
-            return "00:00:00";
-          } else {
-          var seconds = Math.floor((duration / 1000) % 60),
-              minutes = Math.floor((duration / (1000 * 60)) % 60),
-              hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+        formatDate: function (sValue) {
 
-          hours = (hours < 10) ? "0" + hours : hours;
-          minutes = (minutes < 10) ? "0" + minutes : minutes;
-          seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-          return hours + ":" + minutes + ":" + seconds;
-          }
-      },
-      handleOpenDialogMsg: async function (aData) {
-        if (this.oMessageView === undefined) {
-            await this.handleSetDialog();
-        }
-        var oModel = new sap.ui.model.json.JSONModel();
-        oModel.setData(aData);
-        this.oMessageView.setModel(oModel);
-
-        this.oMessageView.navigateBack();
-        this.oDialog.open();
-    },
-    handleSetDialog: function (oEvent) {
-      var that = this;
-
-      var oMessageTemplate = new sap.m.MessageItem({
-          type: "{type}",
-          title: "{title}",
-          description: "{description}",
-          subtitle: "{subtitle}",
-          // counter: "{counter}",
-          markupDescription: "{markupDescription}"
-      });
-
-      this.oMessageView = new sap.m.MessageView({
-          showDetailsPageHeader: false,
-          itemSelect: function () {
-              oBackButton.setVisible(true);
-          },
-          items: {
-              path: "/",
-              template: oMessageTemplate
-          }
-      });
-      var oBackButton = new sap.m.Button({
-          icon: sap.ui.core.IconPool.getIconURI("nav-back"),
-          visible: false,
-          press: function () {
-              that.oMessageView.navigateBack();
-              this.setVisible(false);
-          }
-      });
-
-      this.oDialog = new sap.m.Dialog({
-          resizable: true,
-          content: this.oMessageView,
-          state: "Information",
-          beginButton: new sap.m.Button(
-              {
-                  press: function () {
-                      this.getParent().close();
-                  },
-                  text: "Close"
-              }
-          ),
-          customHeader: new sap.m.Bar(
-              {
-                  contentLeft: [oBackButton],
-                  contentMiddle: [new sap.m.Title(
-                          {text: "Upload"}
-                      )]
-              }
-          ),
-          contentHeight: "50%",
-          contentWidth: "50%",
-          verticalScrolling: true
-      });
-  },
-      onListVariant: function () {
-        var aFilters = [];
-        aFilters.push(new Filter("APP", FilterOperator.EQ, "1"));
-        aFilters.push(new Filter("TABLE", FilterOperator.EQ, this._oTPC.getTable().split("-").pop()));
-
-        this.byId("tableVariant").getBinding("items").filter(aFilters);
-        this.byId("DialogVariantList").open();
-    },
-    onPressVariant: function () {
-        this.getView().byId("VariantName").setValue("");
-        this.byId("DialogVariant").open();
-    },
-    onSaveVariant: async function () {
-        if (this.getView().byId("VariantName").getValue() === "") {
-            MessageToast.show("Inserire un Nome");
-        } else {
-
-            var vColumn = [],
-                vFilter = {};
-            var aSel = this._oTPC._oPersonalizations.aColumns;
-            if (aSel.length > 0) {
-                for (var i = 0; i < aSel.length; i++) {
-                    vColumn.push(aSel[i].visible);
-                }
+            if (sValue === "" || sValue === undefined || sValue === null) {
+                return "";
             } else {
-                aSel = this.getView().byId(this._oTPC.getTable().split("-").pop()).getColumns();
-                for (var i = 0; i < aSel.length; i++) {
-                    vColumn.push(aSel[i].getVisible());
-                }
-            } vColumn = JSON.stringify(vColumn);
-            vFilter = JSON.stringify(this.getView().getModel("sFilter").getData());
-            var sVariant = {
-                APP: "1",
-                TABLE: this._oTPC.getTable().split("-").pop(),
-                USER: "Test",
-                NAME: this.getView().byId("VariantName").getValue(),
-                COLUMN: vColumn,
-                FILTER: vFilter
-            };
-            await this._saveHana("/Variante", sVariant);
-            this.byId("DialogVariant").close();
-        }
-    },
-    onCloseVariant: function () {
-        this.byId("DialogVariant").close();
-    },
-    onDeleteVariantList: async function (oEvent) {
-        sap.ui.core.BusyIndicator.show();
-        var line = oEvent.getSource().getBindingContext().getObject();
-        var sURL = "/Variante(" + "APP=" + "'" + line.APP + "'," + "TABLE=" + "'" + line.TABLE + "'," + "USER=" + "'" + line.USER + "'," + "NAME=" + "'" + line.NAME + "'" + ")";
+                jQuery.sap.require("sap.ui.core.format.DateFormat");
+                var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "yyyyMMdd"});
 
-        await this._removeHana(sURL);
-        sap.ui.core.BusyIndicator.hide();
-    },
-    onVariantPress: function (oEvent) {
-        var line = oEvent.getSource().getBindingContext().getObject();
-
-        var _oTPC = this._oTPC._oPersonalizations.aColumns;
-        var table = this.getView().byId(this._oTPC.getTable().split("-").pop()).getColumns();
-        var aSel = JSON.parse(line.COLUMN);
-        for (var i = 0; i < aSel.length; i++) {
-            if (_oTPC.length > 0) {
-                _oTPC[i].visible = aSel[i];
-            } else {
-                table[i].setVisible(aSel[i]);
+                return oDateFormat.format(new Date(sValue), true);
             }
-        }
-        this.getView().getModel("sFilter").setData(JSON.parse(line.FILTER));
-        this._oTPC.refresh();
-        this.getView().byId(this._oTPC.getTable().split("-").pop()).getModel().refresh();
+        },
+        onTestoEstesoAE: async function (line) {
+            var Tdname = "ZAE" + line.IndexPmo.padStart(18, "0") + line.Cont.padStart(10, "0");
+            var aFilters = [];
+            aFilters.push(new Filter("Tdname", FilterOperator.EQ, Tdname));
+            aFilters.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
+            aFilters.push(new Filter("Tdspras", FilterOperator.EQ, "I"));
+            aFilters.push(new Filter("Tdobject", FilterOperator.EQ, "TEXT"));
+            var result = await this._getTextLine("/TestiEstesi", aFilters);
+            return result;
+        },
+        onTestoEstesoI: async function (line) {
+            var Tdname = "ZI" + line.IndexPmo.padStart(18, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
+            var aFilters = [];
+            aFilters.push(new Filter("Tdname", FilterOperator.EQ, Tdname));
+            aFilters.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
+            aFilters.push(new Filter("Tdspras", FilterOperator.EQ, "I"));
+            aFilters.push(new Filter("Tdobject", FilterOperator.EQ, "TEXT"));
+            var result = await this._getTextLine("/TestiEstesi", aFilters);
+            return result;
+        },
+        onTestoEstesoISave: async function (line, Testo) {
+          if (Testo !== undefined && Testo !== null && Testo !== ""){
+            var Tdname = "ZI" + line.IndexPmo.padStart(18, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
+            var sTesto = {
+                "Tdname": Tdname,
+                "Tdid": "ST",
+                "Tdspras": "I",
+                "Tdobject": "TEXT",
+                "Overwrite": "X",
+                "Testo": Testo
+            };
+            var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
+            if (result !== "") {
+                var sUrl = "/TestiEstesi(Testo='" + Testo + "')";
+                delete sTesto.Testo;
+                await this._updateHanaNoError(sUrl, sTesto);
+            }
+          }
+        },
+        onTestoEstesoAESave: async function (line, Testo) {
+          if (Testo !== undefined && Testo !== null && Testo !== ""){
+            var Tdname = "ZAE" + line.IndexPmo.padStart(18, "0") + line.Cont.padStart(10, "0");
+            var sTesto = {
+                "Tdname": Tdname,
+                "Tdid": "ST",
+                "Tdspras": "I",
+                "Tdobject": "TEXT",
+                "Overwrite": "X",
+                "Testo": Testo
+            };
+            var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
+            if (result !== "") {
+                var sUrl = "/TestiEstesi(Testo='" + Testo + "')";
+                delete sTesto.Testo;
+                await this._updateHanaNoError(sUrl, sTesto);
+            }
+          }
+        },
+        formatUzeit: function (duration) {
+            if (duration === undefined) {
+                return "00:00:00";
+            } else {
+                var seconds = Math.floor((duration / 1000) % 60),
+                    minutes = Math.floor((duration / (1000 * 60)) % 60),
+                    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-        this.onSearchFilters();
+                hours = (hours < 10) ? "0" + hours : hours;
+                minutes = (minutes < 10) ? "0" + minutes : minutes;
+                seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-        this.byId("DialogVariantList").close();
-    },
-    onCloseVariantList: function () {
-        this.byId("DialogVariantList").close();
-    },
-      createUzeit: function () {
-        var aDate = new Date();
+                return hours + ":" + minutes + ":" + seconds;
+            }
+        },
+        handleOpenDialogMsg: async function (aData) {
+            if (this.oMessageView === undefined) {
+                await this.handleSetDialog();
+            }
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setData(aData);
+            this.oMessageView.setModel(oModel);
 
-        var hours = aDate.getHours(),
-            minutes = aDate.getMinutes(),
-            seconds = aDate.getSeconds();
+            this.oMessageView.navigateBack();
+            this.oDialog.open();
+        },
+        handleSetDialog: function (oEvent) {
+            var that = this;
 
-        hours = (hours < 10) ? "0" + hours : hours;
-        minutes = (minutes < 10) ? "0" + minutes : minutes;
-        seconds = (seconds < 10) ? "0" + seconds : seconds;
+            var oMessageTemplate = new sap.m.MessageItem({
+                type: "{type}",
+                title: "{title}",
+                description: "{description}",
+                subtitle: "{subtitle}",
+                // counter: "{counter}",
+                markupDescription: "{markupDescription}"
+            });
 
-        return hours + ":" + minutes + ":" + seconds;
-    },
+            this.oMessageView = new sap.m.MessageView({
+                showDetailsPageHeader: false,
+                itemSelect: function () {
+                    oBackButton.setVisible(true);
+                },
+                items: {
+                    path: "/",
+                    template: oMessageTemplate
+                }
+            });
+            var oBackButton = new sap.m.Button({
+                icon: sap.ui.core.IconPool.getIconURI("nav-back"),
+                visible: false,
+                press: function () {
+                    that.oMessageView.navigateBack();
+                    this.setVisible(false);
+                }
+            });
+
+            this.oDialog = new sap.m.Dialog({
+                resizable: true,
+                content: this.oMessageView,
+                state: "Information",
+                beginButton: new sap.m.Button(
+                    {
+                        press: function () {
+                            this.getParent().close();
+                        },
+                        text: "Close"
+                    }
+                ),
+                customHeader: new sap.m.Bar(
+                    {
+                        contentLeft: [oBackButton],
+                        contentMiddle: [new sap.m.Title(
+                                {text: "Upload"}
+                            )]
+                    }
+                ),
+                contentHeight: "50%",
+                contentWidth: "50%",
+                verticalScrolling: true
+            });
+        },
+        onListVariant: function () {
+            var aFilters = [];
+            aFilters.push(new Filter("APP", FilterOperator.EQ, "1"));
+            aFilters.push(new Filter("TABLE", FilterOperator.EQ, this._oTPC.getTable().split("-").pop()));
+
+            this.byId("tableVariant").getBinding("items").filter(aFilters);
+            this.byId("DialogVariantList").open();
+        },
+        onPressVariant: function () {
+            this.getView().byId("VariantName").setValue("");
+            this.byId("DialogVariant").open();
+        },
+        onSaveVariant: async function () {
+            if (this.getView().byId("VariantName").getValue() === "") {
+                MessageToast.show("Inserire un Nome");
+            } else {
+
+                var vColumn = [],
+                    vFilter = {};
+                var aSel = this._oTPC._oPersonalizations.aColumns;
+                if (aSel.length > 0) {
+                    for (var i = 0; i < aSel.length; i++) {
+                        vColumn.push(aSel[i].visible);
+                    }
+                } else {
+                    aSel = this.getView().byId(this._oTPC.getTable().split("-").pop()).getColumns();
+                    for (var i = 0; i < aSel.length; i++) {
+                        vColumn.push(aSel[i].getVisible());
+                    }
+                } vColumn = JSON.stringify(vColumn);
+                vFilter = JSON.stringify(this.getView().getModel("sFilter").getData());
+                var sVariant = {
+                    APP: "1",
+                    TABLE: this._oTPC.getTable().split("-").pop(),
+                    USER: "Test",
+                    NAME: this.getView().byId("VariantName").getValue(),
+                    COLUMN: vColumn,
+                    FILTER: vFilter
+                };
+                await this._saveHana("/Variante", sVariant);
+                this.byId("DialogVariant").close();
+            }
+        },
+        onCloseVariant: function () {
+            this.byId("DialogVariant").close();
+        },
+        onDeleteVariantList: async function (oEvent) {
+            sap.ui.core.BusyIndicator.show();
+            var line = oEvent.getSource().getBindingContext().getObject();
+            var sURL = "/Variante(" + "APP=" + "'" + line.APP + "'," + "TABLE=" + "'" + line.TABLE + "'," + "USER=" + "'" + line.USER + "'," + "NAME=" + "'" + line.NAME + "'" + ")";
+
+            await this._removeHana(sURL);
+            sap.ui.core.BusyIndicator.hide();
+        },
+        onVariantPress: function (oEvent) {
+            var line = oEvent.getSource().getBindingContext().getObject();
+
+            var _oTPC = this._oTPC._oPersonalizations.aColumns;
+            var table = this.getView().byId(this._oTPC.getTable().split("-").pop()).getColumns();
+            var aSel = JSON.parse(line.COLUMN);
+            for (var i = 0; i < aSel.length; i++) {
+                if (_oTPC.length > 0) {
+                    _oTPC[i].visible = aSel[i];
+                } else {
+                    table[i].setVisible(aSel[i]);
+                }
+            }
+            this.getView().getModel("sFilter").setData(JSON.parse(line.FILTER));
+            this._oTPC.refresh();
+            this.getView().byId(this._oTPC.getTable().split("-").pop()).getModel().refresh();
+
+            this.onSearchFilters();
+
+            this.byId("DialogVariantList").close();
+        },
+        onCloseVariantList: function () {
+            this.byId("DialogVariantList").close();
+        },
+        createUzeit: function () {
+            var aDate = new Date();
+
+            var hours = aDate.getHours(),
+                minutes = aDate.getMinutes(),
+                seconds = aDate.getSeconds();
+
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+            return hours + ":" + minutes + ":" + seconds;
+        },
         Shpl: async function (ShplName, ShplType, aFilter) {
 
-          var sFilter = {
-              "ReturnFieldValueSet": [{}]
-          };
-          sFilter.ShplType = ShplType;
-          sFilter.ShplName = ShplName;
-          sFilter.IFilterDataSet = aFilter;
-          // Shlpname Shlpfield Sign Option Low
+            var sFilter = {
+                "ReturnFieldValueSet": [{}]
+            };
+            sFilter.ShplType = ShplType;
+            sFilter.ShplName = ShplName;
+            sFilter.IFilterDataSet = aFilter;
+            // Shlpname Shlpfield Sign Option Low
 
-          var result = await this._saveHana("/dySearch", sFilter);
-          if (result.ReturnFieldValueSet !== undefined) {
-              result = result.ReturnFieldValueSet.results;
-              result.splice(0, 1);
-          } else {
-              result = [];
-          }
+            var result = await this._saveHana("/dySearch", sFilter);
+            if (result.ReturnFieldValueSet !== undefined) {
+                result = result.ReturnFieldValueSet.results;
+                result.splice(0, 1);
+            } else {
+                result = [];
+            }
 
-          return result;
-      },
+            return result;
+        },
         /**
              * Convenience method for getting the resource bundle.
              * @public
@@ -322,7 +391,7 @@ sap.ui.define([
             sData = await this._getTableDistinct("/SedeDistinct", aFilter, "SEDE_TECNICA");
             oModel.setData(sData);
             this.getView().setModel(oModel, "SedeTecnica");
-            
+
             var oModel1 = new sap.ui.model.json.JSONModel();
             sData = await this._getTableDistinct("/SedeDistinct", aFilter, "LIVELLO1");
             oModel1.setData(sData);
@@ -402,8 +471,7 @@ sap.ui.define([
                 // 1 -> alfabetico
                 if (isNaN(Number(LIVELLO3[0]))) {
                     fLIVELLO3.push(new Filter("LIVELLO3", FilterOperator.EQ, "kx")); // kx
-                }
-                fLIVELLO3 = new sap.ui.model.Filter({filters: fLIVELLO3, and: false});
+                }fLIVELLO3 = new sap.ui.model.Filter({filters: fLIVELLO3, and: false});
                 return fLIVELLO3;
             }
 
@@ -540,19 +608,19 @@ sap.ui.define([
             }
         },
         filtriSedeReale: async function (sel) {
-          // control Sede Tecnica da lvl 3 a lvl 6
-          // n = Numero - k = Alfabetico - x = Alfanumerico
-          var aFilter = [];
-          aFilter.push(new Filter("LIVELLO1", FilterOperator.EQ, "++" + sel.LIVELLO1[2]));
-          aFilter.push(new Filter("LIVELLO2", FilterOperator.EQ, "++++"));
+            // control Sede Tecnica da lvl 3 a lvl 6
+            // n = Numero - k = Alfabetico - x = Alfanumerico
+            var aFilter = [];
+            aFilter.push(new Filter("LIVELLO1", FilterOperator.EQ, "++" + sel.LIVELLO1[2]));
+            aFilter.push(new Filter("LIVELLO2", FilterOperator.EQ, "++++"));
 
-          aFilter.push(this.filterLivello3(sel.LIVELLO3));
-          aFilter.push(this.filterLivello4(sel.LIVELLO4));
-          aFilter.push(this.filterLivello5(sel.LIVELLO5));
-          aFilter.push(this.filterLivello6(sel.LIVELLO6));
+            aFilter.push(this.filterLivello3(sel.LIVELLO3));
+            aFilter.push(this.filterLivello4(sel.LIVELLO4));
+            aFilter.push(this.filterLivello5(sel.LIVELLO5));
+            aFilter.push(this.filterLivello6(sel.LIVELLO6));
 
-          //aFilter.push(new Filter("LANGUAGE", FilterOperator.EQ, "IT")); // fisso IT - todo
-          return aFilter;
+            // aFilter.push(new Filter("LANGUAGE", FilterOperator.EQ, "IT")); // fisso IT - todo
+            return aFilter;
 
         },
         _initIndexReal: function () {
@@ -786,47 +854,47 @@ sap.ui.define([
             });
         },
         _removeHanaShowError: function (URL) {
-          var xsoDataModelReport = this.getView().getModel();
-          return new Promise(function (resolve) {
-              xsoDataModelReport.remove(URL, {
-                  success: function () {
-                      resolve("");
-                  },
-                  error: function (err) {
-                      var responseObject = JSON.parse(err.responseText);
-                      resolve(responseObject.error.message.value);
-                  }
-              });
-          });
-      },
+            var xsoDataModelReport = this.getView().getModel();
+            return new Promise(function (resolve) {
+                xsoDataModelReport.remove(URL, {
+                    success: function () {
+                        resolve("");
+                    },
+                    error: function (err) {
+                        var responseObject = JSON.parse(err.responseText);
+                        resolve(responseObject.error.message.value);
+                    }
+                });
+            });
+        },
         _updateHanaShowError: function (sURL, oEntry) {
-          var xsoDataModelReport = this.getOwnerComponent().getModel();
-          return new Promise(function (resolve, reject) {
-              xsoDataModelReport.update(sURL, oEntry, {
-                  success: function (oDataIn) {
-                      resolve("");
-                  },
-                  error: function (err) {
-                      var responseObject = JSON.parse(err.responseText);
-                      resolve(responseObject.error.message.value);
-                  }
-              });
+            var xsoDataModelReport = this.getOwnerComponent().getModel();
+            return new Promise(function (resolve, reject) {
+                xsoDataModelReport.update(sURL, oEntry, {
+                    success: function (oDataIn) {
+                        resolve("");
+                    },
+                    error: function (err) {
+                        var responseObject = JSON.parse(err.responseText);
+                        resolve(responseObject.error.message.value);
+                    }
+                });
             });
         },
         _saveHanaShowError: function (URL, sData) {
-          var xsoDataModelReport = this.getView().getModel();
-          return new Promise(function (resolve, reject) {
-              xsoDataModelReport.create(URL, sData, {
-                  success: function (oDataIn) {
-                      resolve("");
-                  },
-                  error: function (err) {
-                    var responseObject = JSON.parse(err.responseText);
-                    resolve(responseObject.error.message.value);
-                  }
-              });
-          });
-      },
+            var xsoDataModelReport = this.getView().getModel();
+            return new Promise(function (resolve, reject) {
+                xsoDataModelReport.create(URL, sData, {
+                    success: function (oDataIn) {
+                        resolve("");
+                    },
+                    error: function (err) {
+                        var responseObject = JSON.parse(err.responseText);
+                        resolve(responseObject.error.message.value);
+                    }
+                });
+            });
+        },
         _getLastItemData: function (Entity, Filters, SortBy) {
             var xsoDataModelReport = this.getView().getModel();
             return new Promise(function (resolve, reject) {
@@ -920,24 +988,42 @@ sap.ui.define([
                 });
             });
         },
+        _getTextLine: function (Entity, Filters) {
+            var xsoDataModelReport = this.getView().getModel();
+            return new Promise(function (resolve, reject) {
+                xsoDataModelReport.read(Entity, {
+                    filters: Filters,
+                    success: function (oDataIn) {
+                        if (oDataIn.results !== undefined) {
+                            resolve(oDataIn.results[0].Testo);
+                        } else {
+                            resolve("");
+                        }
+                    },
+                    error: function () {
+                        resolve("");
+                    }
+                });
+            });
+        },
         _getTableNoError: function (Entity, Filters) {
-          var xsoDataModelReport = this.getView().getModel();
-          return new Promise(function (resolve, reject) {
-              xsoDataModelReport.read(Entity, {
-                  filters: Filters,
-                  success: function (oDataIn) {
-                      if (oDataIn.results !== undefined) {
-                          resolve(oDataIn.results);
-                      } else {
-                          resolve(oDataIn);
-                      }
-                  },
-                  error: function (err) {
-                    resolve([]);
-                  }
-              });
-          });
-      },
+            var xsoDataModelReport = this.getView().getModel();
+            return new Promise(function (resolve, reject) {
+                xsoDataModelReport.read(Entity, {
+                    filters: Filters,
+                    success: function (oDataIn) {
+                        if (oDataIn.results !== undefined) {
+                            resolve(oDataIn.results);
+                        } else {
+                            resolve(oDataIn);
+                        }
+                    },
+                    error: function (err) {
+                        resolve([]);
+                    }
+                });
+            });
+        },
         _getTableDistinct: function (Entity, Filters, Columns) {
             var xsoDataModelReport = this.getView().getModel();
             return new Promise(function (resolve) {

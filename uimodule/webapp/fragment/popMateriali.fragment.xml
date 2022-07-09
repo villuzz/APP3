@@ -18,8 +18,8 @@
           <items>
               <ColumnListItem vAlign="Middle">
                   <cells>
-                       <Input showSuggestion="true" maxSuggestionWidth="30em"  value="{aMaterial>MATNR}" suggestionItems="{sHelp>/MATNR}" suggest=".onSuggestMatnr" suggestionItemSelected="onSuggestMatnrSelect" enabled="{ parts:[{path:'sSelect>/stato'}], formatter: '.LocalFormatter.statoEnabled'}" >
-                      <!--<suggestionColumns>
+                       <Input showSuggestion="true" maxSuggestionWidth="30em"  value="{aMaterial>MATNR}" suggestionItems="{sHelp>/MATNR}" suggest=".onSuggestMatnr" suggestionItemSelected="onSuggestMatnrSelect" >
+                      <suggestionColumns>
                               <Column>
                                 <Label text="{i18n>Materiale}" />
                               </Column>
@@ -32,7 +32,7 @@
                                 <Label text="{sHelp>Fieldname1}" />
                                 <Label text="{sHelp>Fieldname4}" />
                               </ColumnListItem>
-                      </suggestionRows>-->
+                      </suggestionRows>
                       <suggestionItems>
                         <core:ListItem text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname4}" />
                       </suggestionItems>
@@ -58,19 +58,19 @@
                       </suggestionRows>
                     </Input>
                       <Input value="{aMaterial>MENGE}" maxLength="5" type="Number"/>
-                      <ComboBox  selectedKey="{aMaterial>MEINS}" valueStateText="{i18n>valueState} {i18n>MEINS}" items="{ path: 'sHelp>/MEINS' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aMaterial>MEINS}" valueStateText="{i18n>valueState} {i18n>MEINS}" items="{ path: 'sHelp>/MEINS', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aMaterial>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aMaterial>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aMaterial>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aMaterial>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aMaterial>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM' }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aMaterial>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                       <core:ListItem key="{sHelp>Fieldname2}" text="{sHelp>Fieldname2}" additionalText="{sHelp>Fieldname3}"/>
                     </ComboBox>
-                    <ComboBox  selectedKey="{aMaterial>MATKL}" valueStateText="{i18n>valueState} {i18n>MATKL}" items="{ path: 'sHelp>/MATKL' }" change="handleChangeCb" showSecondaryValues= "true" >
+                    <ComboBox  selectedKey="{aMaterial>MATKL}" valueStateText="{i18n>valueState} {i18n>MATKL}" items="{ path: 'sHelp>/MATKL', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                       <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                     </ComboBox>
                       <Button icon="sap-icon://delete" type="Transparent" press="onCancelMatnr"/>

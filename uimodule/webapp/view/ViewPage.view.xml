@@ -23,7 +23,7 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar search="onSearchFilters" clear="onClearFilter" showClearOnFB="true" showRestoreButton="true" showClearButton="true">
+                    <fb:FilterBar id="FilterBar" search="onSearchFilters" clear="onClearFilter" showClearOnFB="true" showRestoreButton="true" showClearButton="true">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem id="FIINDEX" visible="true" groupName="__$INTERNAL$" name="FYINDEX" label="{i18n>IndexPmo}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
@@ -90,13 +90,13 @@
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem id="FIIProgres" visible="true" groupName="__$INTERNAL$" name="FYIProgres" label="{i18n>IProgres}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <!--<fb:FilterGroupItem id="FIIProgres" visible="true" groupName="__$INTERNAL$" name="FYIProgres" label="{i18n>IProgres}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                   <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/PROGRES', length:2000 }" selectedKeys="{sFilter>/IProgres}">
                                     <core:ListItem key="{sHelp>Progres}" text="{sHelp>Progres}" additionalText="{sHelp>Txt}"/>
                                   </MultiComboBox>
                                   </fb:control>
-                            </fb:FilterGroupItem>
+                            </fb:FilterGroupItem>-->
                             <fb:FilterGroupItem id="FIIDesBreve" visible="true" groupName="__$INTERNAL$" name="FYIDesBreve" label="{i18n>IDesBreve}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                   <Input value="{sFilter>/IDesBreve}" />
@@ -269,9 +269,15 @@
                               </fb:control>
                             </fb:FilterGroupItem>
 
+                            <fb:FilterGroupItem id="FIIPercorso" visible="true" groupName="__$INTERNAL$" name="FYIPercorso" label="{i18n>IPercorso}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/IPercorso}" showValueHelp="false"/>
+                              </fb:control>
+                            </fb:FilterGroupItem>
+  
                             <fb:FilterGroupItem id="FIIContActEl" visible="true" groupName="__$INTERNAL$" name="FYIContActEl" label="{i18n>IContActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiInput id="IContActEl" showValueHelp="false"/>
+                                    <MultiInput id="IContActEl" type="Number" showValueHelp="false"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
                             

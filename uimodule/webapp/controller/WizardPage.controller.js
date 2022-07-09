@@ -68,7 +68,7 @@ sap.ui.define([
             sData.TIPO_ORDINE = await this._getTableDistinct("/Index_Azioni", [], "TIPO_ORDINE");
             sData.VALORE = await this._getTableDistinct("/Index_Azioni", [], "VALORE");
             sData.AZIONE = await this._getTableDistinct("/Index_Azioni", [], "AZIONE");
-
+            sData.MEINS = await this.Shpl("H_T006", "SH");
             // sData.INDEX = await this._getTableDistinct("/Index_Azioni", [], "INDEX");
             oModel1.setData(sData);
             this.getView().setModel(oModel1, "sHelp");
@@ -86,8 +86,7 @@ sap.ui.define([
             this.getView().byId("selLvl6").getModel().setSizeLimit(1000);
         },
         onChangeStat: function (oEvent) {
-          debugger
-          var sData = this.getModel("allIndex").getData();
+          var sData = oEvent.getSource().getBindingContext("allIndex").getObject();
           sData.Toth = Number(sData.Num) * Number(sData.Persone) * Number(sData.Hper);
           sData.Toth1 = Number(sData.Num1) * Number(sData.Persone1) * Number(sData.Hper1);
           sData.Toth2 = Number(sData.Num2) * Number(sData.Persone2) * Number(sData.Hper2);
@@ -141,14 +140,26 @@ sap.ui.define([
             this.byId("navCon").to(this.byId("Page1"));
             sap.ui.core.BusyIndicator.hide();
         },
+        createUzeit: function () {
+          var aDate = new Date();
 
+          var hours = aDate.getHours(),
+              minutes = aDate.getMinutes(),
+              seconds = aDate.getSeconds();
+
+          hours = (hours < 10) ? "0" + hours : hours;
+          minutes = (minutes < 10) ? "0" + minutes : minutes;
+          seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+          return hours + ":" + minutes + ":" + seconds;
+      },
         saveIndex: async function (sRow) {
             var sData = {
                 Divisioneu: sRow.DIVISIONE,
                 FineVal: sRow.FINEVAL,
                 IndexPmo: "",
                 InizioVal: sRow.INIZIOVAL,
-                // Uzeit: "000000",
+                Uzeit: this.createUzeit(),
                 // Appuntam	IN APP4
                 // Azione	Non li popoliamo
                 // Banfn	IN APP4
@@ -161,7 +172,7 @@ sap.ui.define([
                 CentroLavoro: sRow.CENTRO_LAVORO,
                 Ciclo: sRow.FREQ_CICLO,
                 Classe: sRow.CLASSE,
-                // CodAzione	Non li popoliamo
+                CodAzione: sRow.CodAzione,
                 Collective: sRow.COLLECTIVE,
                 // Criticita	Non li popoliamo
                 // DataInizCiclo	Non li popoliamo
@@ -250,9 +261,7 @@ sap.ui.define([
                 Persone4: (
                 (sRow.PERSONE_4 === undefined || sRow.PERSONE_4 === "") ? undefined : Number(sRow.PERSONE_4)
             ),
-                Persone5: (
-                (sRow.PERSONE_5 === undefined || sRow.PERSONE_5 === "") ? undefined : Number(sRow.PERSONE_5)
-            ),
+                Persone5: ( (sRow.PERSONE_5 === undefined || sRow.PERSONE_5 === "") ? undefined : Number(sRow.PERSONE_5) ),
                 Point: sRow.POINT,
                 Priorita: sRow.PRIORITA,
                 Progres: sRow.PROGRES,
@@ -273,12 +282,12 @@ sap.ui.define([
                 TipoGestione2: sRow.TIPO_GESTIONE_2,
                 TipoOrdine: sRow.TIPO_ORDINE,
                 TipoPmo: sRow.TIPOFREQUENZA,
-                // Toth	  IN APP4
-                // Toth1	IN APP4
-                // Toth2	IN APP4
-                // Toth3	IN APP4
-                // Toth4	IN APP4
-                // Toth5	IN APP4
+                Toth: ( (sRow.Toth === undefined || sRow.Toth === "") ? undefined : Number(sRow.Toth) ),
+                Toth1: ( (sRow.Toth1 === undefined || sRow.Toth1 === "") ? undefined : Number(sRow.Toth1) ),
+                Toth2: ( (sRow.Toth2 === undefined || sRow.Toth2 === "") ? undefined : Number(sRow.Toth2) ),
+                Toth3: ( (sRow.Toth3 === undefined || sRow.Toth3 === "") ? undefined : Number(sRow.Toth3) ),
+                Toth4: ( (sRow.Toth4 === undefined || sRow.Toth4 === "") ? undefined : Number(sRow.Toth4) ),
+                Toth5: ( (sRow.Toth5 === undefined || sRow.Toth5 === "") ? undefined : Number(sRow.Toth5) ),
                 // TxtCiclo	Non li popoliamo
                 // UltimaEsecuz	Non li popoliamo
                 // Uname	Non li popoliamo
@@ -287,6 +296,24 @@ sap.ui.define([
             };
 
             var sIndex = await this._saveHana("/T_PMO", sData);
+
+            if (sRow.TESTO_ESTESO !== undefined && sRow.TESTO_ESTESO !== null && sRow.TESTO_ESTESO !== ""){
+              var Tdname = "ZI" + sIndex.IndexPmo.padStart(18, "0") + this.formatDate(sData.InizioVal) + this.formatDate(sData.FineVal) + sData.Uzeit.replaceAll(":", "");
+              var sTesto = {
+                "Tdname": Tdname,
+                "Tdid": "ST",
+                "Tdspras": "I",
+                "Tdobject": "TEXT",
+                "Overwrite": "X",
+                "Testo": sRow.TESTO_ESTESO
+                };
+              var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
+              if (result !== ""){
+                var sUrl = "/TestiEstesi(Testo='" + sRow.TESTO_ESTESO + "')";
+                delete sTesto.Testo;
+                await this._updateHanaNoError(sUrl, sTesto);
+              }
+            }
 
             return sIndex.IndexPmo;
         },
@@ -311,35 +338,25 @@ sap.ui.define([
             ),
                 Datum: new Date,
                 Uname: "AE82826",
-                // todo
-                // Uzeit: "00:00:00" // todo
+                Uzeit: this.createUzeit()
             };
 
             var sAzione = await this._saveHana("/T_ACT_EL", sData);
 
-            if (sAzione.TESTO_ESTESO_P !== undefined && sAzione.TESTO_ESTESO_P !== null && sAzione.TESTO_ESTESO_P !== ""){
+            if (sRow.TESTO_ESTESO_P !== undefined && sRow.TESTO_ESTESO_P !== null && sRow.TESTO_ESTESO_P !== ""){
 
-              /*CONCATENATE 'Z'
-                     zpm4r_t_act_type-inizio_val
-                     zpm4r_t_act_type-fine_val
-                     zpm4r_t_act_type-divisione
-                     zpm4r_t_act_type-sistema
-                     zpm4r_t_act_type-progres
-                     zpm4r_t_act_type-classe
-                     zpm4r_t_act_type-uzeit */
-
-              var Tdname = "ZI" + sAzione.IndexPmo.padStart(18, "0") + sAzione.INIZIOVAL + sAzione.FINEVAL + "000000";
+              var Tdname = "ZAE" + sAzione.IndexPmo.padStart(18, "0") + sAzione.Cont.padStart(10, "0");
               var sTestoAzioni = {
                 "Tdname": Tdname,
                 "Tdid": "ST",
                 "Tdspras": "I",
                 "Tdobject": "TEXT",
                 "Overwrite": "X",
-                "Testo": sAzione.TESTO_ESTESO_P
+                "Testo": sRow.TESTO_ESTESO_P
                 };
               var result = await this._saveHanaNoError("/TestiEstesi", sTestoAzioni);
               if (result !== ""){
-                var sUrl = "/TestiEstesi(Testo=" + sAzione.TESTO_ESTESO_P + ")";
+                var sUrl = "/TestiEstesi(Testo='" + sRow.TESTO_ESTESO_P + "')";
                 delete sTestoAzioni.Testo;
                 await this._updateHanaNoError(sUrl, sTestoAzioni);
               }
@@ -421,8 +438,6 @@ sap.ui.define([
             } else {
                 this.lineSelected.TESTO_ESTESO = this.getView().byId("vTextArea").getValue();
             }
-
-            this.getView().getModel("sSelect").refresh();
             this.byId("popTesto").close();
         },
         HandleMaterialView: function (oEvent) {
@@ -484,8 +499,8 @@ sap.ui.define([
         ExtractHelpMS: async function () {
           sap.ui.core.BusyIndicator.show();          
           var sHelp = this.getView().getModel("sHelp").getData();
-          if (sHelp.MEINS === undefined){
-            sHelp.MEINS = await this.Shpl("H_T006", "SH");
+          if (sHelp.EKGRP === undefined){
+            // sHelp.MEINS = await this.Shpl("H_T006", "SH");
             // sData.LGORT = await this._getTableNoError("/StorageList");
             sHelp.EKGRP = await this.Shpl("H_T024", "SH");
             sHelp.EKORG = await this.Shpl("H_T024E", "SH");
@@ -565,7 +580,7 @@ sap.ui.define([
           });
           var sHelp = this.getView().getModel("sHelp").getData();
           sHelp.ASNUM = await this.Shpl("ZPM4R_SH_ASNUM", "SH", aFilter);
-          this.getView().getModel("sHelp").refresh(true);
+          this.getView().getModel("sHelp").refresh();
       }
   },
         onConfirmMatnr: function () {
@@ -691,19 +706,29 @@ sap.ui.define([
 
             this.byId("cbFREQ_TEMPO").setValue("");
             this.byId("cbFREQ_CICLO").setValue("");
+            this.byId("cbUNITA_TEMPO").setValue("");
+            this.byId("cbUNITA_CICLO").setValue("");
 
             switch (oEvent.getSource().getSelectedKey()) {
                 case "":
                     this.byId("frFREQ_TEMPO").setVisible(false);
+                    this.byId("frUNITA_TEMPO").setVisible(false);
                     this.byId("frFREQ_CICLO").setVisible(false);
+                    this.byId("frUNITA_CICLO").setVisible(false);
+                    
                     break;
                 case "C":
                     this.byId("frFREQ_TEMPO").setVisible(false);
+                    this.byId("frUNITA_TEMPO").setVisible(false);
                     this.byId("frFREQ_CICLO").setVisible(true);
+                    this.byId("frUNITA_CICLO").setVisible(true);
                     break;
                 case "T":
                     this.byId("frFREQ_TEMPO").setVisible(true);
+                    this.byId("frUNITA_TEMPO").setVisible(true);
                     this.byId("frFREQ_CICLO").setVisible(false);
+                    this.byId("frUNITA_CICLO").setVisible(false);
+                    
                     break;
                 default:
                     break;
@@ -723,8 +748,10 @@ sap.ui.define([
                 case "Page2": error = this.checkSpecifiche();
                     if (error) {
 
-                        await this.onStep3Extract();
-                        this.byId("navCon").to(this.byId("Page3"));
+                        var control = await this.onStep3Extract();
+                        if (control) {
+                          this.byId("navCon").to(this.byId("Page3"));
+                        }
                     }
                     break;
                 case "Page3": error = this.checkInterventi();
@@ -761,7 +788,7 @@ sap.ui.define([
                     "Low": "IT"
                 }); // todo
                 sData.OGGETTO_TECNICO = await this.Shpl("EHFND_ELM_EQART_T370K", "SH", aFilter);
-                this.getView().getModel("sHelp").refresh(true);
+                this.getView().getModel("sHelp").refresh();
             }
         },
         onDialogBackButton: function () {
@@ -788,10 +815,10 @@ sap.ui.define([
                 var line = ItemsSel[i];
 
                 trovata = false;
-                actual = line.DIVISIONE + line.SEDE_TECNICA + line.DESC_SEDE + line.CENTRO_LAVORO + line.STRATEGIA;
+                actual = line.DIVISIONE + line.SEDE_ECC + line.DESC_SEDE + line.CENTRO_LAVORO + line.STRATEGIA;
                 actual = actual.replace("null", "");
                 for (var j = 0; j < ItemAccorpate.length; j++) {
-                    control = ItemAccorpate[j].DIVISIONE + ItemAccorpate[j].SEDE_TECNICA + ItemAccorpate[j].DESC_SEDE + ItemAccorpate[j].CENTRO_LAVORO + ItemAccorpate[j].STRATEGIA;
+                    control = ItemAccorpate[j].DIVISIONE + ItemAccorpate[j].SEDE_ECC + ItemAccorpate[j].DESC_SEDE + ItemAccorpate[j].CENTRO_LAVORO + ItemAccorpate[j].STRATEGIA;
                     control = control.replace("null", "");
                     if (control === actual) {
                         trovata = true;
@@ -812,6 +839,7 @@ sap.ui.define([
                         INDEX: 1,
                         CONTATORE: 1,
                         DIVISIONE: line.DIVISIONE,
+                        SEDE_ECC: line.SEDE_ECC,
                         SEDE_TECNICA: line.SEDE_TECNICA,
                         DESC_SEDE: line.DESC_SEDE,
                         CENTRO_LAVORO: line.CENTRO_LAVORO,
@@ -827,6 +855,28 @@ sap.ui.define([
                 }
                 lastIndex = Number(line.INDEX);
 
+            }
+
+            var colorToSet = "G", vIndex = "";
+
+            for (var i = 0; i < ItemsSel.length; i++) {
+              if (vIndex === "" || vIndex !== ItemsSel[i].INDEX)
+                if (colorToSet === "W") {
+                  colorToSet = String("G");
+                } else {
+                    colorToSet = String("W");
+                }
+                vIndex = ItemsSel[i].INDEX;
+                ItemsSel[i].COLORSET = colorToSet;
+            }
+
+            for (var i = 0; i < ItemAccorpate.length; i++) {
+              if (colorToSet === "W") {
+                colorToSet = String("G");
+              } else {
+                  colorToSet = String("W");
+              }
+              ItemAccorpate[i].COLORSET = colorToSet;
             }
 
             var oModel = new sap.ui.model.json.JSONModel();
@@ -846,10 +896,7 @@ sap.ui.define([
             var sFilter = this.getView().getModel("sSelect").getData();
             // this.getView().getModel("sFilter").getData();
             // var aSede = sFilter.SEDE.split("-");
-            if (sFilter.SEDE_TECNICA !== undefined && sFilter.SEDE_TECNICA !== "") {
-                oFilter = new Filter("SEDE_TECNICA", FilterOperator.EQ, sFilter.SEDE_TECNICA);
-                aFilters.push(oFilter);
-            }
+            
             if (sFilter.SEDE != "" && sFilter.SEDE != null) {
                 var aFilterSedeTipo = [];
                 for (var j = 0; j < sFilter.SEDE.length; j++) {
@@ -938,6 +985,10 @@ sap.ui.define([
                 oFilter = new Filter("EQUIPMENT", FilterOperator.EQ, sFilter.EQUIPMENT2);
                 aFilters.push(oFilter);
             }
+            if (sFilter.SEDE_TECNICA !== undefined && sFilter.SEDE_TECNICA !== "") {
+              oFilter = new Filter("SEDE_TECNICA", FilterOperator.EQ, sFilter.SEDE_TECNICA);
+              aFilters.push(oFilter);
+            }
             /*if (sFilter.MPTYP !== "" && sFilter.MPTYP !== undefined) {
                 oFilter = new Filter("MPTYP", FilterOperator.EQ, sFilter.MPTYP);
                 aFilters.push(oFilter);
@@ -1017,6 +1068,10 @@ sap.ui.define([
                     oFilter = new Filter("FREQ_CICLO", FilterOperator.EQ, sFilter.FREQ_CICLO);
                     aFilters.push(oFilter);
                 }
+                if (sFilter.UNITA_CICLO !== "" && sFilter.UNITA_CICLO !== undefined) {
+                  oFilter = new Filter("UNITA_CICLO", FilterOperator.EQ, sFilter.UNITA_CICLO);
+                  aFilters.push(oFilter);
+              }
             }
 
             if (sFilter.TIPOFREQUENZA === "T") {
@@ -1025,6 +1080,10 @@ sap.ui.define([
                     oFilter = new Filter("FREQ_TEMPO", FilterOperator.EQ, sFilter.FREQ_TEMPO);
                     aFilters.push(oFilter);
                 }
+                if (sFilter.UNITA_TEMPO !== "" && sFilter.UNITA_TEMPO !== undefined) {
+                  oFilter = new Filter("UNITA_TEMPO", FilterOperator.EQ, sFilter.UNITA_TEMPO);
+                  aFilters.push(oFilter);
+              }
             }
 
 
@@ -1058,7 +1117,13 @@ sap.ui.define([
                 }
             } else {
                 allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);
-                allIndex = await this.compilaIndice(allIndex, sFilter);
+
+                //Sede Tecnica Equipment
+                aFilters = [];
+                aFilters.push(new Filter("Equnr", FilterOperator.EQ, sFilter.EQUIPMENT2));
+                var sLine = await this._getLine("/HierarchyEquip", aFilters);
+
+                allIndex = await this.compilaIndice(allIndex, sFilter, sLine.HierarchySet.results[0].Tplnr);
             } aIndex = [],
             sIndex = {};
             this.colorToSet = "G";
@@ -1076,7 +1141,7 @@ sap.ui.define([
                     row.SEDE_RAGG = this.SedeRiferimento(row);
 
                     // if (row.SEDE_RAGG !== sIndex.SEDE_RAGG || row.CONTATORE !== sIndex.CONTATORE ){
-                    if (row.SEDE_TECNICA_P !== sIndex.SEDE_TECNICA_P || row.CONTATORE !== sIndex.CONTATORE) {
+                    if (row.SEDE_ECC !== sIndex.SEDE_ECC || row.CONTATORE !== sIndex.CONTATORE) {
                         sIndex = row;
                         aTempIndex.push(row);
                     }
@@ -1112,13 +1177,17 @@ sap.ui.define([
             oModel.setData(aIndex);
             this.getView().setModel(oModel, "allIndex");
             sap.ui.core.BusyIndicator.hide();
+            if (aIndex.length === 0){
+              MessageBox.warning("Nessuna riga trovata con i filtri inseriti");
+              return false;
+            } else { return true; }
         },
         SedeRiferimento: function (sIndex) {
 
-            sIndex.SEDE_RAGG = sIndex.SEDE_TECNICA_P;
+            sIndex.SEDE_RAGG = sIndex.SEDE_ECC;
             var i = 0;
-            if (sIndex.SEDE_TECNICA_P !== undefined) {
-                var aSede = sIndex.SEDE_TECNICA_P.split("-");
+            if (sIndex.SEDE_ECC !== undefined) {
+                var aSede = sIndex.SEDE_ECC.split("-");
                 while (i < sIndex.RIFERIMENTO) {
                     if (aSede[i] !== undefined) {
                         if (i === 0) {
@@ -1129,7 +1198,7 @@ sap.ui.define([
                     }
                     i++;
                 }
-                // SEDE_TECNICA_P
+                // SEDE_ECC
                 return sIndex.SEDE_RAGG;
             } else {
                 return "";
@@ -1160,6 +1229,14 @@ sap.ui.define([
                     if (SEDE_ECC !== undefined) {
                         allIndex[i].SEDE_ECC = SEDE_ECC;
                     }
+
+                    var selConcat = allIndex[i].LIVELLO1 + '-' + allIndex[i].LIVELLO2 + '-' + allIndex[i].LIVELLO3 + '-' + allIndex[i].LIVELLO4 + '-' + allIndex[i].LIVELLO5 + '-' + allIndex[i].LIVELLO6;
+                    // Evita i - in eccesso in fondo
+                    selConcat = selConcat.replaceAll("--", "");
+                    if (selConcat[selConcat.length - 1] === "-") {
+                        selConcat = selConcat.substring(0, (selConcat.length - 1));
+                    }
+                    allIndex[i].SEDE_TECNICA_P = selConcat;
 
                     // Gestione Materiali e Servizi
                     /*if (allIndex[i].MATNR !== "" && allIndex[i].MATNR !== undefined) {
@@ -1296,7 +1373,7 @@ sap.ui.define([
             } else {
                 this.getView().getModel("SelSede").setData([]);
             }
-            this.getView().getModel("SelSede").refresh(true);
+            this.getView().getModel("SelSede").refresh();
             this.byId("DialogSede").open();
 
         },
@@ -1305,7 +1382,7 @@ sap.ui.define([
             var sHelp = this.getView().getModel("sHelp").getData();
             sHelp.SEDE = aSel;
 
-            this.getView().getModel("sHelp").refresh(true);
+            this.getView().getModel("sHelp").refresh();
             this.byId("cbSEDE").setSelectedKeys(this.byId("cbSEDE").getKeys());
             this.byId("DialogSede").close();
         },
@@ -1326,38 +1403,45 @@ sap.ui.define([
             this.byId("DialogSede").close();
         },*/
         moveToTable2: function (oEvent) {
-            if (this.byId("tSedeTecnica").getSelectedIndex() != -1) { // var sel = this.byId("tSedeTecnica").getRows()[this.byId("tSedeTecnica").getSelectedIndex()].getBindingContext().getObject();
-                var sel = this.getView().getModel("Sede").getData()[this.byId("tSedeTecnica").getSelectedIndex()];
+           
+            if (this.byId("tSedeTecnica").getSelectedIndices().length > 0) {
+              var aSelIndex = this.byId("tSedeTecnica").getSelectedIndices();
+              var aSel = this.getView().getModel("SelSede").getData();
+              for (var j = 0; j < aSelIndex.length; j++) {
+                var sel = this.getView().getModel("Sede").getData()[aSelIndex[j]];
                 sel.SEDECONCAT = sel.LIVELLO1 + '-' + sel.LIVELLO2 + '-' + sel.LIVELLO3 + '-' + sel.LIVELLO4 + '-' + sel.LIVELLO5 + '-' + sel.LIVELLO6;
                 sel.SEDECONCAT = sel.SEDECONCAT.replaceAll("--", "");
                 if (sel.SEDECONCAT[sel.SEDECONCAT.length - 1] === "-") {
                     sel.SEDECONCAT = sel.SEDECONCAT.substring(0, (sel.SEDECONCAT.length - 1));
                 }
-
-                var aSel = this.getView().getModel("SelSede").getData();
                 var control = true;
                 for (var i = 0; i < aSel.length; i++) {
-                    var selConcat = aSel[i].LIVELLO1 + '-' + aSel[i].LIVELLO2 + '-' + aSel[i].LIVELLO3 + '-' + aSel[i].LIVELLO4 + '-' + aSel[i].LIVELLO5 + '-' + aSel[i].LIVELLO6;
+                  var selConcat = aSel[i].LIVELLO1 + '-' + aSel[i].LIVELLO2 + '-' + aSel[i].LIVELLO3 + '-' + aSel[i].LIVELLO4 + '-' + aSel[i].LIVELLO5 + '-' + aSel[i].LIVELLO6;
                     selConcat = selConcat.replaceAll("--", "");
                     if (selConcat[selConcat.length - 1] === "-") {
                         selConcat = selConcat.substring(0, (selConcat.length - 1));
                     }
                     if (sel.SEDECONCAT === selConcat) {
-                        control = false;
-                        break;
-                    }
+                      control = false;
+                      break;
+                  }
                 }
                 if (control) {
                     aSel.push(sel);
-                    this.getView().getModel("SelSede").refresh(true);
                 }
+              }
+              this.getView().getModel("SelSede").refresh();
             }
         },
         deleteFromTable2: function () {
-            if (this.byId("tSelSedeTecnica").getSelectedIndex() != -1) {
-                this.getView().getModel("SelSede").getData().splice(this.byId("tSelSedeTecnica").getSelectedIndex(), 1);
-                this.getView().getModel("SelSede").refresh(true);
-            }
+            if (this.byId("tSelSedeTecnica").getSelectedIndices().length > 0) {
+              var aSelIndex = this.byId("tSelSedeTecnica").getSelectedIndices();
+              var aSel = this.getView().getModel("SelSede").getData();
+              for (var j = (aSelIndex.length - 1); j >= 0; j--) {
+                aSel.splice(aSelIndex[j], 1);
+              }
+              this.getView().getModel("SelSede").refresh();
+          }
         },
         handleSedeTecnicaECC: function () {
 
@@ -1375,7 +1459,7 @@ sap.ui.define([
             } else {
                 this.getView().getModel("SelSede").setData([]);
             }
-            this.getView().getModel("SelSedeReale").refresh(true);
+            this.getView().getModel("SelSedeReale").refresh();
             this.byId("DialogSedeReale").open();
 
         },
@@ -1384,7 +1468,7 @@ sap.ui.define([
             var sHelp = this.getView().getModel("sHelp").getData();
             sHelp.SEDEECC = aSel;
 
-            this.getView().getModel("sHelp").refresh(true);
+            this.getView().getModel("sHelp").refresh();
             this.byId("cbSEDEECC").setSelectedKeys(this.byId("cbSEDEECC").getKeys());
             this.byId("DialogSedeReale").close();
         },
@@ -1421,7 +1505,7 @@ sap.ui.define([
                     Option: "EQ",
                     Low: sSelect.SEDE_TECNICA
                 }];
-            if (sSelect.SEDE !== undefined) {
+            /*if (sSelect.SEDE !== undefined) {
                 if (sSelect.SEDE.length !== 0) {
 
                     for (var i = 0; i < sSelect.SEDE.length; i++) {
@@ -1443,7 +1527,7 @@ sap.ui.define([
                         } ListFl.N_FunclocRa.push({Sign: "I", Option: "CP", Low: sSedeTipo});
                     }
                 }
-            }
+            }*/
 
             var oModel = new sap.ui.model.json.JSONModel(),
                 allSedi = [];
@@ -1457,27 +1541,33 @@ sap.ui.define([
 
         },
         moveToTable2Reale: function () {
-            if (this.byId("tSedeTecnicaReale").getSelectedIndex() != -1) { // var sel = this.byId("tSedeTecnicaReale").getRows()[this.byId("tSedeTecnicaReale").getSelectedIndex()].getBindingContext("SedeReale").getObject();
-                var sel = this.getView().getModel("SedeReale").getData()[this.byId("tSedeTecnicaReale").getSelectedIndex()];
-                var aSel = this.getView().getModel("SelSedeReale").getData();
+            if (this.byId("tSedeTecnicaReale").getSelectedIndices().length > 0) {
+              var aSelIndex = this.byId("tSedeTecnicaReale").getSelectedIndices();
+              var aSel = this.getView().getModel("SelSedeReale").getData();
+              for (var j = 0; j < aSelIndex.length; j++) {
+                var sel = this.getView().getModel("SedeReale").getData()[aSelIndex[j]];
                 var control = true;
                 for (var i = 0; i < aSel.length; i++) {
-
-                    if (sel.Functlocation === aSel[i].Functlocation) {
-                        control = false;
-                        break;
-                    }
+                  if (sel.Functlocation === aSel[i].Functlocation) {
+                      control = false;
+                      break;
+                  }
                 }
                 if (control) {
                     aSel.push(sel);
-                    this.getView().getModel("SelSedeReale").refresh(true);
                 }
+              }
+              this.getView().getModel("SelSedeReale").refresh();
             }
         },
         deleteFromTable2Reale: function () {
-            if (this.byId("tSelSedeTecnicaReale").getSelectedIndex() != -1) {
-                this.getView().getModel("SelSedeReale").getData().splice(this.byId("tSelSedeTecnicaReale").getSelectedIndex(), 1);
-                this.getView().getModel("SelSedeReale").refresh(true);
+            if (this.byId("tSelSedeTecnicaReale").getSelectedIndices().length > 0) {
+                var aSelIndex = this.byId("tSelSedeTecnicaReale").getSelectedIndices();
+                var aSel = this.getView().getModel("SelSedeReale").getData();
+                for (var j = (aSelIndex.length - 1); j >= 0; j--) {
+                  aSel.splice(aSelIndex[j], 1);
+                }
+                this.getView().getModel("SelSedeReale").refresh();
             }
         },
         onSuggestMPTYP: async function (oEvent) {
@@ -1492,7 +1582,7 @@ sap.ui.define([
           });
           var sHelp = this.getView().getModel("sHelp").getData();
           sHelp.MPTYP = await this.Shpl("ZPM4R_SH_IMPM", "SH", aFilter);
-          this.getView().getModel("sHelp").refresh(true);
+          this.getView().getModel("sHelp").refresh();
         }
       },
       onSuggestEquipment: async function (oEvent) {
@@ -1515,7 +1605,7 @@ sap.ui.define([
               });
               var sHelp = this.getView().getModel("sHelp").getData();
               sHelp.EQUIPMENT2 = await this.Shpl("ZPM4R_SH_EQUI", "SH", aFilter);
-              this.getView().getModel("sHelp").refresh(true);
+              this.getView().getModel("sHelp").refresh();
           }
       },
       onChangeMatnr: function (oEvent) {

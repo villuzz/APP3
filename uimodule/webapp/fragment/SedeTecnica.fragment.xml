@@ -60,7 +60,7 @@
                 </VBox>
             </HBox>
             <HBox renderType="Bare" class="sapUiTinyMarginBeginEnd">
-                <ui:Table id="tSedeTecnica" selectionMode="Single" ariaLabelledBy="title" rows="{ path: 'Sede>/' }" visibleRowCount="10" width="47.5%">
+                <ui:Table id="tSedeTecnica" selectionMode="MultiToggle" ariaLabelledBy="title" rows="{ path: 'Sede>/' }" visibleRowCount="10" width="47.5%">
                     <ui:extension>
                         <OverflowToolbar id="infobar" style="Clear" >
                             <Text id="title" class="titleInfo" text="Sedi disponibili" />
@@ -122,7 +122,7 @@
                 <Button icon="sap-icon://navigation-right-arrow" tooltip="passare a Sedi selezionate" press="moveToTable2" class="sapUiTinyMarginBottom" />
 					      <Button icon="sap-icon://delete" tooltip="cancellare da Sedi selezionate" press="deleteFromTable2"/>
                 </VBox>
-                <ui:Table id="tSelSedeTecnica" width="47.5%" selectionMode="Single" rows="{ path: 'SelSede>/'}" visibleRowCount="10" ariaLabelledBy="tableSede" noData="Si prega di trascinare le Sedi qui.">
+                <ui:Table id="tSelSedeTecnica" width="47.5%" selectionMode="MultiToggle" rows="{ path: 'SelSede>/'}" visibleRowCount="10" ariaLabelledBy="tableSede" noData="Si prega di trascinare le Sedi qui.">
                     <ui:extension>
                         <OverflowToolbar style="Clear">
                             <Text id="title2" class="titleInfo" text="Sedi selezionate"/>

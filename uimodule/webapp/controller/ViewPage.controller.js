@@ -54,6 +54,14 @@ sap.ui.define([
             }
 
         },
+        handleTestoView: async function (oEvent) {
+          var result = await this.onTestoEstesoI(oEvent.getSource().getBindingContext("mPiani").getObject());
+          this.getView().byId("vTextAreaView").setText(result);
+          this.byId("popTestoView").open();
+        },
+        onCloseTestoView: function () {
+            this.byId("popTestoView").close();
+        },
         onDataExport: async function () {
             var oResource = this.getResourceBundle();
             var items = this.getView().byId("tbPiani").getSelectedItems(),
@@ -152,11 +160,11 @@ sap.ui.define([
             sData[oResource.getText("EquipmentCompo").replaceAll(" ", "_")] = sLine.EquipmentCompo;
             sData[oResource.getText("EquipmentOdm").replaceAll(" ", "_")] = sLine.EquipmentOdm;
             sData[oResource.getText("FineCard").replaceAll(" ", "_")] = sLine.FineCard;
-            sData[oResource.getText("FlagAttivo").replaceAll(" ", "_")] = ( sLine.FlagAttivo === true) ? "X" : "";
-            sData[oResource.getText("FlagInterc").replaceAll(" ", "_")] = ( sLine.FlagInterc === true) ? "X" : "";
-            sData[oResource.getText("FlagMateriali").replaceAll(" ", "_")] = ( sLine.FlagMateriali === true) ? "X" : "";
+            sData[oResource.getText("FlagAttivo").replaceAll(" ", "_")] = (sLine.FlagAttivo === true) ? "X" : "";
+            sData[oResource.getText("FlagInterc").replaceAll(" ", "_")] = (sLine.FlagInterc === true) ? "X" : "";
+            sData[oResource.getText("FlagMateriali").replaceAll(" ", "_")] = (sLine.FlagMateriali === true) ? "X" : "";
             sData[oResource.getText("FlagOdm").replaceAll(" ", "_")] = sLine.FlagOdm;
-            sData[oResource.getText("FlagPrestazioni").replaceAll(" ", "_")] = ( sLine.FlagPrestazioni === true) ? "X" : "";
+            sData[oResource.getText("FlagPrestazioni").replaceAll(" ", "_")] = (sLine.FlagPrestazioni === true) ? "X" : "";
             sData[oResource.getText("FlgMail").replaceAll(" ", "_")] = sLine.FlgMail;
             sData[oResource.getText("Frequenza").replaceAll(" ", "_")] = sLine.Frequenza;
             sData[oResource.getText("Hper").replaceAll(" ", "_")] = sLine.Hper;
@@ -260,7 +268,8 @@ sap.ui.define([
                     aMaterial = [],
                     aServizi = [],
                     result = [],
-                    i = 0, k = 0,
+                    i = 0,
+                    k = 0,
                     aReturn = [],
                     line = {};
 
@@ -292,41 +301,42 @@ sap.ui.define([
                             description: result
                         });
                     }
+                    this.aRigheNuove = [];
                     for (k = 0; k < aAzione.length; k++) {
-                      result = await this.saveAzioni(aAzione[k]);
-                      if (result !== "") {
-                          aReturn.push({
-                              type: "Error",
-                              title: "Azione riga " + (
-                                  k + 2
-                              ) + " Excel andata in errore",
-                              description: result
-                          });
-                      }
+                        result = await this.saveAzioni(aAzione[k], aAzione);
+                        if (result !== "") {
+                            aReturn.push({
+                                type: "Error",
+                                title: "Azione riga " + (
+                                    k + 2
+                                ) + " Excel andata in errore",
+                                description: result
+                            });
+                        }
                     }
                     for (k = 0; k < aServizi.length; k++) {
-                      result = await this.saveServizi(aServizi[k]);
-                      if (result !== "") {
-                          aReturn.push({
-                              type: "Error",
-                              title: "Servizio riga " + (
-                                  k + 2
-                              ) + " Excel andata in errore",
-                              description: result
-                          });
-                      }
+                        result = await this.saveServizi(aServizi[k]);
+                        if (result !== "") {
+                            aReturn.push({
+                                type: "Error",
+                                title: "Servizio riga " + (
+                                    k + 2
+                                ) + " Excel andata in errore",
+                                description: result
+                            });
+                        }
                     }
                     for (k = 0; k < aMaterial.length; k++) {
-                      result = await this.saveMaterial(aMaterial[k]);
-                      if (result !== "") {
-                          aReturn.push({
-                              type: "Error",
-                              title: "Materiale riga " + (
-                                  k + 2
-                              ) + " Excel andata in errore",
-                              description: result
-                          });
-                      }
+                        result = await this.saveMaterial(aMaterial[k]);
+                        if (result !== "") {
+                            aReturn.push({
+                                type: "Error",
+                                title: "Materiale riga " + (
+                                    k + 2
+                                ) + " Excel andata in errore",
+                                description: result
+                            });
+                        }
                     }
                 }
                 if (aReturn.length === 0) {
@@ -343,170 +353,170 @@ sap.ui.define([
             }
         },
         formatIndici: function (sValue) {
-          var sData = {};
-          sData.Divisioneu = (sValue[oResource.getText("Divisioneu").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Divisioneu").replaceAll(" ", "_")].toString();
-          //sData.FineVal = (sValue[oResource.getText("FineVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FineVal").replaceAll(" ", "_")].toString();
-          sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
-          //sData.InizioVal = (sValue[oResource.getText("InizioVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("InizioVal").replaceAll(" ", "_")].toString();
-          sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
-          sData.Appuntam = (sValue[oResource.getText("Appuntam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Appuntam").replaceAll(" ", "_")].toString();
-          sData.Azione = (sValue[oResource.getText("Azione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Azione").replaceAll(" ", "_")].toString();
-          sData.Banfn = (sValue[oResource.getText("Banfn").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Banfn").replaceAll(" ", "_")].toString();
-          sData.Cdl = (sValue[oResource.getText("Cdl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl").replaceAll(" ", "_")].toString();
-          sData.Cdl1 = (sValue[oResource.getText("Cdl1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl1").replaceAll(" ", "_")].toString();
-          sData.Cdl2 = (sValue[oResource.getText("Cdl2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl2").replaceAll(" ", "_")].toString();
-          sData.Cdl3 = (sValue[oResource.getText("Cdl3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl3").replaceAll(" ", "_")].toString();
-          sData.Cdl4 = (sValue[oResource.getText("Cdl4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl4").replaceAll(" ", "_")].toString();
-          sData.Cdl5 = (sValue[oResource.getText("Cdl5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl5").replaceAll(" ", "_")].toString();
-          sData.CentroLavoro = (sValue[oResource.getText("CentroLavoro").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("CentroLavoro").replaceAll(" ", "_")].toString();
-          sData.Ciclo = (sValue[oResource.getText("Ciclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ciclo").replaceAll(" ", "_")].toString();
-          sData.Classe = (sValue[oResource.getText("Classe").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Classe").replaceAll(" ", "_")].toString();
-          sData.CodAzione = (sValue[oResource.getText("CodAzione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("CodAzione").replaceAll(" ", "_")].toString();
-          sData.Collective = (sValue[oResource.getText("Collective").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Collective").replaceAll(" ", "_")].toString();
-          sData.Criticita = (sValue[oResource.getText("Criticita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Criticita").replaceAll(" ", "_")].toString();
-          //sData.DataInizCiclo = (sValue[oResource.getText("DataInizCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DataInizCiclo").replaceAll(" ", "_")].toString();
-          //sData.Datum = (sValue[oResource.getText("Datum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Datum").replaceAll(" ", "_")].toString();
-          sData.Daune = (sValue[oResource.getText("Daune").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Daune").replaceAll(" ", "_")].toString();
-          sData.DayAdv = (sValue[oResource.getText("DayAdv").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DayAdv").replaceAll(" ", "_")].toString();
-          sData.DesBreve = (sValue[oResource.getText("DesBreve").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesBreve").replaceAll(" ", "_")].toString();
-          sData.DesComponente = (sValue[oResource.getText("DesComponente").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesComponente").replaceAll(" ", "_")].toString();
-          sData.DesEstesa = (sValue[oResource.getText("DesEstesa").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesEstesa").replaceAll(" ", "_")].toString();
-          sData.Destinatario = (sValue[oResource.getText("Destinatario").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Destinatario").replaceAll(" ", "_")].toString();
-          sData.Determinanza = (sValue[oResource.getText("Determinanza").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Determinanza").replaceAll(" ", "_")].toString();
-          sData.Differibile = (sValue[oResource.getText("Differibile").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Differibile").replaceAll(" ", "_")].toString();
-          sData.Divisionec = (sValue[oResource.getText("Divisionec").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Divisionec").replaceAll(" ", "_")].toString();
-          sData.DurataCiclo = (sValue[oResource.getText("DurataCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DurataCiclo").replaceAll(" ", "_")].toString();
-          sData.EquipmentCompo = (sValue[oResource.getText("EquipmentCompo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("EquipmentCompo").replaceAll(" ", "_")].toString();
-          sData.EquipmentOdm = (sValue[oResource.getText("EquipmentOdm").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("EquipmentOdm").replaceAll(" ", "_")].toString();
-          //sData.FineCard = (sValue[oResource.getText("FineCard").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FineCard").replaceAll(" ", "_")].toString();
-          sData.FlagAttivo = (sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")].toString();
-          sData.FlagInterc = (sValue[oResource.getText("FlagInterc").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagInterc").replaceAll(" ", "_")].toString();
-          sData.FlagMateriali = (sValue[oResource.getText("FlagMateriali").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagMateriali").replaceAll(" ", "_")].toString();
-          sData.FlagOdm = (sValue[oResource.getText("FlagOdm").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagOdm").replaceAll(" ", "_")].toString();
-          sData.FlagPrestazioni = (sValue[oResource.getText("FlagPrestazioni").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagPrestazioni").replaceAll(" ", "_")].toString();
-          sData.FlgMail = (sValue[oResource.getText("FlgMail").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlgMail").replaceAll(" ", "_")].toString();
-          sData.Frequenza = (sValue[oResource.getText("Frequenza").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Frequenza").replaceAll(" ", "_")].toString();
-          sData.Hper = (sValue[oResource.getText("Hper").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper").replaceAll(" ", "_")].toString();
-          sData.Hper1 = (sValue[oResource.getText("Hper1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper1").replaceAll(" ", "_")].toString();
-          sData.Hper2 = (sValue[oResource.getText("Hper2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper2").replaceAll(" ", "_")].toString();
-          sData.Hper3 = (sValue[oResource.getText("Hper3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper3").replaceAll(" ", "_")].toString();
-          sData.Hper4 = (sValue[oResource.getText("Hper4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper4").replaceAll(" ", "_")].toString();
-          sData.Hper5 = (sValue[oResource.getText("Hper5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper5").replaceAll(" ", "_")].toString();
-          sData.Indisponibilita = (sValue[oResource.getText("Indisponibilita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Indisponibilita").replaceAll(" ", "_")].toString();
-          sData.IntegTxtEsteso = (sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")].toString();
-          sData.Lstar = (sValue[oResource.getText("Lstar").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar").replaceAll(" ", "_")].toString();
-          sData.Lstar1 = (sValue[oResource.getText("Lstar1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar1").replaceAll(" ", "_")].toString();
-          sData.Lstar2 = (sValue[oResource.getText("Lstar2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar2").replaceAll(" ", "_")].toString();
-          sData.Lstar3 = (sValue[oResource.getText("Lstar3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar3").replaceAll(" ", "_")].toString();
-          sData.Lstar4 = (sValue[oResource.getText("Lstar4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar4").replaceAll(" ", "_")].toString();
-          sData.Lstar5 = (sValue[oResource.getText("Lstar5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar5").replaceAll(" ", "_")].toString();
-          sData.Num = (sValue[oResource.getText("Num").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num").replaceAll(" ", "_")].toString();
-          sData.Num1 = (sValue[oResource.getText("Num1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num1").replaceAll(" ", "_")].toString();
-          sData.Num2 = (sValue[oResource.getText("Num2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num2").replaceAll(" ", "_")].toString();
-          sData.Num3 = (sValue[oResource.getText("Num3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num3").replaceAll(" ", "_")].toString();
-          sData.Num4 = (sValue[oResource.getText("Num4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num4").replaceAll(" ", "_")].toString();
-          sData.Num5 = (sValue[oResource.getText("Num5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num5").replaceAll(" ", "_")].toString();
-          sData.Percorso = (sValue[oResource.getText("Percorso").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Percorso").replaceAll(" ", "_")].toString();
-          sData.Persone = (sValue[oResource.getText("Persone").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone").replaceAll(" ", "_")].toString();
-          sData.Persone1 = (sValue[oResource.getText("Persone1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone1").replaceAll(" ", "_")].toString();
-          sData.Persone2 = (sValue[oResource.getText("Persone2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone2").replaceAll(" ", "_")].toString();
-          sData.Persone3 = (sValue[oResource.getText("Persone3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone3").replaceAll(" ", "_")].toString();
-          sData.Persone4 = (sValue[oResource.getText("Persone4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone4").replaceAll(" ", "_")].toString();
-          sData.Persone5 = (sValue[oResource.getText("Persone5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone5").replaceAll(" ", "_")].toString();
-          sData.Point = (sValue[oResource.getText("Point").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Point").replaceAll(" ", "_")].toString();
-          sData.Priorita = (sValue[oResource.getText("Priorita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Priorita").replaceAll(" ", "_")].toString();
-          sData.Progres = (sValue[oResource.getText("Progres").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Progres").replaceAll(" ", "_")].toString();
-          sData.Scostamento = (sValue[oResource.getText("Scostamento").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Scostamento").replaceAll(" ", "_")].toString();
-          sData.SedeTecOdm = (sValue[oResource.getText("SedeTecOdm").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("SedeTecOdm").replaceAll(" ", "_")].toString();
-          sData.Sistema = (sValue[oResource.getText("Sistema").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Sistema").replaceAll(" ", "_")].toString();
-          sData.StComponente = (sValue[oResource.getText("StComponente").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("StComponente").replaceAll(" ", "_")].toString();
-          sData.Steus = (sValue[oResource.getText("Steus").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus").replaceAll(" ", "_")].toString();
-          sData.Steus1 = (sValue[oResource.getText("Steus1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus1").replaceAll(" ", "_")].toString();
-          sData.Steus2 = (sValue[oResource.getText("Steus2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus2").replaceAll(" ", "_")].toString();
-          sData.Steus3 = (sValue[oResource.getText("Steus3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus3").replaceAll(" ", "_")].toString();
-          sData.Steus4 = (sValue[oResource.getText("Steus4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus4").replaceAll(" ", "_")].toString();
-          sData.Steus5 = (sValue[oResource.getText("Steus5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus5").replaceAll(" ", "_")].toString();
-          sData.TipoAggr = (sValue[oResource.getText("TipoAggr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoAggr").replaceAll(" ", "_")].toString();
-          sData.TipoAttivita = (sValue[oResource.getText("TipoAttivita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoAttivita").replaceAll(" ", "_")].toString();
-          sData.TipoGestione = (sValue[oResource.getText("TipoGestione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione").replaceAll(" ", "_")].toString();
-          sData.TipoGestione1 = (sValue[oResource.getText("TipoGestione1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione1").replaceAll(" ", "_")].toString();
-          sData.TipoGestione2 = (sValue[oResource.getText("TipoGestione2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione2").replaceAll(" ", "_")].toString();
-          sData.TipoOrdine = (sValue[oResource.getText("TipoOrdine").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoOrdine").replaceAll(" ", "_")].toString();
-          sData.TipoPmo = (sValue[oResource.getText("TipoPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoPmo").replaceAll(" ", "_")].toString();
-          sData.Toth = (sValue[oResource.getText("Toth").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth").replaceAll(" ", "_")].toString();
-          sData.Toth1 = (sValue[oResource.getText("Toth1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth1").replaceAll(" ", "_")].toString();
-          sData.Toth2 = (sValue[oResource.getText("Toth2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth2").replaceAll(" ", "_")].toString();
-          sData.Toth3 = (sValue[oResource.getText("Toth3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth3").replaceAll(" ", "_")].toString();
-          sData.Toth4 = (sValue[oResource.getText("Toth4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth4").replaceAll(" ", "_")].toString();
-          sData.Toth5 = (sValue[oResource.getText("Toth5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth5").replaceAll(" ", "_")].toString();
-          sData.TxtCiclo = (sValue[oResource.getText("TxtCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TxtCiclo").replaceAll(" ", "_")].toString();
-          //sData.UltimaEsecuz = (sValue[oResource.getText("UltimaEsecuz").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("UltimaEsecuz").replaceAll(" ", "_")].toString();
-          sData.Uname = (sValue[oResource.getText("Uname").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uname").replaceAll(" ", "_")].toString();
-          sData.UnitaCiclo = (sValue[oResource.getText("UnitaCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("UnitaCiclo").replaceAll(" ", "_")].toString();          
+            var sData = {};
+            sData.Divisioneu = (sValue[oResource.getText("Divisioneu").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Divisioneu").replaceAll(" ", "_")].toString();
+            // sData.FineVal = (sValue[oResource.getText("FineVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FineVal").replaceAll(" ", "_")].toString();
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            // sData.InizioVal = (sValue[oResource.getText("InizioVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("InizioVal").replaceAll(" ", "_")].toString();
+            sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
+            sData.Appuntam = (sValue[oResource.getText("Appuntam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Appuntam").replaceAll(" ", "_")].toString();
+            sData.Azione = (sValue[oResource.getText("Azione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Azione").replaceAll(" ", "_")].toString();
+            sData.Banfn = (sValue[oResource.getText("Banfn").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Banfn").replaceAll(" ", "_")].toString();
+            sData.Cdl = (sValue[oResource.getText("Cdl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl").replaceAll(" ", "_")].toString();
+            sData.Cdl1 = (sValue[oResource.getText("Cdl1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl1").replaceAll(" ", "_")].toString();
+            sData.Cdl2 = (sValue[oResource.getText("Cdl2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl2").replaceAll(" ", "_")].toString();
+            sData.Cdl3 = (sValue[oResource.getText("Cdl3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl3").replaceAll(" ", "_")].toString();
+            sData.Cdl4 = (sValue[oResource.getText("Cdl4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl4").replaceAll(" ", "_")].toString();
+            sData.Cdl5 = (sValue[oResource.getText("Cdl5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl5").replaceAll(" ", "_")].toString();
+            sData.CentroLavoro = (sValue[oResource.getText("CentroLavoro").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("CentroLavoro").replaceAll(" ", "_")].toString();
+            sData.Ciclo = (sValue[oResource.getText("Ciclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ciclo").replaceAll(" ", "_")].toString();
+            sData.Classe = (sValue[oResource.getText("Classe").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Classe").replaceAll(" ", "_")].toString();
+            sData.CodAzione = (sValue[oResource.getText("CodAzione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("CodAzione").replaceAll(" ", "_")].toString();
+            sData.Collective = (sValue[oResource.getText("Collective").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Collective").replaceAll(" ", "_")].toString();
+            sData.Criticita = (sValue[oResource.getText("Criticita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Criticita").replaceAll(" ", "_")].toString();
+            // sData.DataInizCiclo = (sValue[oResource.getText("DataInizCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DataInizCiclo").replaceAll(" ", "_")].toString();
+            // sData.Datum = (sValue[oResource.getText("Datum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Datum").replaceAll(" ", "_")].toString();
+            sData.Daune = (sValue[oResource.getText("Daune").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Daune").replaceAll(" ", "_")].toString();
+            sData.DayAdv = (sValue[oResource.getText("DayAdv").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DayAdv").replaceAll(" ", "_")].toString();
+            sData.DesBreve = (sValue[oResource.getText("DesBreve").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesBreve").replaceAll(" ", "_")].toString();
+            sData.DesComponente = (sValue[oResource.getText("DesComponente").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesComponente").replaceAll(" ", "_")].toString();
+            sData.DesEstesa = (sValue[oResource.getText("DesEstesa").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesEstesa").replaceAll(" ", "_")].toString();
+            sData.Destinatario = (sValue[oResource.getText("Destinatario").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Destinatario").replaceAll(" ", "_")].toString();
+            sData.Determinanza = (sValue[oResource.getText("Determinanza").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Determinanza").replaceAll(" ", "_")].toString();
+            sData.Differibile = (sValue[oResource.getText("Differibile").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Differibile").replaceAll(" ", "_")].toString();
+            sData.Divisionec = (sValue[oResource.getText("Divisionec").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Divisionec").replaceAll(" ", "_")].toString();
+            sData.DurataCiclo = (sValue[oResource.getText("DurataCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DurataCiclo").replaceAll(" ", "_")].toString();
+            sData.EquipmentCompo = (sValue[oResource.getText("EquipmentCompo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("EquipmentCompo").replaceAll(" ", "_")].toString();
+            sData.EquipmentOdm = (sValue[oResource.getText("EquipmentOdm").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("EquipmentOdm").replaceAll(" ", "_")].toString();
+            // sData.FineCard = (sValue[oResource.getText("FineCard").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FineCard").replaceAll(" ", "_")].toString();
+            sData.FlagAttivo = (sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")].toString();
+            sData.FlagInterc = (sValue[oResource.getText("FlagInterc").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagInterc").replaceAll(" ", "_")].toString();
+            sData.FlagMateriali = (sValue[oResource.getText("FlagMateriali").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagMateriali").replaceAll(" ", "_")].toString();
+            sData.FlagOdm = (sValue[oResource.getText("FlagOdm").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagOdm").replaceAll(" ", "_")].toString();
+            sData.FlagPrestazioni = (sValue[oResource.getText("FlagPrestazioni").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagPrestazioni").replaceAll(" ", "_")].toString();
+            sData.FlgMail = (sValue[oResource.getText("FlgMail").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlgMail").replaceAll(" ", "_")].toString();
+            sData.Frequenza = (sValue[oResource.getText("Frequenza").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Frequenza").replaceAll(" ", "_")].toString();
+            sData.Hper = (sValue[oResource.getText("Hper").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper").replaceAll(" ", "_")].toString();
+            sData.Hper1 = (sValue[oResource.getText("Hper1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper1").replaceAll(" ", "_")].toString();
+            sData.Hper2 = (sValue[oResource.getText("Hper2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper2").replaceAll(" ", "_")].toString();
+            sData.Hper3 = (sValue[oResource.getText("Hper3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper3").replaceAll(" ", "_")].toString();
+            sData.Hper4 = (sValue[oResource.getText("Hper4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper4").replaceAll(" ", "_")].toString();
+            sData.Hper5 = (sValue[oResource.getText("Hper5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Hper5").replaceAll(" ", "_")].toString();
+            sData.Indisponibilita = (sValue[oResource.getText("Indisponibilita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Indisponibilita").replaceAll(" ", "_")].toString();
+            sData.IntegTxtEsteso = (sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")].toString();
+            sData.Lstar = (sValue[oResource.getText("Lstar").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar").replaceAll(" ", "_")].toString();
+            sData.Lstar1 = (sValue[oResource.getText("Lstar1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar1").replaceAll(" ", "_")].toString();
+            sData.Lstar2 = (sValue[oResource.getText("Lstar2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar2").replaceAll(" ", "_")].toString();
+            sData.Lstar3 = (sValue[oResource.getText("Lstar3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar3").replaceAll(" ", "_")].toString();
+            sData.Lstar4 = (sValue[oResource.getText("Lstar4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar4").replaceAll(" ", "_")].toString();
+            sData.Lstar5 = (sValue[oResource.getText("Lstar5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lstar5").replaceAll(" ", "_")].toString();
+            sData.Num = (sValue[oResource.getText("Num").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num").replaceAll(" ", "_")].toString();
+            sData.Num1 = (sValue[oResource.getText("Num1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num1").replaceAll(" ", "_")].toString();
+            sData.Num2 = (sValue[oResource.getText("Num2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num2").replaceAll(" ", "_")].toString();
+            sData.Num3 = (sValue[oResource.getText("Num3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num3").replaceAll(" ", "_")].toString();
+            sData.Num4 = (sValue[oResource.getText("Num4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num4").replaceAll(" ", "_")].toString();
+            sData.Num5 = (sValue[oResource.getText("Num5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Num5").replaceAll(" ", "_")].toString();
+            sData.Percorso = (sValue[oResource.getText("Percorso").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Percorso").replaceAll(" ", "_")].toString();
+            sData.Persone = (sValue[oResource.getText("Persone").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone").replaceAll(" ", "_")].toString();
+            sData.Persone1 = (sValue[oResource.getText("Persone1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone1").replaceAll(" ", "_")].toString();
+            sData.Persone2 = (sValue[oResource.getText("Persone2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone2").replaceAll(" ", "_")].toString();
+            sData.Persone3 = (sValue[oResource.getText("Persone3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone3").replaceAll(" ", "_")].toString();
+            sData.Persone4 = (sValue[oResource.getText("Persone4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone4").replaceAll(" ", "_")].toString();
+            sData.Persone5 = (sValue[oResource.getText("Persone5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Persone5").replaceAll(" ", "_")].toString();
+            sData.Point = (sValue[oResource.getText("Point").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Point").replaceAll(" ", "_")].toString();
+            sData.Priorita = (sValue[oResource.getText("Priorita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Priorita").replaceAll(" ", "_")].toString();
+            sData.Progres = (sValue[oResource.getText("Progres").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Progres").replaceAll(" ", "_")].toString();
+            sData.Scostamento = (sValue[oResource.getText("Scostamento").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Scostamento").replaceAll(" ", "_")].toString();
+            sData.SedeTecOdm = (sValue[oResource.getText("SedeTecOdm").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("SedeTecOdm").replaceAll(" ", "_")].toString();
+            sData.Sistema = (sValue[oResource.getText("Sistema").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Sistema").replaceAll(" ", "_")].toString();
+            sData.StComponente = (sValue[oResource.getText("StComponente").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("StComponente").replaceAll(" ", "_")].toString();
+            sData.Steus = (sValue[oResource.getText("Steus").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus").replaceAll(" ", "_")].toString();
+            sData.Steus1 = (sValue[oResource.getText("Steus1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus1").replaceAll(" ", "_")].toString();
+            sData.Steus2 = (sValue[oResource.getText("Steus2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus2").replaceAll(" ", "_")].toString();
+            sData.Steus3 = (sValue[oResource.getText("Steus3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus3").replaceAll(" ", "_")].toString();
+            sData.Steus4 = (sValue[oResource.getText("Steus4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus4").replaceAll(" ", "_")].toString();
+            sData.Steus5 = (sValue[oResource.getText("Steus5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Steus5").replaceAll(" ", "_")].toString();
+            sData.TipoAggr = (sValue[oResource.getText("TipoAggr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoAggr").replaceAll(" ", "_")].toString();
+            sData.TipoAttivita = (sValue[oResource.getText("TipoAttivita").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoAttivita").replaceAll(" ", "_")].toString();
+            sData.TipoGestione = (sValue[oResource.getText("TipoGestione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione").replaceAll(" ", "_")].toString();
+            sData.TipoGestione1 = (sValue[oResource.getText("TipoGestione1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione1").replaceAll(" ", "_")].toString();
+            sData.TipoGestione2 = (sValue[oResource.getText("TipoGestione2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione2").replaceAll(" ", "_")].toString();
+            sData.TipoOrdine = (sValue[oResource.getText("TipoOrdine").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoOrdine").replaceAll(" ", "_")].toString();
+            sData.TipoPmo = (sValue[oResource.getText("TipoPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoPmo").replaceAll(" ", "_")].toString();
+            sData.Toth = (sValue[oResource.getText("Toth").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth").replaceAll(" ", "_")].toString();
+            sData.Toth1 = (sValue[oResource.getText("Toth1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth1").replaceAll(" ", "_")].toString();
+            sData.Toth2 = (sValue[oResource.getText("Toth2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth2").replaceAll(" ", "_")].toString();
+            sData.Toth3 = (sValue[oResource.getText("Toth3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth3").replaceAll(" ", "_")].toString();
+            sData.Toth4 = (sValue[oResource.getText("Toth4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth4").replaceAll(" ", "_")].toString();
+            sData.Toth5 = (sValue[oResource.getText("Toth5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth5").replaceAll(" ", "_")].toString();
+            sData.TxtCiclo = (sValue[oResource.getText("TxtCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TxtCiclo").replaceAll(" ", "_")].toString();
+            // sData.UltimaEsecuz = (sValue[oResource.getText("UltimaEsecuz").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("UltimaEsecuz").replaceAll(" ", "_")].toString();
+            sData.Uname = (sValue[oResource.getText("Uname").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uname").replaceAll(" ", "_")].toString();
+            sData.UnitaCiclo = (sValue[oResource.getText("UnitaCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("UnitaCiclo").replaceAll(" ", "_")].toString();
 
-          //sData.FlagAttivo = ( sData.FlagAttivo === "X") ? true : false;
-          sData.FlagInterc = ( sData.FlagInterc === "X") ? true : false;
-          sData.FlagMateriali = ( sData.FlagMateriali === "X") ? true : false;
-          //sData.FlagOdm = ( sData.FlagOdm === "X") ? true : false;
-          sData.FlagPrestazioni = ( sData.FlagPrestazioni === "X") ? true : false;
-          //sData.FlgMail = ( sData.FlgMail === "X") ? true : false;
+            // sData.FlagAttivo = ( sData.FlagAttivo === "X") ? true : false;
+            sData.FlagInterc = (sData.FlagInterc === "X") ? true : false;
+            sData.FlagMateriali = (sData.FlagMateriali === "X") ? true : false;
+            // sData.FlagOdm = ( sData.FlagOdm === "X") ? true : false;
+            sData.FlagPrestazioni = (sData.FlagPrestazioni === "X") ? true : false;
+            // sData.FlgMail = ( sData.FlgMail === "X") ? true : false;
 
-          return sData;
+            return sData;
         },
         formatAzioni: function (sValue) {
-          var sData = {};
-          sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
-          sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
-          sData.Sistem = (sValue[oResource.getText("Sistem").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Sistem").replaceAll(" ", "_")].toString();
-          sData.Progres = (sValue[oResource.getText("Progres").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Progres").replaceAll(" ", "_")].toString();
-          sData.Classe = (sValue[oResource.getText("Classe").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Classe").replaceAll(" ", "_")].toString();
-          sData.DesComponente = (sValue[oResource.getText("DesComponente").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesComponente").replaceAll(" ", "_")].toString();
-          sData.Tplnr = (sValue[oResource.getText("Tplnr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Tplnr").replaceAll(" ", "_")].toString();
-          sData.Equipment = (sValue[oResource.getText("Equipment").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Equipment").replaceAll(" ", "_")].toString();
-          sData.ComponentTipo = (sValue[oResource.getText("ComponentTipo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("ComponentTipo").replaceAll(" ", "_")].toString();
-          sData.DesBreve = (sValue[oResource.getText("DesBreve").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesBreve").replaceAll(" ", "_")].toString();
-          sData.IntegTxtEsteso = (sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")].toString();
-          sData.FlagAttivo = (sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")].toString();
-          //sData.Datum = (sValue[oResource.getText("Datum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Datum").replaceAll(" ", "_")].toString();
-          //sData.Uname = (sValue[oResource.getText("Uname").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uname").replaceAll(" ", "_")].toString();
-          //sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
-          sData.GestioneLoad = (sValue[oResource.getText("GestioneLoad").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("GestioneLoad").replaceAll(" ", "_")].toString();
-          return sData;
+            var sData = {};
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
+            sData.Sistem = (sValue[oResource.getText("Sistem").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Sistem").replaceAll(" ", "_")].toString();
+            sData.Progres = (sValue[oResource.getText("Progres").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Progres").replaceAll(" ", "_")].toString();
+            sData.Classe = (sValue[oResource.getText("Classe").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Classe").replaceAll(" ", "_")].toString();
+            sData.DesComponente = (sValue[oResource.getText("DesComponente").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesComponente").replaceAll(" ", "_")].toString();
+            sData.Tplnr = (sValue[oResource.getText("Tplnr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Tplnr").replaceAll(" ", "_")].toString();
+            sData.Equipment = (sValue[oResource.getText("Equipment").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Equipment").replaceAll(" ", "_")].toString();
+            sData.ComponentTipo = (sValue[oResource.getText("ComponentTipo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("ComponentTipo").replaceAll(" ", "_")].toString();
+            sData.DesBreve = (sValue[oResource.getText("DesBreve").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("DesBreve").replaceAll(" ", "_")].toString();
+            sData.IntegTxtEsteso = (sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")].toString();
+            sData.FlagAttivo = (sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FlagAttivo").replaceAll(" ", "_")].toString();
+            // sData.Datum = (sValue[oResource.getText("Datum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Datum").replaceAll(" ", "_")].toString();
+            // sData.Uname = (sValue[oResource.getText("Uname").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uname").replaceAll(" ", "_")].toString();
+            // sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
+            sData.GestioneLoad = (sValue[oResource.getText("GestioneLoad").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("GestioneLoad").replaceAll(" ", "_")].toString();
+            return sData;
         },
         formatMaterial: function (sValue) {
-          var sData = {};
-          sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
-          sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
-          sData.Matnr = (sValue[oResource.getText("Matnr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matnr").replaceAll(" ", "_")].toString();
-          sData.Maktx = (sValue[oResource.getText("Maktx").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Maktx").replaceAll(" ", "_")].toString();
-          sData.Menge = (sValue[oResource.getText("Menge").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Menge").replaceAll(" ", "_")].toString();
-          sData.Meins = (sValue[oResource.getText("Meins").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Meins").replaceAll(" ", "_")].toString();
-          sData.Lgort = (sValue[oResource.getText("Lgort").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lgort").replaceAll(" ", "_")].toString();
-          sData.Werks = (sValue[oResource.getText("Werks").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Werks").replaceAll(" ", "_")].toString();
-          //sData.Charg = (sValue[oResource.getText("Charg").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Charg").replaceAll(" ", "_")].toString();
-          //sData.Tbtwr = (sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")].toString();
-          //sData.Waers = (sValue[oResource.getText("Waers").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Waers").replaceAll(" ", "_")].toString();
-          sData.Ekgrp = (sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")].toString();
-          sData.Ekorg = (sValue[oResource.getText("Ekorg").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekorg").replaceAll(" ", "_")].toString();
-          sData.Afnam = (sValue[oResource.getText("Afnam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Afnam").replaceAll(" ", "_")].toString();
-          sData.Matkl = (sValue[oResource.getText("Matkl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matkl").replaceAll(" ", "_")].toString();          
-          return sData;
+            var sData = {};
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
+            sData.Matnr = (sValue[oResource.getText("Matnr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matnr").replaceAll(" ", "_")].toString();
+            sData.Maktx = (sValue[oResource.getText("Maktx").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Maktx").replaceAll(" ", "_")].toString();
+            sData.Menge = (sValue[oResource.getText("Menge").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Menge").replaceAll(" ", "_")].toString();
+            sData.Meins = (sValue[oResource.getText("Meins").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Meins").replaceAll(" ", "_")].toString();
+            sData.Lgort = (sValue[oResource.getText("Lgort").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Lgort").replaceAll(" ", "_")].toString();
+            sData.Werks = (sValue[oResource.getText("Werks").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Werks").replaceAll(" ", "_")].toString();
+            // sData.Charg = (sValue[oResource.getText("Charg").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Charg").replaceAll(" ", "_")].toString();
+            // sData.Tbtwr = (sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")].toString();
+            // sData.Waers = (sValue[oResource.getText("Waers").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Waers").replaceAll(" ", "_")].toString();
+            sData.Ekgrp = (sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")].toString();
+            sData.Ekorg = (sValue[oResource.getText("Ekorg").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekorg").replaceAll(" ", "_")].toString();
+            sData.Afnam = (sValue[oResource.getText("Afnam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Afnam").replaceAll(" ", "_")].toString();
+            sData.Matkl = (sValue[oResource.getText("Matkl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matkl").replaceAll(" ", "_")].toString();
+            return sData;
         },
         formatServizi: function (sValue) {
-          var sData = {};
-          sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
-          sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
-          sData.Asnum = (sValue[oResource.getText("Asnum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Asnum").replaceAll(" ", "_")].toString();
-          sData.Asktx = (sValue[oResource.getText("Asktx").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Asktx").replaceAll(" ", "_")].toString();
-          sData.Menge = (sValue[oResource.getText("Menge").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Menge").replaceAll(" ", "_")].toString();
-          sData.Meins = (sValue[oResource.getText("Meins").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Meins").replaceAll(" ", "_")].toString();
-          //sData.Tbtwr = (sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")].toString();
-          //sData.Waers = (sValue[oResource.getText("Waers").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Waers").replaceAll(" ", "_")].toString();
-          sData.Ekgrp = (sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")].toString();
-          sData.Ekorg = (sValue[oResource.getText("Ekorg").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekorg").replaceAll(" ", "_")].toString();
-          sData.Afnam = (sValue[oResource.getText("Afnam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Afnam").replaceAll(" ", "_")].toString();
-          sData.Matkl = (sValue[oResource.getText("Matkl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matkl").replaceAll(" ", "_")].toString();
-          return sData;
+            var sData = {};
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
+            sData.Asnum = (sValue[oResource.getText("Asnum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Asnum").replaceAll(" ", "_")].toString();
+            sData.Asktx = (sValue[oResource.getText("Asktx").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Asktx").replaceAll(" ", "_")].toString();
+            sData.Menge = (sValue[oResource.getText("Menge").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Menge").replaceAll(" ", "_")].toString();
+            sData.Meins = (sValue[oResource.getText("Meins").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Meins").replaceAll(" ", "_")].toString();
+            // sData.Tbtwr = (sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Tbtwr").replaceAll(" ", "_")].toString();
+            // sData.Waers = (sValue[oResource.getText("Waers").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Waers").replaceAll(" ", "_")].toString();
+            sData.Ekgrp = (sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekgrp").replaceAll(" ", "_")].toString();
+            sData.Ekorg = (sValue[oResource.getText("Ekorg").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Ekorg").replaceAll(" ", "_")].toString();
+            sData.Afnam = (sValue[oResource.getText("Afnam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Afnam").replaceAll(" ", "_")].toString();
+            sData.Matkl = (sValue[oResource.getText("Matkl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matkl").replaceAll(" ", "_")].toString();
+            return sData;
 
         },
         saveIndici: async function (sLine) {
@@ -516,27 +526,103 @@ sap.ui.define([
             var sUrl = "/T_PMO(IndexPmo='" + sLine.IndexPmo + "')";
             return await this._updateHanaShowError(sUrl, sLine);
         },
-        saveAzioni: async function (sLine) {
+        saveAzioni: async function (sLine, aTable) {
             // Controlli
-
+            var aFilters = [];
+            aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, sLine.IndexPmo));
+            var aWO = await this._getTableNoError("/T_APP_WO", aFilters);
+            if (aWO === []){
+              return "Index con Appuntamento";
+            }
             // Salvataggio - Update Insert Spostamento Delete
-            var sUrl = "/T_ACT_EL(IndexPmo='" + sLine.IndexPmo + "',Cont='" + sLine.Cont + "')";
+            var sUrl = "/T_ACT_EL(IndexPmo='" + sLine.IndexPmo + "',Cont='" + sLine.Cont + "')",
+                sURL = "";
             var result = "";
-            if (sLine.GestioneLoad === "D" || sLine.GestioneLoad === "S"){
-              delete sLine.GestioneLoad;
-              result = await this._removeHanaShowError("/T_PMO_S");
-            } else {
-              delete sLine.GestioneLoad;
-              result = await this._saveHanaShowError("/T_PMO_S", sLine);
-              if (result !== "") {
-                  result = await this._updateHanaShowError(sUrl, sLine);
-              }
+
+            switch (sLine.GestioneLoad) {
+                case "D":
+                    delete sLine.GestioneLoad;
+                    result = await this._removeHanaShowError("/T_ACT_EL");
+
+                    aFilters = [];
+                    aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, sLine.IndexPmo));
+                    aFilters.push(new Filter("Cont", FilterOperator.EQ, sLine.Cont));
+                    var aMatnr = await this._getTableNoError("/T_PMO_M", aFilters);
+                    var aServizi = await this._getTableNoError("/T_PMO_S", aFilters);
+
+                    for (var j = 0; j < aMatnr.length; j++) {
+                        sURL = "/T_PMO_M(IndexPmo='" + sLine.IndexPmo + "',Cont='" + aMatnr[j].Cont + "',Matnr='" + aMatnr[j].Matnr.padStart(18, "0") + "',Maktx='" + aMatnr[j].Maktx + "')";
+                        await this._removeHanaShowError(sURL);
+                    }
+                    for (var k = 0; k < aServizi.length; k++) {
+                        sURL = "/T_PMO_S(IndexPmo='" + sLine.IndexPmo + "',Cont='" + aServizi[k].Cont + "',Asnum='" + aServizi[k].Asnum + "',Asktx='" + aServizi[k].Asktx + "')";
+                        await this._removeHanaShowError(sURL);
+                    }
+                    break;
+                case "S":
+                    delete sLine.GestioneLoad;
+                    var vIndex = "";
+                    await this._removeHanaShowError("/T_ACT_EL");
+                    for (var i = 0; i < aTable.length; i++) {
+                        if (aTable[i].Cont === sLine.Cont && aTable[i].GestioneLoad === "X") {
+                            delete aTable[i].GestioneLoad;
+                            result = await this._saveHanaShowError("/T_ACT_EL", aTable[i]);
+                            vIndex = aTable[i].IndexPmo;
+                            break;
+                        }
+                    }
+                    aFilters = [];
+                    aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, sLine.IndexPmo));
+                    aFilters.push(new Filter("Cont", FilterOperator.EQ, sLine.Cont));
+                    var aMatnr = await this._getTableNoError("/T_PMO_M", aFilters);
+                    var aServizi = await this._getTableNoError("/T_PMO_S", aFilters);
+
+                    for (var j = 0; j < aMatnr.length; j++) {
+                        sURL = "/T_PMO_M(IndexPmo='" + sLine.IndexPmo + "',Cont='" + aMatnr[j].Cont + "',Matnr='" + aMatnr[j].Matnr.padStart(18, "0") + "',Maktx='" + aMatnr[j].Maktx + "')";
+                        await this._removeHanaShowError(sURL);
+                        aMatnr[j].IndexPmo = vIndex;
+                        await this._saveHanaShowError("/T_PMO_M", aMatnr[j]);
+                    }
+                    for (var k = 0; k < aServizi.length; k++) {
+                        sURL = "/T_PMO_S(IndexPmo='" + sLine.IndexPmo + "',Cont='" + aServizi[k].Cont + "',Asnum='" + aServizi[k].Asnum + "',Asktx='" + aServizi[k].Asktx + "')";
+                        await this._removeHanaShowError(sURL);
+                        aServizi[k].IndexPmo = vIndex;
+                        await this._saveHanaShowError("/T_PMO_M", aServizi[k]);
+                    }
+                    break;
+                case "X":
+                    break;
+                default:
+                    delete sLine.GestioneLoad;
+                    if (sLine.IndexPmo.startsWith("C-")) {
+                        var sRigaNuova = {
+                            last: sLine.Cont.toString(),
+                            next: ""
+                        };
+                        sLine.Cont = "";
+                        result = await this._saveHanaNoError("/T_ACT_EL", sLine);
+                        sRigaNuova.next = result.Cont;
+                        this.aRigheNuove.push(sRigaNuova);
+                    } else {
+                        result = await this._saveHanaShowError("/T_ACT_EL", sLine);
+                        if (result !== "") {
+                            result = await this._updateHanaShowError(sUrl, sLine);
+                        }
+                    }
+                    break;
             }
             return result;
         },
         saveMaterial: async function (sLine) { // Controlli
             sLine.Matnr = sLine.Matnr.padStart(18, "0");
-
+            if (sLine.IndexPmo.startsWith("C-")) {
+                for (var i = 0; i < this.aRigheNuove.length; i++) {
+                    if (this.aRigheNuove[i].last === sLine.IndexPmo) {
+                        sLine.IndexPmo = this.aRigheNuove[i].next;
+                        break;
+                    }
+                }
+            }
 
             // Salvataggio - Update o Insert
             var result = await this._saveHanaShowError("/T_PMO_M", sLine);
@@ -546,8 +632,15 @@ sap.ui.define([
             }
             return result;
         },
-        saveServizi: async function (sLine) {
-            // Controlli
+        saveServizi: async function (sLine) { // Controlli
+            if (sLine.IndexPmo.startsWith("C-")) {
+                for (var i = 0; i < this.aRigheNuove.length; i++) {
+                    if (this.aRigheNuove[i].last === sLine.IndexPmo) {
+                        sLine.IndexPmo = this.aRigheNuove[i].next;
+                        break;
+                    }
+                }
+            }
 
             // Salvataggio
             var result = await this._saveHanaShowError("/T_PMO_S", sLine);
@@ -567,9 +660,9 @@ sap.ui.define([
             sData[oResource.getText("Meins").replaceAll(" ", "_")] = sLine.Meins;
             sData[oResource.getText("Lgort").replaceAll(" ", "_")] = sLine.Lgort;
             sData[oResource.getText("Werks").replaceAll(" ", "_")] = sLine.Werks;
-            //sData[oResource.getText("Charg").replaceAll(" ", "_")] = sLine.Charg;
-            //sData[oResource.getText("Tbtwr").replaceAll(" ", "_")] = sLine.Tbtwr;
-            //sData[oResource.getText("Waers").replaceAll(" ", "_")] = sLine.Waers;
+            // sData[oResource.getText("Charg").replaceAll(" ", "_")] = sLine.Charg;
+            // sData[oResource.getText("Tbtwr").replaceAll(" ", "_")] = sLine.Tbtwr;
+            // sData[oResource.getText("Waers").replaceAll(" ", "_")] = sLine.Waers;
             sData[oResource.getText("Ekgrp").replaceAll(" ", "_")] = sLine.Ekgrp;
             sData[oResource.getText("Ekorg").replaceAll(" ", "_")] = sLine.Ekorg;
             sData[oResource.getText("Afnam").replaceAll(" ", "_")] = sLine.Afnam;
@@ -584,8 +677,8 @@ sap.ui.define([
             sData[oResource.getText("Asktx").replaceAll(" ", "_")] = sLine.Asktx;
             sData[oResource.getText("Menge").replaceAll(" ", "_")] = sLine.Menge;
             sData[oResource.getText("Meins").replaceAll(" ", "_")] = sLine.Meins;
-            //sData[oResource.getText("Tbtwr").replaceAll(" ", "_")] = sLine.Tbtwr;
-            //sData[oResource.getText("Waers").replaceAll(" ", "_")] = sLine.Waers;
+            // sData[oResource.getText("Tbtwr").replaceAll(" ", "_")] = sLine.Tbtwr;
+            // sData[oResource.getText("Waers").replaceAll(" ", "_")] = sLine.Waers;
             sData[oResource.getText("Ekgrp").replaceAll(" ", "_")] = sLine.Ekgrp;
             sData[oResource.getText("Ekorg").replaceAll(" ", "_")] = sLine.Ekorg;
             sData[oResource.getText("Afnam").replaceAll(" ", "_")] = sLine.Afnam;
@@ -626,12 +719,12 @@ sap.ui.define([
             sData.push(vValue);
             vValue = oResource.getText("FlagAttivo").replaceAll(" ", "_");
             sData.push(vValue);
-            //vValue = oResource.getText("Datum").replaceAll(" ", "_");
-            //sData.push(vValue);
-            //vValue = oResource.getText("Uname").replaceAll(" ", "_");
-            //sData.push(vValue);
-            //vValue = oResource.getText("Uzeit").replaceAll(" ", "_");
-            //sData.push(vValue);
+            // vValue = oResource.getText("Datum").replaceAll(" ", "_");
+            // sData.push(vValue);
+            // vValue = oResource.getText("Uname").replaceAll(" ", "_");
+            // sData.push(vValue);
+            // vValue = oResource.getText("Uzeit").replaceAll(" ", "_");
+            // sData.push(vValue);
             vValue = oResource.getText("GestioneLoad").replaceAll(" ", "_");
             sData.push(vValue);
             return sData;
@@ -896,34 +989,7 @@ sap.ui.define([
             this.getView().getModel("sHelp").refresh();
             // sap.ui.core.BusyIndicator.hide();
         },
-        onTestoEsteso: async function (line) {
-            if (line.DesEstesa === "X") {
-                var aFilter = [];
-                var vNome = "ZI" + line.IndexPmo.padStart(18, "0") + this.formatDate(line.INIZIOVAL) + this.formatDate(line.FINEVAL) + line.Uzeit.replaceAll(":", "");
-                aFilter.push(new Filter("Tdname", FilterOperator.EQ, vNome));
-                aFilter.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
-                aFilter.push(new Filter("Tdspras", FilterOperator.EQ, "I"));
-                aFilter.push(new Filter("Tdobject", FilterOperator.EQ, "TEXT"));
-                var result = await this._getLinenoError("/TestiEstesi", aFilter);
-                if (result === undefined) {
-                    return "";
-                } else {
-                    return result.Testo;
-                }
-            } else {
-                return "";
-            }
-        },
-        handleTestoView: async function (oEvent) {
-            this.lineSelected = oEvent.getSource().getBindingContext("mPiani").getObject();
-
-            var DesEstesa = await this.onTestoEsteso(this.lineSelected);
-            this.getView().byId("vTextArea").setText(DesEstesa);
-            this.byId("popTestoView").open();
-        },
-        onCloseTestoView: function () {
-            this.byId("popTestoView").close();
-        },
+        
         onPressIndex: async function (oEvent) {
             var sPiani = oEvent.getSource().getBindingContext("mPiani").getObject();
             sap.ui.getCore().setModel(sPiani, "Piani");
@@ -993,12 +1059,12 @@ sap.ui.define([
                     aFilters = aFilters.concat(tempFilter);
                 }
             }
-            if (sFilter.IProgres !== undefined) {
+            /*if (sFilter.IProgres !== undefined) {
                 if (sFilter.IProgres.length !== 0) {
                     tempFilter = this.multiFilterText(sFilter.IProgres, "IProgres");
                     aFilters = aFilters.concat(tempFilter);
                 }
-            }
+            }*/
             if (sFilter.ISistemActEl !== undefined) {
                 if (sFilter.ISistemActEl.length !== 0) {
                     tempFilter = this.multiFilterText(sFilter.ISistemActEl, "ISistemActEl");
@@ -1098,6 +1164,10 @@ sap.ui.define([
             if (sFilter.IDesComponenteActEl !== undefined && sFilter.IDesComponenteActEl !== "") {
                 aFilters.push(new Filter("IDesComponenteActEl", "CP", sFilter.IDesComponenteActEl));
             }
+            if (sFilter.IPercorso !== undefined && sFilter.IPercorso !== "") {
+                aFilters.push(new Filter("IPercorso", "EQ", sFilter.IPercorso));
+            }
+
 
             /*if (sFilter.Collective !== undefined && sFilter.Collective !== "") {
                     aFilters.push(new Filter("Collective", FilterOperator.EQ, sFilter.Collective));

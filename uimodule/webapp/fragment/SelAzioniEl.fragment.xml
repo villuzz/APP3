@@ -71,42 +71,42 @@
               <Column width="10em" id="col61"><Text text="{i18n>NUM}"/></Column>
               <Column width="10em" id="col62"><Text text="{i18n>PERSONE}"/></Column>
               <Column width="10em" id="col63"><Text text="{i18n>HPER}"/></Column>
-              <Column width="10em" visible="false" id="col120"><Text text="{i18n>Toth}"/></Column>
+              <Column width="10em" id="col120"><Text text="{i18n>Toth}"/></Column>
 
               <Column width="10em" id="col64"><Text text="{i18n>LSTAR_1}"/></Column>
               <Column width="12em" id="col65"><Text text="{i18n>STEUS_1}"/></Column>
               <Column width="10em" id="col66"><Text text="{i18n>NUM_1}"/></Column>
               <Column width="10em" id="col67"><Text text="{i18n>PERSONE_1}"/></Column>
               <Column width="10em" id="col68"><Text text="{i18n>HPER_1}"/></Column>
-              <Column width="10em" visible="false" id="col121"><Text text="{i18n>Toth1}"/></Column>
+              <Column width="10em" id="col121"><Text text="{i18n>Toth1}"/></Column>
 
               <Column width="10em" id="col69"><Text text="{i18n>LSTAR_2}"/></Column>
               <Column width="12em" id="col70"><Text text="{i18n>STEUS_2}"/></Column>
               <Column width="10em" id="col71"><Text text="{i18n>NUM_2}"/></Column>
               <Column width="10em" id="col72"><Text text="{i18n>PERSONE_2}"/></Column>
               <Column width="10em" id="col73"><Text text="{i18n>HPER_2}"/></Column>
-              <Column width="10em" visible="false" id="col122"><Text text="{i18n>Toth2}"/></Column>
+              <Column width="10em" id="col122"><Text text="{i18n>Toth2}"/></Column>
 
               <Column width="10em" id="col75"><Text text="{i18n>LSTAR_3}"/></Column>
               <Column width="12em" id="col76"><Text text="{i18n>STEUS_3}"/></Column>
               <Column width="10em" id="col77"><Text text="{i18n>NUM_3}"/></Column>
               <Column width="10em" id="col78"><Text text="{i18n>PERSONE_3}"/></Column>
               <Column width="10em" id="col79"><Text text="{i18n>HPER_3}"/></Column>
-              <Column width="10em" visible="false" id="col123"><Text text="{i18n>Toth3}"/></Column>
+              <Column width="10em" id="col123"><Text text="{i18n>Toth3}"/></Column>
 
               <Column width="10em" id="col80"><Text text="{i18n>LSTAR_4}"/></Column>
               <Column width="12em" id="col81"><Text text="{i18n>STEUS_4}"/></Column>
               <Column width="10em" id="col82"><Text text="{i18n>NUM_4}"/></Column>
               <Column width="10em" id="col83"><Text text="{i18n>PERSONE_4}"/></Column>
               <Column width="10em" id="col84"><Text text="{i18n>HPER_4}"/></Column>
-              <Column width="10em" visible="false" id="col124"><Text text="{i18n>Toth4}"/></Column>
+              <Column width="10em" id="col124"><Text text="{i18n>Toth4}"/></Column>
 
               <Column width="10em" id="col85"><Text text="{i18n>LSTAR_5}"/></Column>
               <Column width="12em" id="col86"><Text text="{i18n>STEUS_5}"/></Column>
               <Column width="10em" id="col87"><Text text="{i18n>NUM_5}"/></Column>
               <Column width="10em" id="col88"><Text text="{i18n>PERSONE_5}"/></Column>
               <Column width="10em" id="col89"><Text text="{i18n>HPER_5}"/></Column>
-              <Column width="10em" visible="false" id="col125"><Text text="{i18n>Toth5}"/></Column>
+              <Column width="10em" id="col125"><Text text="{i18n>Toth5}"/></Column>
 
               <Column width="10em" id="col95"><Text text="{i18n>RISK}"/></Column>
               <Column width="10em" id="col96"><Text text="{i18n>LIMITE}"/></Column>
@@ -123,6 +123,8 @@
               <Column width="10em" id="col108"><Text text="{i18n>FINEVAL}"/></Column>
               <Column width="10em" id="col109"><Text text="{i18n>INIZIOVAL}"/></Column>
               <Column width="10em" id="col110"><Text text="{i18n>DESTINATARIO}"/></Column>
+              <Column width="10em" id="col130"><Text text="{i18n>CodAzione}"/></Column>
+              
 
             </columns>
             <items>
@@ -253,7 +255,7 @@
                   <Text text="{ parts:[{path:'allIndex>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Text text="{ parts:[{path:'allIndex>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Input value="{allIndex>DESTINATARIO}" />
-
+                  <Input value="{allIndex>CodAzione}" />
                 </cells>
               </ColumnListItem>
             </items>

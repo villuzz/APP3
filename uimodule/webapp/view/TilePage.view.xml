@@ -3,20 +3,21 @@
     <f:landmarkInfo>
             <f:DynamicPageAccessibleLandmarkInfo rootRole="Region" contentRole="Main" headerRole="Banner" rootLabel="{i18n>Overview_rootLabel}" contentLabel="{i18n>Overview_contentLabel}" headerLabel="{i18n>Overview_headerLabel}"/>
           </f:landmarkInfo>
+
+
         <f:title>
-            <f:DynamicPageTitle>
-                <f:content>
-                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                       <Title text="{i18n>Piani}" class="sapUiTinyMarginTop titleTile"/>
-                    </HBox>
-                </f:content>
-                <f:actions></f:actions>
-                <f:navigationActions>
-                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
-                    <Image src="./img/logo.png" width="5rem"/>
-                </f:navigationActions>
-            </f:DynamicPageTitle>
-        </f:title>
+				<f:DynamicPageTitle class="titleHeader">
+					<f:heading>
+            <HBox>
+                   <Title text="{i18n>Piani}" class="sapUiTinyMarginTop titleTile titleText"/>
+            </HBox>
+					</f:heading>
+					<f:navigationActions>
+						  <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
+                <Image src="./img/logo.png" width="5rem"/>
+           </f:navigationActions>
+				</f:DynamicPageTitle>
+			</f:title>
         <f:content>
             <HBox height="100%" >
                

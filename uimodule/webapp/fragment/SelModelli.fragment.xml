@@ -228,6 +228,16 @@
                                     </ComboBox>
                                 </form:fields>
                             </form:FormElement>
+                            <form:FormElement visible="false" id="frUNITA_TEMPO">
+                                <form:label>
+                                    <Label text="{i18n>UNITA_TEMPO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox id="cbUNITA_TEMPO" selectedKey="{sSelect>/UNITA_TEMPO}" valueStateText="{i18n>valueState} {i18n>UNITA_TEMPO}" items="{ path: 'sHelp>/MEINS', length:2000 }" showSecondaryValues= "true" >
+                                      <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
                             <form:FormElement visible="false" id="frFREQ_CICLO">
                                 <form:label>
                                     <Label text="{i18n>FREQ_CICLO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
@@ -235,6 +245,16 @@
                                 <form:fields>
                                     <ComboBox id="cbFREQ_CICLO" value="{sSelect>/FREQ_CICLO}" items="{ path: 'sHelp>/FREQ_CICLO', sorter: { path: 'FREQ_CICLO' } }">
                                         <core:ListItem key="{sHelp>FREQ_CICLO}" text="{sHelp>FREQ_CICLO}"/>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="false" id="frUNITA_CICLO">
+                                <form:label>
+                                    <Label text="{i18n>UNITA_CICLO}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox id="cbUNITA_CICLO" selectedKey="{sSelect>/UNITA_CICLO}" valueStateText="{i18n>valueState} {i18n>UNITA_CICLO}" items="{ path: 'sHelp>/MEINS', length:2000 }" showSecondaryValues= "true" >
+                                      <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                                     </ComboBox>
                                 </form:fields>
                             </form:FormElement>

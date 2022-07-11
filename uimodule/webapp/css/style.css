@@ -64,13 +64,6 @@ font-size: medium;
   overflow: visible !important;
 }
 
-.sapMPage>section.sapMPageEnableScrolling {
-  overflow: visible !important;
-}
-
-.sapMPage>section {
-  overflow: visible !important;
-}
 
 /* Object Header */
 .sapMOHR .sapMOHRAttr .sapMObjectAttributeTitle, .sapMOHR .sapMOHRAttr .sapMObjectAttributeText {
@@ -112,6 +105,7 @@ height: 100% !important;
 .sapFDynamicPageTitle .sapFDynamicPageTitleMain>.sapFDynamicPageTitleMainInner .sapFDynamicPageTitleMainContent .sapMTB {
   justify-content: space-between !important;
 }
+<<<<<<< HEAD
   
 .linkRef{
   margin-left: auto !important;
@@ -131,3 +125,15 @@ html.sap-desktop .sapFDynamicPage.sapFDynamicPageWithScroll .sapFDynamicPageTitl
   height: auto !important;
 }
 
+=======
+
+/*
+non funziona lo scroll dei filtri con questi due attivi  
+.sapMPage>section.sapMPageEnableScrolling {
+  overflow: visible !important;
+}
+
+.sapMPage>section {
+  overflow: visible !important;
+}*/
+>>>>>>> 8a59f2d3215a24876ce031b37a55f1b91df05fc9

@@ -33,7 +33,7 @@ sap.ui.define([
             var oModel = new sap.ui.model.json.JSONModel();
             var sData = {
                 INIZIOVAL: new Date(),
-                FINEVAL: new Date()
+                FINEVAL: new Date("9999-12-31T10:00:00.000Z")
             };
             oModel.setData(sData);
             this.getView().setModel(oModel, "sSelect");
@@ -87,13 +87,17 @@ sap.ui.define([
         },
         onChangeStat: function (oEvent) {
           var sData = oEvent.getSource().getBindingContext("allIndex").getObject();
-          sData.Toth = Number(sData.Num) * Number(sData.Persone) * Number(sData.Hper);
-          sData.Toth1 = Number(sData.Num1) * Number(sData.Persone1) * Number(sData.Hper1);
-          sData.Toth2 = Number(sData.Num2) * Number(sData.Persone2) * Number(sData.Hper2);
-          sData.Toth3 = Number(sData.Num3) * Number(sData.Persone3) * Number(sData.Hper3);
-          sData.Toth4 = Number(sData.Num4) * Number(sData.Persone4) * Number(sData.Hper4);
-          sData.Toth5 = Number(sData.Num5) * Number(sData.Persone5) * Number(sData.Hper5);
+          sData = this.ChangeStat(sData);
           this.getView().getModel("allIndex").refresh();
+        },
+        ChangeStat: function (sData) {
+          sData.Toth = Number(sData.NUM) * Number(sData.PERSONE) * Number(sData.HPER);
+          sData.Toth1 = Number(sData.NUM_1) * Number(sData.PERSONE_1) * Number(sData.HPER_1);
+          sData.Toth2 = Number(sData.NUM_2) * Number(sData.PERSONE_2) * Number(sData.HPER_2);
+          sData.Toth3 = Number(sData.NUM_3) * Number(sData.PERSONE_3) * Number(sData.HPER_3);
+          sData.Toth4 = Number(sData.NUM_4) * Number(sData.PERSONE_4) * Number(sData.HPER_4);
+          sData.Toth5 = Number(sData.NUM_5) * Number(sData.PERSONE_5) * Number(sData.HPER_5);
+          return sData;
         },
         handleWizardSubmit: async function () {
             sap.ui.core.BusyIndicator.show();
@@ -172,7 +176,7 @@ sap.ui.define([
                 CentroLavoro: sRow.CENTRO_LAVORO,
                 Ciclo: sRow.FREQ_CICLO,
                 Classe: sRow.CLASSE,
-                CodAzione: sRow.CodAzione,
+                Azione: (sRow.AZIONE === undefined) ? "" : sRow.AZIONE.toString().padStart(5, "0"),
                 Collective: sRow.COLLECTIVE,
                 // Criticita	Non li popoliamo
                 // DataInizCiclo	Non li popoliamo
@@ -298,21 +302,8 @@ sap.ui.define([
             var sIndex = await this._saveHana("/T_PMO", sData);
 
             if (sRow.TESTO_ESTESO !== undefined && sRow.TESTO_ESTESO !== null && sRow.TESTO_ESTESO !== ""){
-              var Tdname = "ZI" + sIndex.IndexPmo.padStart(18, "0") + this.formatDate(sData.InizioVal) + this.formatDate(sData.FineVal) + sData.Uzeit.replaceAll(":", "");
-              var sTesto = {
-                "Tdname": Tdname,
-                "Tdid": "ST",
-                "Tdspras": "I",
-                "Tdobject": "TEXT",
-                "Overwrite": "X",
-                "Testo": sRow.TESTO_ESTESO
-                };
-              var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
-              if (result !== ""){
-                var sUrl = "/TestiEstesi(Testo='" + sRow.TESTO_ESTESO + "')";
-                delete sTesto.Testo;
-                await this._updateHanaNoError(sUrl, sTesto);
-              }
+              var Tdname = "ZI" + sIndex.IndexPmo.padStart(12, "0") + this.formatDate(sData.InizioVal) + this.formatDate(sData.FineVal) + sData.Uzeit.replaceAll(":", "");
+              await this.TestoSave(Tdname, sRow.TESTO_ESTESO);
             }
 
             return sIndex.IndexPmo;
@@ -344,22 +335,8 @@ sap.ui.define([
             var sAzione = await this._saveHana("/T_ACT_EL", sData);
 
             if (sRow.TESTO_ESTESO_P !== undefined && sRow.TESTO_ESTESO_P !== null && sRow.TESTO_ESTESO_P !== ""){
-
-              var Tdname = "ZAE" + sAzione.IndexPmo.padStart(18, "0") + sAzione.Cont.padStart(10, "0");
-              var sTestoAzioni = {
-                "Tdname": Tdname,
-                "Tdid": "ST",
-                "Tdspras": "I",
-                "Tdobject": "TEXT",
-                "Overwrite": "X",
-                "Testo": sRow.TESTO_ESTESO_P
-                };
-              var result = await this._saveHanaNoError("/TestiEstesi", sTestoAzioni);
-              if (result !== ""){
-                var sUrl = "/TestiEstesi(Testo='" + sRow.TESTO_ESTESO_P + "')";
-                delete sTestoAzioni.Testo;
-                await this._updateHanaNoError(sUrl, sTestoAzioni);
-              }
+              var Tdname = "ZAE" + sAzione.IndexPmo.padStart(12, "0") + sAzione.Cont.padStart(10, "0");
+              await this.TestoSave(Tdname, sRow.TESTO_ESTESO_P);
             }
 
             return sAzione.Cont;
@@ -370,9 +347,9 @@ sap.ui.define([
                     var sLine = {
                         IndexPmo: vINDEX,
                         Cont: vCONTATORE,
-                        Matnr: sRow.Material[i].MATNR,
+                        Matnr: sRow.Material[i].MATNR.padStart(12, "0"),
                         Maktx: sRow.Material[i].MAKTX,
-                        Menge: sRow.Material[i].MENGE,
+                        Menge: Number(sRow.Material[i].MENGE),
                         Meins: sRow.Material[i].MEINS,
                         Lgort: sRow.Material[i].LGORT,
                         Werks: sRow.Material[i].WERKS,
@@ -393,7 +370,7 @@ sap.ui.define([
                         Cont: vCONTATORE,
                         Asnum: sRow.Servizi[i].ASNUM,
                         Asktx: sRow.Servizi[i].ASKTX,
-                        Menge: sRow.Servizi[i].MENGE,
+                        Menge: Number(sRow.Servizi[i].MENGE),
                         Meins: sRow.Servizi[i].MEINS,
                         Ekgrp: sRow.Servizi[i].EKGRP,
                         Ekorg: sRow.Servizi[i].EKORG,
@@ -513,14 +490,14 @@ sap.ui.define([
         },
         onSuggestLgort: async function (oEvent) {
           var sSelect = oEvent.getSource().getBindingContext("aMaterial").getObject();
-          if (oEvent.getParameter("suggestValue").length >= 0 || (sSelect.WERKS !== "" && sSelect.WERKS !== undefined && sSelect.WERKS !== null)) {
+          if ((sSelect.WERKS !== "" && sSelect.WERKS !== undefined && sSelect.WERKS !== null)) {
 
               var aFilter = [];
               if (sSelect.WERKS !== "" && sSelect.WERKS !== undefined && sSelect.WERKS !== null) {
                   aFilter.push(new Filter("Werks", FilterOperator.EQ, sSelect.WERKS));
               }
               if (oEvent.getParameter("suggestValue").length >= 0) {
-                  aFilter.push(new Filter("Code", FilterOperator.EQ, sSelect.LGORT));
+                  aFilter.push(new Filter("Code", FilterOperator.Contains, sSelect.LGORT));
               }
 
               var sHelp = this.getView().getModel("sHelp").getData();
@@ -1166,6 +1143,7 @@ sap.ui.define([
                     row.CONTATORE = this.resetContatore;
                     row.INDEX = this.resetIndex;
                     row.COLORSET = this.colorToSet;
+                    row = this.ChangeStat(row);
 
                     sIndex = row;
                     aIndex.push(row);

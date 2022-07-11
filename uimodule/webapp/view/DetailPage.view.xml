@@ -69,7 +69,7 @@
                                                   </ComboBox></form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{i18n>DesBreve}">
-                                                <form:fields><Input value="{PianiDetail>/DesBreve}" maxLength="4"/></form:fields>
+                                                <form:fields><Input value="{PianiDetail>/DesBreve}" maxLength="40"/></form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{i18n>Sistema}">
                                                 <form:fields><ComboBox valueStateText="{i18n>valueState} {i18n>Sistema}" showSecondaryValues="true" items="{ path: 'sHelp>/SISTEMA', length:2000 }" selectedKey="{PianiDetail>/Sistema}">
@@ -84,7 +84,7 @@
                                                 </form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{i18n>Azione}"><form:fields><Input value="{PianiDetail>/Azione}" maxLength="5"/></form:fields></form:FormElement>
-                                            <form:FormElement label="{i18n>TipoAggr}"><form:fields><Input value="{PianiDetail>/TipoAggr}" editable="false" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>TipoAggr}"><form:fields><Input value="{PianiDetail>/TipoAggr}" editable="false" maxLength="2"/></form:fields></form:FormElement>
                                             
                                            <!-- <form:FormElement label="{i18n>Progres}">
                                                 <form:fields>
@@ -112,10 +112,48 @@
                                                     </ComboBox></form:fields>
                                             </form:FormElement>
                                             
-                                            <form:FormElement label="{i18n>DesComponente}"><form:fields><Input value="{PianiDetail>/DesComponente}" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>DesComponente}"><form:fields><Input value="{PianiDetail>/DesComponente}" maxLength="80"/></form:fields></form:FormElement>
                                             <!--<form:FormElement label="{i18n>DesEstesa}"><form:fields><Input value="{PianiDetail>/DesEstesa}" maxLength="4"/></form:fields></form:FormElement>-->
-                                            <form:FormElement label="{i18n>EquipmentCompo}"><form:fields><Input value="{PianiDetail>/EquipmentCompo}" maxLength="4"/></form:fields></form:FormElement>
-                                            <form:FormElement label="{i18n>StComponente}"><form:fields><Input value="{PianiDetail>/StComponente}" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>EquipmentCompo}"><form:fields>
+                                            <Input showSuggestion="true" value="{PianiDetail>/EquipmentCompo}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment">
+                                                <suggestionColumns>
+                                                    <Column>
+                                                        <Label text="{i18n>Equipment}"/>
+                                                    </Column>
+                                                    <Column hAlign="End">
+                                                        <Label text="{i18n>Description}"/>
+                                                    </Column>
+                                                </suggestionColumns>
+                                                <suggestionRows>
+                                                    <ColumnListItem>
+                                                        <Label text="{sHelp>Fieldname1}"/>
+                                                        <Label text="{sHelp>Fieldname3}"/>
+                                                    </ColumnListItem>
+                                                </suggestionRows>
+                                            </Input>
+                                            </form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>StComponente}"><form:fields>
+                                            <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{PianiDetail>/StComponente}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
+                                                <suggestionColumns>
+                                                    <Column>
+                                                        <Label text="{i18n>Functlocation}"/>
+                                                    </Column>
+                                                    <Column hAlign="Center">
+                                                        <Label text="{i18n>Category}"/>
+                                                    </Column>
+                                                    <Column hAlign="End">
+                                                        <Label text="{i18n>Descript}"/>
+                                                    </Column>
+                                                </suggestionColumns>
+                                                <suggestionRows>
+                                                    <ColumnListItem>
+                                                        <Label text="{sHelp>Functlocation}"/>
+                                                        <Label text="{sHelp>Category}"/>
+                                                        <Label text="{sHelp>Descript}"/>
+                                                    </ColumnListItem>
+                                                </suggestionRows>
+                                            </Input>
+                                            </form:fields></form:FormElement>
                                             
                                             
                                             <form:FormElement label="{i18n>Collective}">
@@ -229,11 +267,21 @@
                                                 <form:fields><Input value="{PianiDetail>/DurataCiclo}" maxLength="4"/></form:fields>
                                             </form:FormElement>
                                             <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>FrequenzaT}">
-                                                <form:fields><Input value="{PianiDetail>/Frequenza}" maxLength="4"/></form:fields>
+                                                <form:fields>
+                                                <ComboBox selectedKey="{PianiDetail>/Frequenza}" valueStateText="{i18n>valueState} {i18n>Meins}" items="{ path: 'sHelp>/MEINS', length:2000 }" change="handleChangeCb" showSecondaryValues="true">
+                                                <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                            </ComboBox>
+                                                </form:fields>
                                             </form:FormElement>
+                                            <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>FineCard}"><form:fields><Input value="{PianiDetail>/FineCard}" enabled="false" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>Scostamento}"><form:fields><Input value="{PianiDetail>/Scostamento}" enabled="false" maxLength="4"/></form:fields></form:FormElement>
                                             
                                             <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>Ciclo}"><form:fields><Input value="{PianiDetail>/Ciclo}" maxLength="32"/></form:fields></form:FormElement>
-                                            <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>UnitaCiclo}"><form:fields><Input value="{PianiDetail>/UnitaCiclo}" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>UnitaCiclo}"><form:fields>
+                                            <ComboBox selectedKey="{PianiDetail>/UnitaCiclo}" valueStateText="{i18n>valueState} {i18n>Meins}" items="{ path: 'sHelp>/MEINS', length:2000 }" change="handleChangeCb" showSecondaryValues="true">
+                                                <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                            </ComboBox>
+                                            </form:fields></form:FormElement>
                                              <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>TxtCiclo}"><form:fields><Input value="{PianiDetail>/TxtCiclo}" maxLength="4"/></form:fields></form:FormElement>
                                             <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>DataInizCiclo}" >
                                                 <form:fields>
@@ -242,31 +290,40 @@
                                             </form:FormElement>
                                             <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>Point}"><form:fields><Input value="{PianiDetail>/Point}" maxLength="4"/></form:fields></form:FormElement>
                                             
-                                            <form:FormElement label="{i18n>FlagInterc}"><form:fields><Switch type="AcceptReject" state="{PianiDetail>/FlagInterc}" /></form:fields></form:FormElement>
-                                            <form:FormElement label="{i18n>FlagMateriali}"><form:fields><Switch type="AcceptReject" state="{PianiDetail>/FlagMateriali}"/></form:fields></form:FormElement>
-                                            <form:FormElement label="{i18n>FlagPrestazioni}"><form:fields><Switch type="AcceptReject" state="{PianiDetail>/FlagPrestazioni}"/></form:fields></form:FormElement>
-                                           
+                                            
                                            <form:FormElement label="{i18n>UltimaEsecuz}">
                                                 <form:fields>
                                                 <DatePicker displayFormat="dd-MM-YYYY" dateValue="{PianiDetail>/UltimaEsecuz}"  enabled="false" />
                                                 </form:fields>
                                             </form:FormElement>
 
-                                            <form:FormElement label="{i18n>CentroLavoro}"><form:fields><Input value="{PianiDetail>/CentroLavoro}" maxLength="8"/></form:fields></form:FormElement>
-                                            <form:FormElement label="{i18n>Divisionec}"><form:fields><Input value="{PianiDetail>/Divisionec}" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>CentroLavoro}"><form:fields>
+                                            <ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>CentroLavoro}" showSecondaryValues="true" items="{ path: 'sHelp>/CENTRO_LAVORO', length:2500 }" selectedKey="{PianiDetail>/CentroLavoro}">
+                                                        <core:ListItem key="{sHelp>Arbpl}" text="{sHelp>Arbpl}" additionalText="{sHelp>Werks} - {sHelp>Destinatario}"/>
+                                                    </ComboBox>
+                                            
+                                            </form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>Divisionec}"><form:fields>
+                                            <ComboBox selectedKey="{PianiDetail>/Divisionec}" change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>Divisionec}" showSecondaryValues="true" items="{ path: 'sHelp>/DIVISIONE', length:4000 }">
+                                                        <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
+                                                    </ComboBox>
+                                            </form:fields></form:FormElement>
                                             
 
                                             <form:FormElement label="{i18n>Destinatario}">
                                                 <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>Destinatario}" showSecondaryValues="true" items="{ path: 'sHelp>/CENTRO_LAVORO', length:2500 }" selectedKey="{PianiDetail>/Destinatario}">
-                                                        <core:ListItem key="{sHelp>Arbpl}" text="{sHelp>Arbpl}" additionalText="{sHelp>Werks} - {sHelp>Destinatario}"/>
-                                                    </ComboBox></form:fields>
+                                                        <core:ListItem key="{sHelp>Destinatario}" text="{sHelp>Destinatario}" additionalText="{sHelp>Werks} - {sHelp>Arbpl}"/>
+                                                    </ComboBox>
+                                                    
+                                                    </form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{i18n>Percorso}">
                                                 <form:fields><Input value="{PianiDetail>/Percorso}" maxLength="15"/></form:fields>
                                             </form:FormElement>
-                                            
-                                            <form:FormElement label="{i18n>FineCard}"><form:fields><Input value="{PianiDetail>/FineCard}" enabled="false" maxLength="4"/></form:fields></form:FormElement>
-                                            <form:FormElement label="{i18n>Scostamento}"><form:fields><Input value="{PianiDetail>/Scostamento}" enabled="false" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>FlagInterc}"><form:fields><Switch type="AcceptReject" state="{PianiDetail>/FlagInterc}" /></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>FlagMateriali}"><form:fields><Switch type="AcceptReject" state="{PianiDetail>/FlagMateriali}"/></form:fields></form:FormElement>
+                                            <form:FormElement label="{i18n>FlagPrestazioni}"><form:fields><Switch type="AcceptReject" state="{PianiDetail>/FlagPrestazioni}"/></form:fields></form:FormElement>
+                                           
                                             </form:formElements>
                                     </form:FormContainer>
                                 </form:formContainers>
@@ -501,7 +558,7 @@
                                     <Column width="6em" id="aCol3"><Text text="{i18n>FlagAttivo}"/></Column>
 
                                     
-                                    <Column width="16em" visible="false" id="aCol11"><Label text="{i18n>DesBreve}"/></Column>
+                                    <Column width="16em" visible="false" id="aCol11"><Label text="{i18n>DesBreveAE}"/></Column>
                                     <Column width="16em" visible="false" id="aCol12"><Text text="{i18n>ComponentTipo}"/></Column>
                                     <Column width="10em" visible="false" id="aCol13"><Text text="{i18n>IntegTxtEsteso}"/></Column>
                                     <!--
@@ -606,11 +663,12 @@
                                     <ColumnListItem vAlign="Middle">
                                         <cells>
                                             <Input value="{MatnrDetail>Cont}" editable="{ parts:[{path:'MatnrDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}" maxLength="10"/>
-                                            <Input showSuggestion="true" value="{MatnrDetail>Matnr}" suggestionItemSelected="onSuggestMatnrSelect" suggestionItems="{sHelp>/Matnr}" suggest=".onSuggestMatnr" editable="{ parts:[{path:'MatnrDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}">
+                                            <Input showSuggestion="true" maxSuggestionWidth="40em" value="{MatnrDetail>Matnr}" suggestionItemSelected="onSuggestMatnrSelect" suggestionItems="{sHelp>/MATNR}" suggest=".onSuggestMatnr" editable="{ parts:[{path:'MatnrDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}">
                                                 <suggestionItems>
                                                     <core:ListItem text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname4}"/>
                                                 </suggestionItems>
                                             </Input>
+                                           
                                             <Input value="{MatnrDetail>Maktx}" editable="{ parts:[{path:'MatnrDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}" maxLength="40"/>
                                             <Input value="{MatnrDetail>Menge}" maxLength="17" type="Number"/>
                                             <ComboBox selectedKey="{MatnrDetail>Meins}" valueStateText="{i18n>valueState} {i18n>Meins}" items="{ path: 'sHelp>/MEINS', length:2000 }" change="handleChangeCb" showSecondaryValues="true">
@@ -619,7 +677,7 @@
                                             <ComboBox id="cbDivisione" selectedKey="{MatnrDetail>Werks}" change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>Werks}" showSecondaryValues="true" items="{ path: 'sHelp>/DIVISIONE', length:4000 }">
                                                 <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                                             </ComboBox>
-                                            <Input showSuggestion="true" value="{MatnrDetail>Lgort}" suggestionRows="{sHelp>/LGORT}" suggest=".onSuggestLgort">
+                                            <Input showSuggestion="true" maxSuggestionWidth="30em" value="{MatnrDetail>Lgort}" suggestionRows="{sHelp>/LGORT}" suggest=".onSuggestLgort">
                                                 <suggestionColumns>
                                                     <Column>
                                                         <Label text="{i18n>Lgort}"/>
@@ -679,7 +737,7 @@
                                     <ColumnListItem vAlign="Middle">
                                         <cells>
                                             <Input value="{ServiziDetail>Cont}" editable="{ parts:[{path:'ServiziDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}" maxLength="10"/>
-                                            <Input showSuggestion="true" value="{ServiziDetail>Asnum}" suggestionRows="{sHelp>/Asnum}" suggest=".onSuggestAsnum" editable="{ parts:[{path:'ServiziDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}">
+                                            <Input showSuggestion="true" value="{ServiziDetail>Asnum}" suggestionRows="{sHelp>/ASNUM}" suggest=".onSuggestAsnum" editable="{ parts:[{path:'ServiziDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}">
                                                 <suggestionColumns>
                                                     <Column>
                                                         <Label text="{i18n>Asnum}"/>

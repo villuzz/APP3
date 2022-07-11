@@ -255,7 +255,7 @@
                   <Text text="{ parts:[{path:'allIndex>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Text text="{ parts:[{path:'allIndex>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Input value="{allIndex>DESTINATARIO}" />
-                  <Input value="{allIndex>CodAzione}" />
+                  <Input value="{allIndex>AZIONE}" type="Number" />
                 </cells>
               </ColumnListItem>
             </items>

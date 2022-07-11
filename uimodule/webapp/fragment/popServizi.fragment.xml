@@ -36,7 +36,7 @@
                       <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKGRP', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
-                      <ComboBox  selectedKey="{aServizi>EKGRP}" valueStateText="{i18n>valueState} {i18n>EKGRP}" items="{ path: 'sHelp>/EKORG', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
+                      <ComboBox  selectedKey="{aServizi>EKORG}" valueStateText="{i18n>valueState} {i18n>EKORG}" items="{ path: 'sHelp>/EKORG', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >
                         <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname2}"/>
                       </ComboBox>
                       <ComboBox  selectedKey="{aServizi>AFNAM}" valueStateText="{i18n>valueState} {i18n>AFNAM}" items="{ path: 'sHelp>/AFNAM', length:2000 }" change="handleChangeCb" showSecondaryValues= "true" >

@@ -360,7 +360,7 @@ sap.ui.define([
             // sData.InizioVal = (sValue[oResource.getText("InizioVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("InizioVal").replaceAll(" ", "_")].toString();
             sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
             sData.Appuntam = (sValue[oResource.getText("Appuntam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Appuntam").replaceAll(" ", "_")].toString();
-            sData.Azione = (sValue[oResource.getText("Azione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Azione").replaceAll(" ", "_")].toString();
+            sData.Azione = (sValue[oResource.getText("Azione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Azione").replaceAll(" ", "_")].toString().padStart(5, "0");
             sData.Banfn = (sValue[oResource.getText("Banfn").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Banfn").replaceAll(" ", "_")].toString();
             sData.Cdl = (sValue[oResource.getText("Cdl").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl").replaceAll(" ", "_")].toString();
             sData.Cdl1 = (sValue[oResource.getText("Cdl1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cdl1").replaceAll(" ", "_")].toString();
@@ -1090,9 +1090,17 @@ sap.ui.define([
                 aFilters.push(new Filter("IEquipmentActEl", FilterOperator.EQ, sFilter.IEquipmentActEl));
             }
             if (sFilter.IComponentTipoActEl !== undefined && sFilter.IComponentTipoActEl !== "") {
-                aFilters.push(new Filter("IComponentTipoActEl", FilterOperator.CP, sFilter.IComponentTipoActEl));
+                aFilters.push(new Filter("IComponentTipoActEl", FilterOperator.Contains, sFilter.IComponentTipoActEl));
             }
-
+            if (sFilter.IPoint !== undefined && sFilter.IPoint !== "") {
+              aFilters.push(new Filter("IPoint", FilterOperator.EQ, sFilter.IPoint));
+            }
+            if (sFilter.ITplnrActEl !== undefined && sFilter.ITplnrActEl !== "") {
+              aFilters.push(new Filter("ITplnrActEl", FilterOperator.EQ, sFilter.ITplnrActEl));
+          }
+          if (sFilter.IStComponente !== undefined && sFilter.IStComponente !== "") {
+            aFilters.push(new Filter("IStComponente", FilterOperator.EQ, sFilter.IStComponente));
+        }
             if (sFilter.IPriorita !== undefined) {
                 if (sFilter.IPriorita.length !== 0) {
                     tempFilter = this.multiFilterText(sFilter.IPriorita, "IPriorita");
@@ -1105,6 +1113,26 @@ sap.ui.define([
                     aFilters = aFilters.concat(tempFilter);
                 }
             }
+            if (sFilter.ITipoGestione !== undefined) {
+              if (sFilter.ITipoGestione.length !== 0) {
+                  tempFilter = this.multiFilterText(sFilter.ITipoGestione, "ITipoGestione");
+                  aFilters = aFilters.concat(tempFilter);
+              }
+          }
+          if (sFilter.ITipoGestione1 !== undefined) {
+            if (sFilter.ITipoGestione1.length !== 0) {
+                tempFilter = this.multiFilterText(sFilter.ITipoGestione1, "ITipoGestione1");
+                aFilters = aFilters.concat(tempFilter);
+            }
+        }
+        if (sFilter.ITipoGestione2 !== undefined) {
+          if (sFilter.ITipoGestione2.length !== 0) {
+              tempFilter = this.multiFilterText(sFilter.ITipoGestione2, "ITipoGestione2");
+              aFilters = aFilters.concat(tempFilter);
+          }
+      }
+
+
             var aSelIndici = "",
                 aSelInd = [];
 

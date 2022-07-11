@@ -56,7 +56,7 @@ sap.ui.define([
             }
         },
         onTestoEstesoAE: async function (line) {
-            var Tdname = "ZAE" + line.IndexPmo.padStart(18, "0") + line.Cont.padStart(10, "0");
+            var Tdname = "ZAE" + line.IndexPmo.padStart(12, "0") + line.Cont.padStart(10, "0");
             var aFilters = [];
             aFilters.push(new Filter("Tdname", FilterOperator.EQ, Tdname));
             aFilters.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
@@ -66,7 +66,7 @@ sap.ui.define([
             return result;
         },
         onTestoEstesoI: async function (line) {
-            var Tdname = "ZI" + line.IndexPmo.padStart(18, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
+            var Tdname = "ZI" + line.IndexPmo.padStart(12, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
             var aFilters = [];
             aFilters.push(new Filter("Tdname", FilterOperator.EQ, Tdname));
             aFilters.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
@@ -77,26 +77,17 @@ sap.ui.define([
         },
         onTestoEstesoISave: async function (line, Testo) {
           if (Testo !== undefined && Testo !== null && Testo !== ""){
-            var Tdname = "ZI" + line.IndexPmo.padStart(18, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
-            var sTesto = {
-                "Tdname": Tdname,
-                "Tdid": "ST",
-                "Tdspras": "I",
-                "Tdobject": "TEXT",
-                "Overwrite": "X",
-                "Testo": Testo
-            };
-            var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
-            if (result !== "") {
-                var sUrl = "/TestiEstesi(Testo='" + Testo + "')";
-                delete sTesto.Testo;
-                await this._updateHanaNoError(sUrl, sTesto);
-            }
+            var Tdname = "ZI" + line.IndexPmo.padStart(12, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
+            await this.TestoSave(Tdname, Testo);
           }
         },
         onTestoEstesoAESave: async function (line, Testo) {
           if (Testo !== undefined && Testo !== null && Testo !== ""){
-            var Tdname = "ZAE" + line.IndexPmo.padStart(18, "0") + line.Cont.padStart(10, "0");
+            var Tdname = "ZAE" + line.IndexPmo.padStart(12, "0") + line.Cont.padStart(10, "0");
+            await this.TestoSave(Tdname, Testo);
+          }
+        },
+        TestoSave: async function (Tdname, Testo) {
             var sTesto = {
                 "Tdname": Tdname,
                 "Tdid": "ST",
@@ -105,14 +96,37 @@ sap.ui.define([
                 "Overwrite": "X",
                 "Testo": Testo
             };
+
+            /*var aFilters = [];
+            aFilters.push(new Filter("Tdname", FilterOperator.EQ, Tdname));
+            aFilters.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
+            aFilters.push(new Filter("Tdspras", FilterOperator.EQ, "I"));
+            aFilters.push(new Filter("Tdobject", FilterOperator.EQ, "TEXT"));
+            await this._removeHanaShowError("/TestiEstesiDelete", aFilters);*/
+
             var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
-            if (result !== "") {
-                var sUrl = "/TestiEstesi(Testo='" + Testo + "')";
-                delete sTesto.Testo;
-                await this._updateHanaNoError(sUrl, sTesto);
+            if (result !== ""){
+              var sUrl = "/TestiEstesi(Testo='" + Testo + "')";
+              delete sTesto.Testo;
+              await this._updateHanaNoError(sUrl, sTesto);
             }
-          }
         },
+        ControlAzioni: async function (sData) {
+
+          if (sData.Tplnr === "" || sData.Tplnr === undefined) {
+            return "Inserire Tecnologia";
+          }
+          if (sData.Sistem === "" || sData.Sistem === undefined) {
+              return "Inserire Sistema";
+          }
+          if (sData.Progres === null || sData.Progres === undefined || sData.Progres === "") {
+              return "Inserire Progressivo";
+          }
+          if (sData.Classe === "" || sData.Classe === undefined) {
+              return "Inserire Classe";
+          }
+          return "";
+      },
         formatUzeit: function (duration) {
             if (duration === undefined) {
                 return "00:00:00";

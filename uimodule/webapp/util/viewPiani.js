@@ -19,7 +19,6 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col9", order: 9, text: oResource.getText("DesBreve"), visible: true},
               {id: "Piani-tbPiani-col10", order: 10, text: oResource.getText("Sistema"), visible: true},
               {id: "Piani-tbPiani-col11", order: 11, text: oResource.getText("Classe"), visible: true},
-              {id: "Piani-tbPiani-col12", order: 12, text: oResource.getText("Progres"), visible: true},
               {id: "Piani-tbPiani-col13", order: 13, text: oResource.getText("Indisponibilita"), visible: true},
               {id: "Piani-tbPiani-col14", order: 14, text: oResource.getText("TipoGestione"), visible: true},
               {id: "Piani-tbPiani-col15", order: 15, text: oResource.getText("TipoGestione1"), visible: true},
@@ -91,7 +90,6 @@ sap.ui.define(['jquery.sap.global'], function (jQuery) {
               {id: "Piani-tbPiani-col81", order: 81, text: oResource.getText("Differibile"), visible: false},
               {id: "Piani-tbPiani-col82", order: 82, text: oResource.getText("Divisionec"), visible: false},
               {id: "Piani-tbPiani-col83", order: 83, text: oResource.getText("EquipmentCompo"), visible: false},
-              {id: "Piani-tbPiani-col84", order: 84, text: oResource.getText("EquipmentOdm"), visible: false},
               {id: "Piani-tbPiani-col85", order: 85, text: oResource.getText("FineCard"), visible: false},
               
               {id: "Piani-tbPiani-col87", order: 87, text: oResource.getText("FlagInterc"), visible: false},

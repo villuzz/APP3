@@ -181,7 +181,7 @@
                                     <Label text="{i18n>SedeTecnicaEcc}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
                                 <form:fields>
-                                    <Text text="{sSelect>/SEDE_TECNICA_ECC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="{sSelect>/SEDE_ECC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">
@@ -247,14 +247,14 @@
             <ScrollContainer width="100%" horizontal="true">
                 <Table id="tbPiani2" items="{ path: 'allIndex2>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
             <columns>
-              <Column width="10em" id= "Rcol1"><Text text="{i18n>INDEX}"/></Column>
+              <Column width="10em" id= "Rcol1"><Text text="{i18n>nINDEX}"/></Column>
               	<!-- <Column width="10em" id= "Rcol1" demandPopin="false" >
                   <header >
                     <Text text="{i18n>INDEX}" wrapping="true" />
                   </header>
                 </Column> -->
               <Column width="10em" id= "Rcol3"><Text text="{i18n>ATTIVO}"/></Column>              
-              <Column width="10em" id= "Rcol2"><Text text="{i18n>CONTATORE}"/></Column>
+              <Column width="10em" id= "Rcol2"><Text text="{i18n>nCONTATORE}"/></Column>
               <Column width="5em" id= "Rcol104"><Text text="{i18n>Materiali}"/></Column>
               <Column width="5em" id= "Rcol105"><Text text="{i18n>Servizi}"/></Column>
               <Column width="10em" id= "Rcol5"><Text text="{i18n>SISTEMA}"/></Column>
@@ -451,7 +451,7 @@
                   <Text text="{ parts:[{path:'allIndex2>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Text text="{ parts:[{path:'allIndex2>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
                   <Text text="{allIndex2>DESTINATARIO}" />
-                  <Text text="{allIndex2>CodAzione}" />
+                  <Text text="{allIndex2>AZIONE}" />
                 </cells>
               </ColumnListItem>
             </items>

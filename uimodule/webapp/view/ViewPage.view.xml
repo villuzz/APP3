@@ -154,9 +154,9 @@
                                   </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem id="FISedeTecnica" visible="true" groupName="__$INTERNAL$" name="FYSedeTecnica" label="{i18n>SedeTecnica2}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem id="FIIStComponente" visible="true" groupName="__$INTERNAL$" name="FYIStComponente" label="{i18n>SedeTecnica2}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/SedeTecnica}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
+                                <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/IStComponente}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
                                                 <suggestionColumns>
                                                     <Column>
                                                         <Label text="{i18n>Functlocation}"/>
@@ -302,7 +302,30 @@
                                   </MultiComboBox>
                                   </fb:control>
                             </fb:FilterGroupItem>
-                            
+                            <fb:FilterGroupItem id="FIITplnrActEl" visible="true" groupName="__$INTERNAL$" name="FYITplnrActEl" label="{i18n>ITplnrActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/ITplnrActEl}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
+                                                <suggestionColumns>
+                                                    <Column>
+                                                        <Label text="{i18n>Functlocation}"/>
+                                                    </Column>
+                                                    <Column hAlign="Center">
+                                                        <Label text="{i18n>Category}"/>
+                                                    </Column>
+                                                    <Column hAlign="End">
+                                                        <Label text="{i18n>Descript}"/>
+                                                    </Column>
+                                                </suggestionColumns>
+                                                <suggestionRows>
+                                                    <ColumnListItem>
+                                                        <Label text="{sHelp>Functlocation}"/>
+                                                        <Label text="{sHelp>Category}"/>
+                                                        <Label text="{sHelp>Descript}"/>
+                                                    </ColumnListItem>
+                                                </suggestionRows>
+                                            </Input>
+                              </fb:control>
+                            </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIIEquipmentActEl" visible="true" groupName="__$INTERNAL$" name="FYIEquipmentActEl" label="{i18n>IEquipmentActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
                                 <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentActEl}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
@@ -363,7 +386,6 @@
                         <Column width="20em" id="col9"><Text text="{i18n>DesBreve}"/></Column>
                         <Column width="10em" id="col10"><Text text="{i18n>Sistema}"/></Column>
                         <Column width="10em" id="col11"><Text text="{i18n>Classe}"/></Column>
-                        <Column width="10em" id="col12"><Text text="{i18n>Progres}"/></Column>
                         <Column width="10em" id="col13"><Text text="{i18n>Indisponibilita}"/></Column>
                         <Column width="10em" id="col14"><Text text="{i18n>TipoGestione}"/></Column>
                         <Column width="10em" id="col15"><Text text="{i18n>TipoGestione1}"/></Column>
@@ -435,7 +457,6 @@
                         <Column width="10em" id="col81"><Text text="{i18n>Differibile}"/></Column>
                         <Column width="10em" id="col82"><Text text="{i18n>IDivisioneu}"/></Column>
                         <Column width="10em" id="col83"><Text text="{i18n>EquipmentCompo}"/></Column>
-                        <Column width="10em" id="col84"><Text text="{i18n>EquipmentOdm}"/></Column>
                         <Column width="10em" id="col85"><Text text="{i18n>FineCard}"/></Column>
                         <Column width="10em" id="col86"><Text text="{i18n>FlagAttivo}"/></Column>
                         <Column width="10em" id="col87"><Text text="{i18n>FlagInterc}"/></Column>
@@ -465,7 +486,6 @@
                                 <Text text="{mPiani>DesBreve}"/>
                                 <Text text="{mPiani>Sistema}"/>
                                 <Text text="{mPiani>Classe}"/>
-                                <Text text="{mPiani>Progres}"/>
                                 <Text text="{mPiani>Indisponibilita}"/>
                                 <Text text="{mPiani>TipoGestione}"/>
                                 <Text text="{mPiani>TipoGestione1}"/>
@@ -537,7 +557,6 @@
                                 <Text text="{mPiani>Differibile}"/>
                                 <Text text="{mPiani>IDivisioneu}"/>
                                 <Text text="{mPiani>EquipmentCompo}"/>
-                                <Text text="{mPiani>EquipmentOdm}"/>
                                 <Text text="{mPiani>FineCard}"/>
                                 <Switch type="AcceptReject" state="{mPiani>FlagAttivo}" customTextOn="Attivo" customTextOff="Disattivo" change="onChangeAttivo" ></Switch>
                                 <Text text="{mPiani>FlagInterc}"/>

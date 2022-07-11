@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-  <Dialog id="popServiziView" title="{i18n>Servizi}" showHeader="false" contentHeight="40%" contentWidth="60%">
+  <Dialog id="popServiziView" title="{i18n>Servizi}" showHeader="false" contentHeight="40%" contentWidth="90%">
     <content>
      <Table id="tServiziView" items="{ path: 'aServizi>/' }" sticky="ColumnHeaders" showNoData="false" mode="None">
           <columns>

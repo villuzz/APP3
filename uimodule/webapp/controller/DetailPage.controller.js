@@ -8,9 +8,13 @@ sap.ui.define([
     "PM030/APP3/util/AzioniTable",
     "PM030/APP3/util/MaterialTable",
     "PM030/APP3/util/ServiceTable",
-], function (Controller, JSONModel, MessageBox, TablePersoController, Filter, FilterOperator, AzioniTable, MaterialTable, ServiceTable) {
+    'sap/m/MessageToast',
+], function (Controller, JSONModel, MessageBox, TablePersoController, Filter, FilterOperator, AzioniTable, MaterialTable, ServiceTable, MessageToast) {
     "use strict";
 
+    var oResource;
+    oResource = new sap.ui.model.resource.ResourceModel({bundleName: "PM030.APP3.i18n.i18n"}).getResourceBundle();
+  
     return Controller.extend("PM030.APP3.controller.DetailPage", {
         onInit: function () {
 
@@ -106,7 +110,7 @@ sap.ui.define([
 
             for (var i = 0; i < sPiani[0].T_ACT_ELSet.results.length; i++) {
 
-              sPiani[0].T_ACT_ELSet.results[i].Uzeit = this.formatUzeit(sPiani[0].T_ACT_ELSet.results[i].Uzeit.ms);
+                sPiani[0].T_ACT_ELSet.results[i].Uzeit = this.formatUzeit(sPiani[0].T_ACT_ELSet.results[i].Uzeit.ms);
                 if (sPiani[0].T_ACT_ELSet.results[i].FlagAttivo === "X") {
                     sPiani[0].T_ACT_ELSet.results[i].FlagAttivo = true;
                 } else {
@@ -133,11 +137,11 @@ sap.ui.define([
             this.lineSelected = oEvent.getSource().getBindingContext("AzioniDetail").getObject();
             this.lineSelected.sel = "P";
 
-            if (this.lineSelected.TESTO_ESTESO_P !== undefined){
-              this.getView().byId("vTextArea").setValue(this.lineSelected.TESTO_ESTESO_P);
+            if (this.lineSelected.TESTO_ESTESO_P !== undefined) {
+                this.getView().byId("vTextArea").setValue(this.lineSelected.TESTO_ESTESO_P);
             } else {
-              var result = await this.onTestoEstesoAE(this.lineSelected);
-              this.getView().byId("vTextArea").setValue(result);
+                var result = await this.onTestoEstesoAE(this.lineSelected);
+                this.getView().byId("vTextArea").setValue(result);
             }
             this.byId("popTesto").open();
         },
@@ -145,11 +149,11 @@ sap.ui.define([
             this.lineSelected = this.getView().getModel("PianiDetail").getData();
             this.lineSelected.sel = "T";
 
-            if (this.lineSelected.TESTO_ESTESO !== undefined){
-              this.getView().byId("vTextArea").setValue(this.lineSelected.TESTO_ESTESO);
+            if (this.lineSelected.TESTO_ESTESO !== undefined) {
+                this.getView().byId("vTextArea").setValue(this.lineSelected.TESTO_ESTESO);
             } else {
-              var result = await this.onTestoEstesoI(this.lineSelected);
-              this.getView().byId("vTextArea").setValue(result);
+                var result = await this.onTestoEstesoI(this.lineSelected);
+                this.getView().byId("vTextArea").setValue(result);
             }
 
             this.byId("popTesto").open();
@@ -158,12 +162,12 @@ sap.ui.define([
             this.byId("popTesto").close();
         },
         onCloseTestoConfirm: function () {
-          if (this.lineSelected.sel === "P") {
-              this.lineSelected.TESTO_ESTESO_P = this.getView().byId("vTextArea").getValue();
-          } else {
-              this.lineSelected.TESTO_ESTESO = this.getView().byId("vTextArea").getValue();
-          }
-          this.byId("popTesto").close();
+            if (this.lineSelected.sel === "P") {
+                this.lineSelected.TESTO_ESTESO_P = this.getView().byId("vTextArea").getValue();
+            } else {
+                this.lineSelected.TESTO_ESTESO = this.getView().byId("vTextArea").getValue();
+            }
+            this.byId("popTesto").close();
         },
         onChangetipoFrequenza: function (oEvent) {
 
@@ -261,125 +265,143 @@ sap.ui.define([
             var aMatnr = this.getView().getModel("MatnrDetail").getData();
             var aServizi = this.getView().getModel("ServiziDetail").getData();
             var i,
+                msg,
                 sURL;
-                var actualIndex = {};
+            var actualIndex = {};
 
-            // Righe Spostate
-            for (i = 0; i < this.spostaAzioni.length; i++) {
-                this.spostaAzioni[i].Uzeit = this.createUzeit();
-                result = await this._saveHana("/T_ACT_EL", this.compilaAzione(this.spostaAzioni[i]));
-                await this.onTestoEstesoAESave(result, this.TESTO_ESTESO_P);
-                for (var j = 0; j < this.spostaMateriali.length; j++) {
-                    if (Number(this.spostaAzioni[i].Cont) === Number(this.spostaMateriali[j].Cont)) {
-                        this.spostaMateriali[j].IndexPmo = this.spostaAzioni[i].IndexPmo;
-                        this.spostaMateriali[j].Cont = this.spostaAzioni[i].Cont;
-                        await this._saveHana("/T_PMO_M", this.compilaMatnr(this.spostaMateriali[j]));
-                    }
-                }
-                for (var k = 0; k < this.spostaServizi.length; k++) {
-                    if (Number(this.spostaAzioni[i].Cont) === Number(this.spostaServizi[k].Cont)) {
-                        this.spostaServizi[k].IndexPmo = this.spostaAzioni[i].IndexPmo;
-                        this.spostaServizi[k].Cont = this.spostaAzioni[i].Cont;
-                        await this._saveHana("/T_PMO_S", this.compilaServizi(this.spostaServizi[k]));
-                    }
+            // msg = await this.ControlIndex(sIndex);
+            for (i = 0; i < aAzioni.length; i++) { // controllo Dati Azioni Elementari
+                msg = await this.ControlAzioni(aAzioni[i]);
+
+                if (msg !== "") {
+                    msg = msg + ", riga Azioni n° " + (
+                        i + 1
+                    );
+                    break;
                 }
             }
 
-            // Righe Rimosse
-            for (i = 0; i < this.delAzioni.length; i++) {
-                if (this.delAzioni[i].Create !== "X") {
-                    sURL = "/T_ACT_EL(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + this.delAzioni[i].Cont + "')";
-                    await this._removeHana(sURL);
+            if (msg !== "") {
+                MessageBox.error(msg);
+            } else {
+                // Creazione
+                // Righe Spostate
+                for (i = 0; i < this.spostaAzioni.length; i++) {
+                    this.spostaAzioni[i].Uzeit = this.createUzeit();
+                    result = await this._saveHana("/T_ACT_EL", this.compilaAzione(this.spostaAzioni[i]));
+                    await this.onTestoEstesoAESave(result, this.TESTO_ESTESO_P);
+                    for (var j = 0; j < this.spostaMateriali.length; j++) {
+                        if (Number(this.spostaAzioni[i].Cont) === Number(this.spostaMateriali[j].Cont)) {
+                            this.spostaMateriali[j].IndexPmo = this.spostaAzioni[i].IndexPmo;
+                            this.spostaMateriali[j].Cont = this.spostaAzioni[i].Cont;
+                            await this._saveHana("/T_PMO_M", this.compilaMatnr(this.spostaMateriali[j]));
+                        }
+                    }
+                    for (var k = 0; k < this.spostaServizi.length; k++) {
+                        if (Number(this.spostaAzioni[i].Cont) === Number(this.spostaServizi[k].Cont)) {
+                            this.spostaServizi[k].IndexPmo = this.spostaAzioni[i].IndexPmo;
+                            this.spostaServizi[k].Cont = this.spostaAzioni[i].Cont;
+                            await this._saveHana("/T_PMO_S", this.compilaServizi(this.spostaServizi[k]));
+                        }
+                    }
+                }
+
+                // Righe Rimosse
+                for (i = 0; i < this.delAzioni.length; i++) {
+                    if (this.delAzioni[i].Create !== "X") {
+                        sURL = "/T_ACT_EL(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + this.delAzioni[i].Cont + "')";
+                        await this._removeHana(sURL);
+
+                        for (var j = 0; j < aMatnr.length; j++) {
+                            if (Number(this.delAzioni[i].Cont) === Number(aMatnr[j].Cont)) {
+                                sURL = "/T_PMO_M(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + aMatnr[j].Cont + "',Matnr='" + aMatnr[j].Matnr.padStart(18, "0") + "',Maktx='" + aMatnr[j].Maktx + "')";
+                                await this._removeHana(sURL);
+                            }
+                        }
+                        for (var k = 0; k < aServizi.length; k++) {
+                            if (Number(this.delAzioni[i].Cont) === Number(aServizi[k].Cont)) {
+                                sURL = "/T_PMO_S(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + aServizi[k].Cont + "',Asnum='" + aServizi[k].Asnum + "',Asktx='" + aServizi[k].Asktx + "')";
+                                await this._removeHana(sURL);
+                            }
+                        }
+                    }
+                }
+                for (i = 0; i < this.delMaterial.length; i++) {
+                    if (this.delMaterial[i].Create !== "X") {
+                        sURL = "/T_PMO_M(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + this.delMaterial[i].Cont + "',Matnr='" + this.delMaterial[i].Matnr.padStart(18, "0") + "',Maktx='" + this.delMaterial[i].Maktx + "')";
+                        await this._removeHana(sURL);
+                    }
+                }
+                for (i = 0; i < this.delServizi.length; i++) {
+                    if (this.delServizi[i].Create !== "X") {
+                        sURL = "/T_PMO_S(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + this.delServizi[i].Cont + "',Asnum='" + this.delServizi[i].Asnum + "',Asktx='" + this.delServizi[i].Asktx + "')";
+                        await this._removeHana(sURL);
+                    }
+                }
+                if (aAzioni.length === 0) {
+                    sIndex.FlagAttivo = "";
+                }
+                if (sIndex.Create !== "X") {
+                    sURL = "/T_PMO('" + sIndex.IndexPmo + "')";
+                    actualIndex = this.compilaIndex(sIndex);
+                    result = await this._updateHana(sURL, actualIndex);
+                    await this.onTestoEstesoISave(actualIndex, this.TESTO_ESTESO);
+                } else {
+                    sURL = "/T_PMO('" + sIndex.IndexPmo + "')";
+                    sIndex.Uzeit = this.createUzeit();
+                    actualIndex = this.compilaIndex(sIndex);
+                    result = await this._saveHana("/T_PMO", actualIndex);
+                    actualIndex.IndexPmo = result.IndexPmo;
+                    await this.onTestoEstesoISave(actualIndex, this.TESTO_ESTESO);
+                }
+                for (i = 0; i < aAzioni.length; i++) {
+                    if (aAzioni[i].Create !== "X") {
+                        sURL = "/" + aAzioni[i].__metadata.uri.split("/")[aAzioni[i].__metadata.uri.split("/").length - 1];
+                        result = await this._updateHana(sURL, this.compilaAzione(aAzioni[i]));
+                        await this.onTestoEstesoAESave(aAzioni[i], this.TESTO_ESTESO_P);
+                        actualCont = aAzioni[i].Cont;
+                    } else {
+                        aAzioni[i].IndexPmo = actualIndex.IndexPmo;
+                        actualCont = aAzioni[i].Cont;
+                        aAzioni[i].Cont = "";
+                        aAzioni[i].Uzeit = this.createUzeit();
+                        result = await this._saveHana("/T_ACT_EL", this.compilaAzione(aAzioni[i]));
+                        await this.onTestoEstesoAESave(result, this.TESTO_ESTESO_P);
+                        aAzioni[i].Cont = result.Cont;
+                    }
 
                     for (var j = 0; j < aMatnr.length; j++) {
-                        if (Number(this.delAzioni[i].Cont) === Number(aMatnr[j].Cont)) {
-                            sURL = "/T_PMO_M(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + aMatnr[j].Cont + "',Matnr='" + aMatnr[j].Matnr.padStart(18, "0") + "',Maktx='" + aMatnr[j].Maktx + "')";
-                            await this._removeHana(sURL);
+                        if (actualCont.toString() === aMatnr[j].Cont.toString()) {
+                            if (aMatnr[j].Create !== "X") {
+                                sURL = "/T_PMO_M(IndexPmo='" + aMatnr[j].IndexPmo + "',Cont='" + aMatnr[j].Cont + "',Matnr='" + aMatnr[j].Matnr.padStart(18, "0") + "',Maktx='" + aMatnr[j].Maktx + "')";
+                                await this._updateHana(sURL, this.compilaMatnr(aMatnr[j]));
+                            } else {
+                                aMatnr[j].IndexPmo = actualIndex.IndexPmo;
+                                aMatnr[j].Cont = aAzioni[i].Cont;
+                                await this._saveHana("/T_PMO_M", this.compilaMatnr(aMatnr[j]));
+                            }
                         }
                     }
                     for (var k = 0; k < aServizi.length; k++) {
-                        if (Number(this.delAzioni[i].Cont) === Number(aServizi[k].Cont)) {
-                            sURL = "/T_PMO_S(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + aServizi[k].Cont + "',Asnum='" + aServizi[k].Asnum + "',Asktx='" + aServizi[k].Asktx + "')";
-                            await this._removeHana(sURL);
+                        if (actualCont.toString() === aServizi[k].Cont.toString()) {
+                            if (aServizi[k].Create !== "X") {
+                                sURL = "/" + aServizi[k].__metadata.uri.split("/")[aServizi[k].__metadata.uri.split("/").length - 1];
+                                await this._updateHana(sURL, this.compilaServizi(aServizi[k]));
+                            } else {
+                                aServizi[k].IndexPmo = actualIndex.IndexPmo;
+                                aServizi[k].Cont = aAzioni[i].Cont;
+                                await this._saveHana("/T_PMO_S", this.compilaServizi(aServizi[k]));
+                            }
                         }
                     }
                 }
-            }
-            for (i = 0; i < this.delMaterial.length; i++) {
-                if (this.delMaterial[i].Create !== "X") {
-                    sURL = "/T_PMO_M(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + this.delMaterial[i].Cont + "',Matnr='" + this.delMaterial[i].Matnr.padStart(18, "0") + "',Maktx='" + this.delMaterial[i].Maktx + "')";
-                    await this._removeHana(sURL);
-                }
-            }
-            for (i = 0; i < this.delServizi.length; i++) {
-                if (this.delServizi[i].Create !== "X") {
-                    sURL = "/T_PMO_S(IndexPmo='" + sIndex.IndexPmo + "',Cont='" + this.delServizi[i].Cont + "',Asnum='" + this.delServizi[i].Asnum + "',Asktx='" + this.delServizi[i].Asktx + "')";
-                    await this._removeHana(sURL);
-                }
-            }
-            if (aAzioni.length === 0) {
-                sIndex.FlagAttivo = "";
-            }
-            if (sIndex.Create !== "X") {
-                sURL = "/T_PMO('" + sIndex.IndexPmo + "')";
-                actualIndex = this.compilaIndex(sIndex);
-                result = await this._updateHana(sURL, actualIndex);
-                await this.onTestoEstesoISave(actualIndex, this.TESTO_ESTESO);
-            } else {
-                sURL = "/T_PMO('" + sIndex.IndexPmo + "')";
-                sIndex.Uzeit = this.createUzeit();
-                actualIndex = this.compilaIndex(sIndex);
-                result = await this._saveHana("/T_PMO", actualIndex);
-                actualIndex.IndexPmo = result.IndexPmo;
-                await this.onTestoEstesoISave(actualIndex, this.TESTO_ESTESO);
-            }
-            for (i = 0; i < aAzioni.length; i++) {
-                if (aAzioni[i].Create !== "X") {
-                    sURL = "/" + aAzioni[i].__metadata.uri.split("/")[aAzioni[i].__metadata.uri.split("/").length - 1];
-                    result = await this._updateHana(sURL, this.compilaAzione(aAzioni[i]));
-                    await this.onTestoEstesoAESave(aAzioni[i], this.TESTO_ESTESO_P);
-                    actualCont = aAzioni[i].Cont;
+                if (this.selCOPY !== "X") {
+                    MessageBox.success("Indice modificato con successo");
                 } else {
-                    aAzioni[i].IndexPmo = actualIndex.IndexPmo;
-                    actualCont = aAzioni[i].Cont;
-                    aAzioni[i].Cont = "";
-                    aAzioni[i].Uzeit = this.createUzeit();
-                    result = await this._saveHana("/T_ACT_EL", this.compilaAzione(aAzioni[i]));
-                    await this.onTestoEstesoAESave(result, this.TESTO_ESTESO_P);
-                    aAzioni[i].Cont = result.Cont;
+                    MessageBox.success("Indice " + actualIndex.IndexPmo + " creato con successo");
                 }
-
-                for (var j = 0; j < aMatnr.length; j++) {
-                    if (actualCont.toString() === aMatnr[j].Cont.toString()) {
-                        if (aMatnr[j].Create !== "X") {
-                            sURL = "/T_PMO_M(IndexPmo='" + aMatnr[j].IndexPmo + "',Cont='" + aMatnr[j].Cont + "',Matnr='" + aMatnr[j].Matnr.padStart(18, "0") + "',Maktx='" + aMatnr[j].Maktx + "')";
-                            await this._updateHana(sURL, this.compilaMatnr(aMatnr[j]));
-                        } else {
-                            aMatnr[j].IndexPmo = actualIndex.IndexPmo;
-                            aMatnr[j].Cont = aAzioni[i].Cont;
-                            await this._saveHana("/T_PMO_M", this.compilaMatnr(aMatnr[j]));
-                        }
-                    }
-                }
-                for (var k = 0; k < aServizi.length; k++) {
-                    if (actualCont.toString() === aServizi[k].Cont.toString()) {
-                        if (aServizi[k].Create !== "X") {
-                            sURL = "/" + aServizi[k].__metadata.uri.split("/")[aServizi[k].__metadata.uri.split("/").length - 1];
-                            await this._updateHana(sURL, this.compilaServizi(aServizi[k]));
-                        } else {
-                            aServizi[k].IndexPmo = actualIndex.IndexPmo;
-                            aServizi[k].Cont = aAzioni[i].Cont;
-                            await this._saveHana("/T_PMO_S", this.compilaServizi(aServizi[k]));
-                        }
-                    }
-                }
+                this.navTo("ViewPage", {ret: "X"});
             }
-            if (this.selCOPY !== "X") {
-                MessageBox.success("Indice modificato con successo");
-            } else {
-                MessageBox.success("Indice " + actualIndex.IndexPmo + " creato con successo");
-            }
-            this.navTo("ViewPage", {ret: "X"});
             sap.ui.core.BusyIndicator.hide();
         },
         compilaIndex: function (sIndex) {
@@ -396,13 +418,13 @@ sap.ui.define([
             // delete sIndex.Uzeit;
             delete sIndex.__metadata;
 
-            if (sIndex.TESTO_ESTESO !== undefined){
-              this.TESTO_ESTESO = JSON.stringify(sIndex.TESTO_ESTESO);
-              this.TESTO_ESTESO = JSON.parse(this.TESTO_ESTESO);
-              delete sIndex.TESTO_ESTESO;
-              sIndex.IntegTxtEsteso = "X";
+            if (sIndex.TESTO_ESTESO !== undefined) {
+                this.TESTO_ESTESO = JSON.stringify(sIndex.TESTO_ESTESO);
+                this.TESTO_ESTESO = JSON.parse(this.TESTO_ESTESO);
+                delete sIndex.TESTO_ESTESO;
+                sIndex.IntegTxtEsteso = "X";
             } else {
-              this.TESTO_ESTESO = "";
+                this.TESTO_ESTESO = "";
             }
 
             if (sIndex.Divisioneu === undefined || sIndex.Divisioneu === null) {
@@ -712,13 +734,13 @@ sap.ui.define([
             delete sAzione.__metadata;
             delete sAzione.Create;
 
-            if (sAzione.TESTO_ESTESO_P !== undefined){
-              this.TESTO_ESTESO_P = JSON.stringify(sAzione.TESTO_ESTESO_P);
-              this.TESTO_ESTESO_P = JSON.parse(this.TESTO_ESTESO_P);
-              delete sAzione.TESTO_ESTESO_P;
-              sAzione.IntegTxtEsteso = "X";
+            if (sAzione.TESTO_ESTESO_P !== undefined) {
+                this.TESTO_ESTESO_P = JSON.stringify(sAzione.TESTO_ESTESO_P);
+                this.TESTO_ESTESO_P = JSON.parse(this.TESTO_ESTESO_P);
+                delete sAzione.TESTO_ESTESO_P;
+                sAzione.IntegTxtEsteso = "X";
             } else {
-              this.TESTO_ESTESO_P = "";
+                this.TESTO_ESTESO_P = "";
             }
 
             if (sAzione.FlagAttivo) {
@@ -902,6 +924,24 @@ sap.ui.define([
             this.getView().getModel("AzioniDetail").refresh();
         },
         onCancelAE: function () {
+          var items = this.getView().byId("tAzioni").getSelectedItems();
+            if (items.length > 0) {
+                MessageBox.warning(oResource.getText("msgCancellaAE"), {
+                    actions: [
+                        MessageBox.Action.OK, MessageBox.Action.CANCEL
+                    ],
+                    emphasizedAction: MessageBox.Action.OK,
+                    onClose: function (sAction) {
+                        if (sAction === MessageBox.Action.OK) {
+                            this.onCancelAEConfirm();
+                        }
+                    }.bind(this)
+                });
+            } else {
+                MessageToast.show("Seleziona una riga");
+            }
+        },
+        onCancelAEConfirm: function () {
             var sel = this.getView().byId("tAzioni").getSelectedItems();
             var AZIONI = this.getView().getModel("AzioniDetail").getData();
             // var deleteRecord = oEvent.getSource().getBindingContext("sSelect").getObject();
@@ -1073,6 +1113,24 @@ sap.ui.define([
             this.getView().getModel("ServiziDetail").refresh();
         },
         onCancelS: function () {
+          var items = this.getView().byId("tServizi").getSelectedItems();
+            if (items.length > 0) {
+                MessageBox.warning(oResource.getText("msgCancellaS"), {
+                    actions: [
+                        MessageBox.Action.OK, MessageBox.Action.CANCEL
+                    ],
+                    emphasizedAction: MessageBox.Action.OK,
+                    onClose: function (sAction) {
+                        if (sAction === MessageBox.Action.OK) {
+                            this.onCancelSConfirm();
+                        }
+                    }.bind(this)
+                });
+            } else {
+                MessageToast.show("Seleziona una riga");
+            }
+        },
+        onCancelSConfirm: function () {
             var sel = this.getView().byId("tServizi").getSelectedItems();
             var SERVIZI = this.getView().getModel("ServiziDetail").getData();
             // var deleteRecord = oEvent.getSource().getBindingContext("sSelect").getObject();
@@ -1126,6 +1184,24 @@ sap.ui.define([
             this.getView().getModel("MatnrDetail").refresh();
         },
         onCancelM: function () {
+          var items = this.getView().byId("tMateriali").getSelectedItems();
+            if (items.length > 0) {
+                MessageBox.warning(oResource.getText("msgCancellaM"), {
+                    actions: [
+                        MessageBox.Action.OK, MessageBox.Action.CANCEL
+                    ],
+                    emphasizedAction: MessageBox.Action.OK,
+                    onClose: function (sAction) {
+                        if (sAction === MessageBox.Action.OK) {
+                            this.onCancelMConfirm();
+                        }
+                    }.bind(this)
+                });
+            } else {
+                MessageToast.show("Seleziona una riga");
+            }
+        },
+        onCancelMConfirm: function () {
             var sel = this.getView().byId("tMateriali").getSelectedItems();
             var MATNR = this.getView().getModel("MatnrDetail").getData();
             // var deleteRecord = oEvent.getSource().getBindingContext("sSelect").getObject();

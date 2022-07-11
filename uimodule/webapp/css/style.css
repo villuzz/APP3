@@ -112,3 +112,22 @@ height: 100% !important;
 .sapFDynamicPageTitle .sapFDynamicPageTitleMain>.sapFDynamicPageTitleMainInner .sapFDynamicPageTitleMainContent .sapMTB {
   justify-content: space-between !important;
 }
+  
+.linkRef{
+  margin-left: auto !important;
+}
+
+.titleText{
+  font-size: medium !important;
+}
+
+.sapFDynamicPageTitle .sapFDynamicPageTitleMain{
+  flex-wrap: wrap !important;
+}
+.titleText{
+  font-size: medium !important;
+}
+html.sap-desktop .sapFDynamicPage.sapFDynamicPageWithScroll .sapFDynamicPageTitleWrapper{
+  height: auto !important;
+}
+

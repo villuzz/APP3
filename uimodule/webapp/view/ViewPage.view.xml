@@ -1,26 +1,50 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:f="sap.f" controllerName="PM030.APP3.controller.ViewPage">
     <f:DynamicPage id="dynamicPageId" preserveHeaderStateOnScroll="true" showFooter="false" fitContent="true" class="sapUiContentPadding">
-    <f:landmarkInfo>
+
+        <f:landmarkInfo>
             <f:DynamicPageAccessibleLandmarkInfo rootRole="Region" contentRole="Main" headerRole="Banner" rootLabel="{i18n>Overview_rootLabel}" contentLabel="{i18n>Overview_contentLabel}" headerLabel="{i18n>Overview_headerLabel}"/>
           </f:landmarkInfo>
-        <f:title>
+
+        <!-- <f:title>
             <f:DynamicPageTitle>
                 <f:content>
-                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                        <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
+                  <OverflowToolbar  class="toolbarHeader sapUiTinyMarginBottom">
+                    <HBox height="100%" alignItems="Center" class="sapUiTinyMarginBegin" alignContent="Center" justifyContent="Center">
+                       <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd" ariaDescribedBy="ButtonHome" ariaLabelledBy="ActionHome"/>
                         <Title text="{i18n>Piani}" class="sapUiTinyMarginTop"/>
                     </HBox>
+                    <HBox class="linkRef">
+                     <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" ariaDescribedBy="LinkAccessibility" ariaLabelledBy="ActionAccessibility"/>
+                    </HBox>
+                    <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center" >
+                     <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonEdit" ariaLabelledBy="ActionEdit"/>
+                    <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonCopy" ariaLabelledBy="ActionCopy"/>
+                    <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonDelete" ariaLabelledBy="ActionDelete"/>
+                    </HBox>
+                  </OverflowToolbar>
                 </f:content>
-                <f:actions></f:actions>
-                <f:navigationActions>
-                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
-                    <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin"/>
-                    <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin"/>
-                    <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin"/>
-                </f:navigationActions>
             </f:DynamicPageTitle>
-        </f:title>
+          </f:title>   -->
+
+          <f:title>
+				<f:DynamicPageTitle class="titleHeader">
+					<f:heading>
+            <HBox>
+             <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd" ariaDescribedBy="ButtonHome" ariaLabelledBy="ActionHome"/>
+             <Title text="{i18n>Piani}" class="titleText sapUiTinyMarginTop" />
+            </HBox>
+					</f:heading>
+					<f:navigationActions>
+						<Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" />
+					 <Button text="Nuovo" icon="sap-icon://document" press="handleNuovo" class="sapUiTinyMarginBegin" ariaLabelledBy="{i18n>NewButton}" tooltip="{i18n>NewButton}"/>
+             <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonEdit" ariaLabelledBy="ActionEdit"/>
+                    <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonCopy" ariaLabelledBy="ActionCopy"/>
+                    <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonDelete" ariaLabelledBy="ActionDelete"/>
+              </f:navigationActions>
+				</f:DynamicPageTitle>
+			</f:title>
         <f:header>
+        
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
                     <fb:FilterBar search="onSearchFilters" clear="onClearFilter" showClearOnFB="true" showRestoreButton="true" showClearButton="true">

@@ -105,13 +105,22 @@ height: 100% !important;
 .sapFDynamicPageTitle .sapFDynamicPageTitleMain>.sapFDynamicPageTitleMainInner .sapFDynamicPageTitleMainContent .sapMTB {
   justify-content: space-between !important;
 }
-
-/*
-non funziona lo scroll dei filtri con questi due attivi  
-.sapMPage>section.sapMPageEnableScrolling {
-  overflow: visible !important;
+  
+.linkRef{
+  margin-left: auto !important;
 }
 
-.sapMPage>section {
-  overflow: visible !important;
-}*/
+.titleText{
+  font-size: medium !important;
+}
+
+.sapFDynamicPageTitle .sapFDynamicPageTitleMain{
+  flex-wrap: wrap !important;
+}
+.titleText{
+  font-size: medium !important;
+}
+html.sap-desktop .sapFDynamicPage.sapFDynamicPageWithScroll .sapFDynamicPageTitleWrapper{
+  height: auto !important;
+}
+

@@ -14,7 +14,7 @@ sap.ui.define([
 
     var oResource;
     oResource = new sap.ui.model.resource.ResourceModel({bundleName: "PM030.APP3.i18n.i18n"}).getResourceBundle();
-  
+
     return Controller.extend("PM030.APP3.controller.DetailPage", {
         onInit: function () {
 
@@ -73,8 +73,13 @@ sap.ui.define([
                     Contatore = Contatore + 1;
                 }
             } else {
-                if (Number(sPiani[0].T_PMOSet.results[0].Appuntam) > 0) {
-                    sPiani[0].T_PMOSet.results[0].visibleAE = false;
+                aFilters = [];
+                aFilters.push(new Filter("IndexOdm", FilterOperator.EQ, sPiani[0].T_PMOSet.results[0].IndexPmo));
+                var aWO = await this._getTableNoError("/T_APP_WO", aFilters);
+                if (aWO.length > 0) {
+                  sPiani[0].T_PMOSet.results[0].visibleAE = false;
+                } else {
+                  sPiani[0].T_PMOSet.results[0].visibleAE = true;
                 }
                 sPiani[0].T_PMOSet.results[0].IndexPmo = this.formatZero(sPiani[0].T_PMOSet.results[0].IndexPmo);
                 for (var i = 0; i < sPiani[0].T_ACT_ELSet.results.length; i++) {
@@ -197,9 +202,6 @@ sap.ui.define([
             sData.Toth5 = Number(sData.Num5) * Number(sData.Persone5) * Number(sData.Hper5);
             this.getView().getModel("PianiDetail").refresh();
         },
-        formatZero: function (value) {
-            return(value !== undefined && value !== null) ? value.replace(/^0+/, "") : value;
-        },
         onSuggestSEDE: async function (oEvent) {
             if (oEvent.getParameter("suggestValue").length >= 3) {
                 var sTerm = oEvent.getParameter("suggestValue");
@@ -264,20 +266,69 @@ sap.ui.define([
             var aAzioni = this.getView().getModel("AzioniDetail").getData();
             var aMatnr = this.getView().getModel("MatnrDetail").getData();
             var aServizi = this.getView().getModel("ServiziDetail").getData();
-            var i,
-                msg,
-                sURL;
-            var actualIndex = {};
+            var i, j,
+                msg = "",
+                sURL,
+                actualIndex = {},
+                allCont = [];
 
             // msg = await this.ControlIndex(sIndex);
-            for (i = 0; i < aAzioni.length; i++) { // controllo Dati Azioni Elementari
-                msg = await this.ControlAzioni(aAzioni[i]);
+            if (msg === "") {
+                for (i = 0; i < aAzioni.length; i++) { // controllo Dati Azioni Elementari
+                    allCont.push(aAzioni[i].Cont);
+                    msg = await this.ControlAzioni(aAzioni[i]);
 
-                if (msg !== "") {
-                    msg = msg + ", riga Azioni n° " + (
-                        i + 1
-                    );
-                    break;
+                    if (msg !== "") {
+                        msg = msg + ", riga Azioni n° " + (
+                            i + 1
+                        );
+                        break;
+                    }
+                }
+            }
+            if (msg === "") {
+                for (i = 0; i < aMatnr.length; i++) { // controllo Dati Matnr
+                    msg = await this.ControlMatnr(aMatnr[i]);
+                    if (!allCont.includes(aMatnr[i].Cont)) {
+                        msg = "Azione elementare non contenuta nell'Index";
+                    }
+                    if (aMatnr[i].Create === "X"){
+                    for (j = 0; j < aAzioni.length; j++) {
+                        if (aAzioni[j].Cont === aMatnr[i].Cont && aAzioni[j].FlagAttivo === false ){
+                          msg = "Non si possono aggiungere Materiali ad un AE Disattivo";
+                          break;
+                        }
+                      }
+                    }
+                    if (msg !== "") {
+                        msg = msg + ", riga Matnr n° " + (
+                            i + 1
+                        );
+                        break;
+                    }
+                }
+            }
+            if (msg === "") {
+                for (i = 0; i < aServizi.length; i++) { // controllo Dati Servizi
+
+                    msg = await this.ControlServizi(aServizi[i]);
+                    if (!allCont.includes(aServizi[i].Cont)) {
+                        msg = "Azione elementare non contenuta nell'Index";
+                    }
+                    if (aServizi[i].Create === "X"){
+                      for (j = 0; j < aAzioni.length; j++) {
+                          if (aAzioni[j].Cont === aServizi[i].Cont && aAzioni[j].FlagAttivo === false ){
+                            msg = "Non si possono aggiungere Servizi ad un AE Disattivo";
+                            break;
+                          }
+                        }
+                      }
+                    if (msg !== "") {
+                        msg = msg + ", riga Servizi n° " + (
+                            i + 1
+                        );
+                        break;
+                    }
                 }
             }
 
@@ -401,8 +452,7 @@ sap.ui.define([
                     MessageBox.success("Indice " + actualIndex.IndexPmo + " creato con successo");
                 }
                 this.navTo("ViewPage", {ret: "X"});
-            }
-            sap.ui.core.BusyIndicator.hide();
+            } sap.ui.core.BusyIndicator.hide();
         },
         compilaIndex: function (sIndex) {
             delete sIndex.Create;
@@ -924,7 +974,7 @@ sap.ui.define([
             this.getView().getModel("AzioniDetail").refresh();
         },
         onCancelAE: function () {
-          var items = this.getView().byId("tAzioni").getSelectedItems();
+            var items = this.getView().byId("tAzioni").getSelectedItems();
             if (items.length > 0) {
                 MessageBox.warning(oResource.getText("msgCancellaAE"), {
                     actions: [
@@ -1113,7 +1163,7 @@ sap.ui.define([
             this.getView().getModel("ServiziDetail").refresh();
         },
         onCancelS: function () {
-          var items = this.getView().byId("tServizi").getSelectedItems();
+            var items = this.getView().byId("tServizi").getSelectedItems();
             if (items.length > 0) {
                 MessageBox.warning(oResource.getText("msgCancellaS"), {
                     actions: [
@@ -1151,8 +1201,6 @@ sap.ui.define([
                 Asktx: "",
                 Menge: "",
                 Meins: "",
-                Tbtwr: "",
-                Waers: "",
                 Ekgrp: "",
                 Ekorg: "",
                 Afnam: "",
@@ -1184,7 +1232,7 @@ sap.ui.define([
             this.getView().getModel("MatnrDetail").refresh();
         },
         onCancelM: function () {
-          var items = this.getView().byId("tMateriali").getSelectedItems();
+            var items = this.getView().byId("tMateriali").getSelectedItems();
             if (items.length > 0) {
                 MessageBox.warning(oResource.getText("msgCancellaM"), {
                     actions: [
@@ -1224,9 +1272,6 @@ sap.ui.define([
                 Meins: "",
                 Lgort: "",
                 Werks: "",
-                Charg: "",
-                Tbtwr: "",
-                Waers: "",
                 Ekgrp: "",
                 Ekorg: "",
                 Afnam: "",

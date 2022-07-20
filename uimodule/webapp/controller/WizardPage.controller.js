@@ -24,6 +24,32 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().getRoute("WizardPage").attachPatternMatched(this._onObjectMatched, this);
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.attachRouteMatched(this.routeMatched, this);
+
+            /*var oinIndex = this.getView().byId("inEquip");
+            var fnValidator = function (args) {
+                var text = args.text;
+
+                return new sap.m.Token({key: text, text: text});
+            };
+            oinIndex.addValidator(fnValidator);*/
+
+            /*this.byId("inEquip").setFilterFunction(function(sTerm, oItem) {
+              // A case-insensitive 'starts with' filter
+              var sPattern = "^" + sTerm;
+              debugger
+              return oItem.getText().match(new RegExp(sPattern, "i"));
+            });*/
+            var oinEquip = this.getView().byId("inEquip");
+            oinEquip.addValidator(function(args){
+              if (args.suggestionObject){
+                var key = args.suggestionObject.getCells()[0].getText();
+                return new sap.m.Token({key: key, text: key});
+              } else {
+                var text = args.text;
+                return new sap.m.Token({key: text, text: text});
+              }
+            });
+
         },
         _onObjectMatched: async function () {
 
@@ -164,9 +190,6 @@ sap.ui.define([
                 IndexPmo: "",
                 InizioVal: sRow.INIZIOVAL,
                 Uzeit: this.createUzeit(),
-                // Appuntam	IN APP4
-                // Azione	Non li popoliamo
-                // Banfn	IN APP4
                 Cdl: sRow.CENTRO_LAVORO,
                 Cdl1: sRow.CENTRO_LAVORO,
                 Cdl2: sRow.CENTRO_LAVORO,
@@ -178,30 +201,15 @@ sap.ui.define([
                 Classe: sRow.CLASSE,
                 Azione: (sRow.AZIONE === undefined) ? "" : sRow.AZIONE.toString().padStart(5, "0"),
                 Collective: sRow.COLLECTIVE,
-                // Criticita	Non li popoliamo
-                // DataInizCiclo	Non li popoliamo
-                // Datum	Non li popoliamo
-                // Daune	Non li popoliamo
-                // DayAdv	Non li popoliamo
                 DesBreve: sRow.DESC_BREVE,
-                // DesComponente	Non li popoliamo
-                // DesEstesa	da visualizzare in APP4
+                DesComponente: sRow.DES_COMPONENTE,
                 Destinatario: sRow.DESTINATARIO,
-                // Determinanza	Non li popoliamo
-                // Differibile	Non li popoliamo
                 Divisionec: sRow.DIVISIONEC,
                 DurataCiclo: sRow.FREQ_TEMPO,
-                // EquipmentCompo	Non li popoliamo
-                // EquipmentOdm	Non li popoliamo
-                // FineCard	Non li popoliamo
+                EquipmentCompo: sRow.EQUIPMENT,
                 FlagAttivo: (
                 (sRow.ATTIVO === false) ? "" : "X"
             ),
-                // FlagInterc	Non li popoliamo
-                // FlagMateriali	Non li popoliamo
-                // FlagOdm	Non li popoliamo
-                // FlagPrestazioni	Non li popoliamo
-                // FlgMail	Non li popoliamo
                 Frequenza: sRow.UNITA_TEMPO,
                 Hper: (
                 (sRow.HPER === undefined || sRow.HPER === "") ? undefined : Number(sRow.HPER)
@@ -269,17 +277,14 @@ sap.ui.define([
                 Point: sRow.POINT,
                 Priorita: sRow.PRIORITA,
                 Progres: sRow.PROGRES,
-                // Scostamento	IN APP4
-                // SedeTecOdm	Non li popoliamo
                 Sistema: sRow.SISTEMA,
-                // StComponente	Non li popoliamo
+                StComponente: sRow.SEDE_ECC,
                 Steus: sRow.STEUS,
                 Steus1: sRow.STEUS_1,
                 Steus2: sRow.STEUS_2,
                 Steus3: sRow.STEUS_3,
                 Steus4: sRow.STEUS_4,
                 Steus5: sRow.STEUS_5,
-                // TipoAggr	Non li popoliamo
                 TipoAttivita: sRow.TIPO_ATTIVITA,
                 TipoGestione: sRow.TIPO_GESTIONE,
                 TipoGestione1: sRow.TIPO_GESTIONE_1,
@@ -292,10 +297,30 @@ sap.ui.define([
                 Toth3: ( (sRow.Toth3 === undefined || sRow.Toth3 === "") ? undefined : Number(sRow.Toth3) ),
                 Toth4: ( (sRow.Toth4 === undefined || sRow.Toth4 === "") ? undefined : Number(sRow.Toth4) ),
                 Toth5: ( (sRow.Toth5 === undefined || sRow.Toth5 === "") ? undefined : Number(sRow.Toth5) ),
+                UltimaEsecuz: new Date(),
+                //Uname: this.getModel("UserInfo").getData().id.substring(0, 12)
                 // TxtCiclo	Non li popoliamo
-                // UltimaEsecuz	Non li popoliamo
-                // Uname	Non li popoliamo
                 // UnitaCiclo	Non li popoliamo
+                // DataInizCiclo	Non li popoliamo
+                // Appuntam	IN APP4
+                // Banfn	IN APP4
+                // Criticita	Non li popoliamo
+                // Datum	Non li popoliamo
+                // Daune	Non li popoliamo
+                // DayAdv	Non li popoliamo
+                // DesEstesa	da visualizzare in APP4
+                // Determinanza	Non li popoliamo
+                // Differibile	Non li popoliamo
+                // EquipmentOdm	Non li popoliamo
+                // FineCard	Non li popoliamo
+                // FlagInterc	Non li popoliamo
+                // FlagMateriali	Non li popoliamo
+                // FlagOdm	Non li popoliamo
+                // FlagPrestazioni	Non li popoliamo
+                // FlgMail	Non li popoliamo
+                // Scostamento	IN APP4
+                // SedeTecOdm	Non li popoliamo
+                // TipoAggr	Non li popoliamo
 
             };
 
@@ -320,7 +345,7 @@ sap.ui.define([
                   (sRow.SEDE_ECC === undefined || sRow.SEDE_ECC === "") ? "" : sRow.SEDE_ECC
               ),
                 Equipment: sRow.EQUIPMENT,
-                DesBreve: sRow.DESC_BREVE,
+                DesBreve: sRow.DESC_PROG,
                 IntegTxtEsteso: (
                 (sRow.TESTO_ESTESO_P === undefined || sRow.TESTO_ESTESO_P === "") ? "" : "X"
             ),
@@ -331,7 +356,15 @@ sap.ui.define([
                 Uname: "AE82826",
                 Uzeit: this.createUzeit()
             };
-
+            if (sRow.DesBreve === undefined && sRow.DesBreve === ""){
+              var aFilter = [];
+              aFilter.push(new Filter("Progres", FilterOperator.EQ, sRow.Progres));
+              aFilter.push(new Filter("Sistema", FilterOperator.EQ, sRow.Sistem));
+              var result = await this._getLinenoError("/T_ACT_PROG", aFilter);
+              if (result) {
+                sRow.DesBreve = result.Txt;
+              }
+            }
             var sAzione = await this._saveHana("/T_ACT_EL", sData);
 
             if (sRow.TESTO_ESTESO_P !== undefined && sRow.TESTO_ESTESO_P !== null && sRow.TESTO_ESTESO_P !== ""){
@@ -958,9 +991,19 @@ sap.ui.define([
                     aFilters = aFilters.concat(tempFilter);
                 }
             }
-            if (sFilter.EQUIPMENT2 !== undefined) {
+            /*if (sFilter.EQUIPMENT2 !== undefined) {
                 oFilter = new Filter("EQUIPMENT", FilterOperator.EQ, sFilter.EQUIPMENT2);
                 aFilters.push(oFilter);
+            }*/
+            if (this.getView().byId("inEquip").getTokens().length > 0) {
+              var aSelIndici = this.getView().byId("inEquip").getTokens();
+              var aSelInd = [];
+              for (var i = 0; i < aSelIndici.length; i++) {
+                  aSelInd.push(aSelIndici[i].getProperty("key"));
+              }
+              tempFilter = this.multiFilterText(aSelInd, "EQUIPMENT");
+              aFilters = aFilters.concat(tempFilter);
+
             }
             if (sFilter.SEDE_TECNICA !== undefined && sFilter.SEDE_TECNICA !== "") {
               oFilter = new Filter("SEDE_TECNICA", FilterOperator.EQ, sFilter.SEDE_TECNICA);
@@ -1094,13 +1137,7 @@ sap.ui.define([
                 }
             } else {
                 allIndex = await this._getTableIndexAzioni("/Index_Azioni", aFilters);
-
-                //Sede Tecnica Equipment
-                aFilters = [];
-                aFilters.push(new Filter("Equnr", FilterOperator.EQ, sFilter.EQUIPMENT2));
-                var sLine = await this._getLine("/HierarchyEquip", aFilters);
-
-                allIndex = await this.compilaIndice(allIndex, sFilter, sLine.HierarchySet.results[0].Tplnr);
+                allIndex = await this.compilaIndice(allIndex, sFilter);
             } aIndex = [],
             sIndex = {};
             this.colorToSet = "G";
@@ -1186,9 +1223,9 @@ sap.ui.define([
 
             if (allIndex.length > 0) {
                 for (var i = 0; i < allIndex.length; i++) { // PreCompila con i dati inseriti
-                    if (sFilter.EQUIPMENT !== undefined) {
+                    /*if (sFilter.EQUIPMENT !== undefined) {
                         allIndex[i].EQUIPMENT = sFilter.EQUIPMENT;
-                    }
+                    }*/
                     if (sFilter.FINEVAL !== undefined) {
                         allIndex[i].FINEVAL = sFilter.FINEVAL;
                     }
@@ -1206,6 +1243,16 @@ sap.ui.define([
                     }
                     if (SEDE_ECC !== undefined) {
                         allIndex[i].SEDE_ECC = SEDE_ECC;
+                    }
+                    if (allIndex[i].EQUIPMENT !== undefined && allIndex[i].EQUIPMENT !== "" && allIndex[i].EQUIPMENT !== null) { //Sede Tecnica Equipment
+                    var aFilters = [];
+                    aFilters.push(new Filter("Equnr", FilterOperator.EQ, allIndex[i].EQUIPMENT));
+                    var sLine = await this._getLinenoError("/HierarchyEquip", aFilters);
+                    if (sLine !== undefined){
+                      if (sLine.HierarchySet.results.length > 0){
+                      allIndex[i].SEDE_ECC = sLine.HierarchySet.results[0].Tplnr;
+                      }
+                    }
                     }
 
                     var selConcat = allIndex[i].LIVELLO1 + '-' + allIndex[i].LIVELLO2 + '-' + allIndex[i].LIVELLO3 + '-' + allIndex[i].LIVELLO4 + '-' + allIndex[i].LIVELLO5 + '-' + allIndex[i].LIVELLO6;
@@ -1313,7 +1360,7 @@ sap.ui.define([
             var oModel = this.getModel("sSelect").getData();
             var msg = "Selezionare uno dei campi obbligatori: Sede Tecnica o Equipment";
 
-            if ((oModel.SEDE_ECC === "" || oModel.SEDE_ECC === null || oModel.SEDE_ECC === undefined) && (oModel.EQUIPMENT2 === "" || oModel.EQUIPMENT2 === null || oModel.EQUIPMENT2 === undefined)) {
+            if ((oModel.SEDE_ECC === "" || oModel.SEDE_ECC === null || oModel.SEDE_ECC === undefined) && (this.getView().byId("inEquip").getTokens().length === 0)) {
                 MessageToast.show(msg);
                 return false;
             } else {

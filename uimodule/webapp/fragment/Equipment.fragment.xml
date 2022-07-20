@@ -1,0 +1,12 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	  <SelectDialog
+		id="EquipHelp"
+		title="{i18n>EQUIPMENT}"
+		items="{EQUIPMENT2>/}"
+		search="EquipSearch"
+		confirm="EquipConfirm"
+		cancel="EquipClose"
+		multiSelect="true">
+		<StandardListItem title="{EQUIPMENT2>Fieldname1}" description="{EQUIPMENT2>Fieldname3}" />
+	</SelectDialog>
+</core:FragmentDefinition>

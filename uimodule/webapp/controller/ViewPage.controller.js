@@ -55,9 +55,9 @@ sap.ui.define([
 
         },
         handleTestoView: async function (oEvent) {
-          var result = await this.onTestoEstesoI(oEvent.getSource().getBindingContext("mPiani").getObject());
-          this.getView().byId("vTextAreaView").setText(result);
-          this.byId("popTestoView").open();
+            var result = await this.onTestoEstesoI(oEvent.getSource().getBindingContext("mPiani").getObject());
+            this.getView().byId("vTextAreaView").setText(result);
+            this.byId("popTestoView").open();
         },
         onCloseTestoView: function () {
             this.byId("popTestoView").close();
@@ -77,10 +77,10 @@ sap.ui.define([
             if (items.length !== 0) {
                 for (var i = 0; i < items.length; i++) {
                     var line = items[i].getBindingContext("mPiani").getObject();
-                    aIndex.push(this.rowIndex(line));
+                    aIndex.push( await this.rowIndex(line));
                     for (k = 0; k < oAzioni.length; k++) {
                         if (line.IndexPmo === oAzioni[k].IndexPmo) {
-                            aContatore.push(this.rowContatore(oAzioni[k]));
+                           aContatore.push( await this.rowContatore(oAzioni[k]));
                         }
                     }
                     for (k = 0; k < oMatnr.length; k++) {
@@ -116,18 +116,18 @@ sap.ui.define([
                     skipHeader: false
                 });
                 XLSX.utils.book_append_sheet(wb, ws, oResource.getText("ServiziExcel"));
-                XLSX.writeFile(wb, "Prototipi.xlsx");
+                XLSX.writeFile(wb, "PianoDiManutenzione.xlsx");
 
             } else {
                 MessageToast.show("Seleziona almeno una riga");
             }
         },
-        rowIndex: function (sLine) {
+        rowIndex: async function (sLine) {
             var sData = {};
             sData[oResource.getText("ComponentTipo").replaceAll(" ", "_")] = sLine.ComponentTipo;
             sData[oResource.getText("Divisioneu").replaceAll(" ", "_")] = sLine.Divisioneu;
             sData[oResource.getText("FineVal").replaceAll(" ", "_")] = sLine.FineVal;
-            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = sLine.IndexPmo;
+            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = this.formatZero(sLine.IndexPmo);
             sData[oResource.getText("InizioVal").replaceAll(" ", "_")] = sLine.InizioVal;
             sData[oResource.getText("Uzeit").replaceAll(" ", "_")] = sLine.Uzeit;
             sData[oResource.getText("Appuntam").replaceAll(" ", "_")] = sLine.Appuntam;
@@ -174,7 +174,9 @@ sap.ui.define([
             sData[oResource.getText("Hper4").replaceAll(" ", "_")] = sLine.Hper4;
             sData[oResource.getText("Hper5").replaceAll(" ", "_")] = sLine.Hper5;
             sData[oResource.getText("Indisponibilita").replaceAll(" ", "_")] = sLine.Indisponibilita;
-            sData[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] = sLine.IntegTxtEsteso;
+            if (sLine.IntegTxtEsteso === "X"){
+              sData[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] = await this.onTestoEstesoI(sLine);
+            }
             sData[oResource.getText("Lstar").replaceAll(" ", "_")] = sLine.Lstar;
             sData[oResource.getText("Lstar1").replaceAll(" ", "_")] = sLine.Lstar1;
             sData[oResource.getText("Lstar2").replaceAll(" ", "_")] = sLine.Lstar2;
@@ -226,10 +228,10 @@ sap.ui.define([
             sData[oResource.getText("UnitaCiclo").replaceAll(" ", "_")] = sLine.UnitaCiclo;
             return sData;
         },
-        rowContatore: function (sLine) {
+        rowContatore: async function (sLine) {
             var sData = {};
-            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = sLine.IndexPmo;
-            sData[oResource.getText("Cont").replaceAll(" ", "_")] = sLine.Cont;
+            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = this.formatZero(sLine.IndexPmo);
+            sData[oResource.getText("Cont").replaceAll(" ", "_")] = this.formatZero(sLine.Cont);
             sData[oResource.getText("Sistem").replaceAll(" ", "_")] = sLine.Sistem;
             sData[oResource.getText("Progres").replaceAll(" ", "_")] = sLine.Progres;
             sData[oResource.getText("Classe").replaceAll(" ", "_")] = sLine.Classe;
@@ -238,11 +240,13 @@ sap.ui.define([
             sData[oResource.getText("Equipment").replaceAll(" ", "_")] = sLine.Equipment;
             sData[oResource.getText("ComponentTipo").replaceAll(" ", "_")] = sLine.ComponentTipo;
             sData[oResource.getText("DesBreve").replaceAll(" ", "_")] = sLine.DesBreve;
-            sData[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] = sLine.IntegTxtEsteso;
+            if (sLine.IntegTxtEsteso === "X"){
+              sData[oResource.getText("IntegTxtEsteso").replaceAll(" ", "_")] = await this.onTestoEstesoAE(sLine);
+            }
             sData[oResource.getText("FlagAttivo").replaceAll(" ", "_")] = sLine.FlagAttivo;
-            sData[oResource.getText("Datum").replaceAll(" ", "_")] = sLine.Datum;
-            sData[oResource.getText("Uname").replaceAll(" ", "_")] = sLine.Uname;
-            sData[oResource.getText("Uzeit").replaceAll(" ", "_")] = sLine.Uzeit;
+            // sData[oResource.getText("Datum").replaceAll(" ", "_")] = sLine.Datum;
+            // sData[oResource.getText("Uname").replaceAll(" ", "_")] = sLine.Uname;
+            // sData[oResource.getText("Uzeit").replaceAll(" ", "_")] = sLine.Uzeit;
             return sData;
         },
         handleUploadPiani: function () {
@@ -270,11 +274,14 @@ sap.ui.define([
                     result = [],
                     i = 0,
                     k = 0,
+                    j = 0,
                     aReturn = [],
-                    line = {};
+                    line = {}, allCont = [],
+                    aFilters, tableFilters;
+
 
                 for (i = 0; i < aIndiciTemp.length; i++) {
-                    line = this.formatIndici(aIndiciTemp[i]);
+                    line = await this.formatIndici(aIndiciTemp[i]);
                     aIndex.push(line);
                 }
                 for (i = 0; i < aAzioniTemp.length; i++) {
@@ -291,52 +298,117 @@ sap.ui.define([
                 }
 
                 for (i = 0; i < aIndex.length; i++) {
-                    result = await this.saveIndici(aIndex[i]);
-                    if (result !== "") {
-                        aReturn.push({
-                            type: "Error",
-                            title: "Indici riga " + (
-                                i + 2
-                            ) + " Excel andata in errore",
-                            description: result
-                        });
-                    }
-                    this.aRigheNuove = [];
-                    for (k = 0; k < aAzione.length; k++) {
-                        result = await this.saveAzioni(aAzione[k], aAzione);
+                    if (aIndex[i].IndexPmo !== "") {
+                        result = await this.saveIndici(aIndex[i]);
                         if (result !== "") {
                             aReturn.push({
                                 type: "Error",
-                                title: "Azione riga " + (
-                                    k + 2
+                                title: "Indici riga " + (
+                                    i + 2
                                 ) + " Excel andata in errore",
                                 description: result
                             });
                         }
-                    }
-                    for (k = 0; k < aServizi.length; k++) {
-                        result = await this.saveServizi(aServizi[k]);
-                        if (result !== "") {
-                            aReturn.push({
-                                type: "Error",
-                                title: "Servizio riga " + (
-                                    k + 2
-                                ) + " Excel andata in errore",
-                                description: result
-                            });
+                        this.aRigheNuove = [],
+                        this.aRigheSpostate = [];
+                        for (k = 0; k < aAzione.length; k++) {
+                            if (aAzione[k].IndexPmo !== "") {
+                                allCont.push(aAzione[k].Cont);
+                                result = await this.ControlAzioni(aAzione[k]);
+                                if (result === "") {
+                                result = await this.saveAzioni(aAzione[k], aAzione);
+                                }
+                                if (result !== "") {
+                                    aReturn.push({
+                                        type: "Error",
+                                        title: "Azione riga " + (
+                                            k + 2
+                                        ) + " Excel andata in errore",
+                                        description: result
+                                    });
+                                }
+                            }
                         }
-                    }
-                    for (k = 0; k < aMaterial.length; k++) {
-                        result = await this.saveMaterial(aMaterial[k]);
-                        if (result !== "") {
-                            aReturn.push({
-                                type: "Error",
-                                title: "Materiale riga " + (
-                                    k + 2
-                                ) + " Excel andata in errore",
-                                description: result
-                            });
+                        for (k = 0; k < aServizi.length; k++) {
+                            if (aServizi[k].IndexPmo !== "") {
+                                if (!this.aRigheSpostate.includes(aServizi[k].Cont)) {
+                                    result = await this.ControlServizi(aServizi[k]);
+                                    if (!allCont.includes(aServizi[k].Cont)) {
+                                      result = "Azione elementare non contenuta nell'Index";
+                                    }
+                                      for (j = 0; j < aAzione.length; j++) {
+                                          if (aAzione[j].Cont === aServizi[k].Cont && aAzione[j].FlagAttivo === "" ){
+                                            var aFilters = [];
+                                            aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, aServizi[k].IndexPmo));
+                                            aFilters.push(new Filter("Cont", FilterOperator.EQ, aServizi[k].Cont));
+                                            aFilters.push(new Filter("Asnum", FilterOperator.EQ, aServizi[k].Asnum));
+                                            aFilters.push(new Filter("Asktx", FilterOperator.EQ, aServizi[k].Asktx));
+                                            var tableFilters = await this._getTableNoError("/T_PMO_S", aFilters);
+                                            if (tableFilters.length === 0) {
+                                            result = "Non si possono aggiungere Servizi ad un AE Disattivo";
+                                            }
+                                            break;
+                                        }
+                                      }
+                                    if (result === "") {
+                                    result = await this.saveServizi(aServizi[k]);
+                                    }
+                                    if (result !== "") {
+                                        aReturn.push({
+                                            type: "Error",
+                                            title: "Servizio riga " + (
+                                                k + 2
+                                            ) + " Excel andata in errore",
+                                            description: result
+                                        });
+                                    }
+                                }
+                            }
                         }
+                        for (k = 0; k < aMaterial.length; k++) {
+                            if (aMaterial[k].IndexPmo !== "") {
+                                if (!this.aRigheSpostate.includes(aMaterial[k].Cont)) {
+                                    result = await this.ControlMatnr(aMaterial[k]);
+                                    if (!allCont.includes(aMaterial[k].Cont)) {
+                                      result = "Azione elementare non contenuta nell'Index";
+                                    }
+                                    for (j = 0; j < aAzione.length; j++) {
+                                      if (aAzione[j].Cont === aMaterial[k].Cont && aAzione[j].FlagAttivo === "" ){
+                                        aFilters = [];
+                                        aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, aMaterial[k].IndexPmo));
+                                        aFilters.push(new Filter("Cont", FilterOperator.EQ, aMaterial[k].Cont));
+                                        aFilters.push(new Filter("Matnr", FilterOperator.EQ, aMaterial[k].Matnr));
+                                        aFilters.push(new Filter("Maktx", FilterOperator.EQ, aMaterial[k].Maktx));
+                                        tableFilters = await this._getTableNoError("/T_PMO_M", aFilters);
+                                        if (tableFilters.length === 0) {
+                                        result = "Non si possono aggiungere Materiali ad un AE Disattivo";
+                                        }
+                                        break;
+                                    }
+                                  }
+                                  if (result === "") {
+                                    result = await this.saveMaterial(aMaterial[k]);
+                                    }
+                                    if (result !== "") {
+                                        aReturn.push({
+                                            type: "Error",
+                                            title: "Materiale riga " + (
+                                                k + 2
+                                            ) + " Excel andata in errore",
+                                            description: result
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                      aReturn.push({
+                        type: "Error",
+                        title: "Indici riga " + (
+                            i + 2
+                        ) + " Excel andata in errore",
+                        description: "Indice non trovato"
+                    });
                     }
                 }
                 if (aReturn.length === 0) {
@@ -352,13 +424,13 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide(0);
             }
         },
-        formatIndici: function (sValue) {
+        formatIndici: async function (sValue) {
             var sData = {};
             sData.Divisioneu = (sValue[oResource.getText("Divisioneu").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Divisioneu").replaceAll(" ", "_")].toString();
             // sData.FineVal = (sValue[oResource.getText("FineVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("FineVal").replaceAll(" ", "_")].toString();
-            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString().padStart(12, "0");
             // sData.InizioVal = (sValue[oResource.getText("InizioVal").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("InizioVal").replaceAll(" ", "_")].toString();
-            sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
+            //sData.Uzeit = (sValue[oResource.getText("Uzeit").replaceAll(" ", "_")] === undefined) ? "00:00:00" : sValue[oResource.getText("Uzeit").replaceAll(" ", "_")].toString();
             sData.Appuntam = (sValue[oResource.getText("Appuntam").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Appuntam").replaceAll(" ", "_")].toString();
             sData.Azione = (sValue[oResource.getText("Azione").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Azione").replaceAll(" ", "_")].toString().padStart(5, "0");
             sData.Banfn = (sValue[oResource.getText("Banfn").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Banfn").replaceAll(" ", "_")].toString();
@@ -443,12 +515,12 @@ sap.ui.define([
             sData.TipoGestione2 = (sValue[oResource.getText("TipoGestione2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoGestione2").replaceAll(" ", "_")].toString();
             sData.TipoOrdine = (sValue[oResource.getText("TipoOrdine").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoOrdine").replaceAll(" ", "_")].toString();
             sData.TipoPmo = (sValue[oResource.getText("TipoPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TipoPmo").replaceAll(" ", "_")].toString();
-            sData.Toth = (sValue[oResource.getText("Toth").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth").replaceAll(" ", "_")].toString();
-            sData.Toth1 = (sValue[oResource.getText("Toth1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth1").replaceAll(" ", "_")].toString();
-            sData.Toth2 = (sValue[oResource.getText("Toth2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth2").replaceAll(" ", "_")].toString();
-            sData.Toth3 = (sValue[oResource.getText("Toth3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth3").replaceAll(" ", "_")].toString();
-            sData.Toth4 = (sValue[oResource.getText("Toth4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth4").replaceAll(" ", "_")].toString();
-            sData.Toth5 = (sValue[oResource.getText("Toth5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth5").replaceAll(" ", "_")].toString();
+            // sData.Toth = (sValue[oResource.getText("Toth").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth").replaceAll(" ", "_")].toString();
+            // sData.Toth1 = (sValue[oResource.getText("Toth1").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth1").replaceAll(" ", "_")].toString();
+            // sData.Toth2 = (sValue[oResource.getText("Toth2").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth2").replaceAll(" ", "_")].toString();
+            // sData.Toth3 = (sValue[oResource.getText("Toth3").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth3").replaceAll(" ", "_")].toString();
+            // sData.Toth4 = (sValue[oResource.getText("Toth4").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth4").replaceAll(" ", "_")].toString();
+            // sData.Toth5 = (sValue[oResource.getText("Toth5").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Toth5").replaceAll(" ", "_")].toString();
             sData.TxtCiclo = (sValue[oResource.getText("TxtCiclo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("TxtCiclo").replaceAll(" ", "_")].toString();
             // sData.UltimaEsecuz = (sValue[oResource.getText("UltimaEsecuz").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("UltimaEsecuz").replaceAll(" ", "_")].toString();
             sData.Uname = (sValue[oResource.getText("Uname").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Uname").replaceAll(" ", "_")].toString();
@@ -461,11 +533,29 @@ sap.ui.define([
             sData.FlagPrestazioni = (sData.FlagPrestazioni === "X") ? true : false;
             // sData.FlgMail = ( sData.FlgMail === "X") ? true : false;
 
+            sData.Toth = Number(sData.Num) * Number(sData.Persone) * Number(sData.Hper);
+            sData.Toth1 = Number(sData.Num1) * Number(sData.Persone1) * Number(sData.Hper1);
+            sData.Toth2 = Number(sData.Num2) * Number(sData.Persone2) * Number(sData.Hper2);
+            sData.Toth3 = Number(sData.Num3) * Number(sData.Persone3) * Number(sData.Hper3);
+            sData.Toth4 = Number(sData.Num4) * Number(sData.Persone4) * Number(sData.Hper4);
+            sData.Toth5 = Number(sData.Num5) * Number(sData.Persone5) * Number(sData.Hper5);
+
+            var aFilter = [];
+            aFilter.push(new Filter("IIndexPmo", FilterOperator.EQ, sData.IndexPmo));
+            var result = await this._getTableNoError("/JoinPMO", aFilter);
+            if (result.length > 0) {
+              result = result[0].T_PMOSet.results[0];
+              sData.InizioVal = result.InizioVal;
+              sData.FineVal = result.FineVal;
+              sData.Uzeit = this.formatUzeit(result.Uzeit.ms);
+            } else {
+              sData.IndexPmo = "";
+            }
             return sData;
         },
         formatAzioni: function (sValue) {
             var sData = {};
-            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString().padStart(12, "0");
             sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
             sData.Sistem = (sValue[oResource.getText("Sistem").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Sistem").replaceAll(" ", "_")].toString();
             sData.Progres = (sValue[oResource.getText("Progres").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Progres").replaceAll(" ", "_")].toString();
@@ -485,9 +575,9 @@ sap.ui.define([
         },
         formatMaterial: function (sValue) {
             var sData = {};
-            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString().padStart(12, "0");
             sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
-            sData.Matnr = (sValue[oResource.getText("Matnr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matnr").replaceAll(" ", "_")].toString();
+            sData.Matnr = (sValue[oResource.getText("Matnr").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Matnr").replaceAll(" ", "_")].toString().padStart(18, "0");
             sData.Maktx = (sValue[oResource.getText("Maktx").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Maktx").replaceAll(" ", "_")].toString();
             sData.Menge = (sValue[oResource.getText("Menge").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Menge").replaceAll(" ", "_")].toString();
             sData.Meins = (sValue[oResource.getText("Meins").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Meins").replaceAll(" ", "_")].toString();
@@ -504,7 +594,7 @@ sap.ui.define([
         },
         formatServizi: function (sValue) {
             var sData = {};
-            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString();
+            sData.IndexPmo = (sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("IndexPmo").replaceAll(" ", "_")].toString().padStart(12, "0");
             sData.Cont = (sValue[oResource.getText("Cont").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Cont").replaceAll(" ", "_")].toString();
             sData.Asnum = (sValue[oResource.getText("Asnum").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Asnum").replaceAll(" ", "_")].toString();
             sData.Asktx = (sValue[oResource.getText("Asktx").replaceAll(" ", "_")] === undefined) ? "" : sValue[oResource.getText("Asktx").replaceAll(" ", "_")].toString();
@@ -521,28 +611,33 @@ sap.ui.define([
         },
         saveIndici: async function (sLine) {
             // Controlli
-
+            if (sLine.IntegTxtEsteso !== "" && sLine.IntegTxtEsteso !== undefined){
+              await this.onTestoEstesoISave(sLine, sLine.IntegTxtEsteso);
+              sLine.IntegTxtEsteso = "X";
+            } else {
+              sLine.IntegTxtEsteso = "";
+            }
             // Salvataggio - solo Update
             var sUrl = "/T_PMO(IndexPmo='" + sLine.IndexPmo + "')";
             return await this._updateHanaShowError(sUrl, sLine);
         },
-        saveAzioni: async function (sLine, aTable) {
-            // Controlli
+        saveAzioni: async function (sLine, aTable) { // Controlli
             var aFilters = [];
-            aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, sLine.IndexPmo));
+            aFilters.push(new Filter("IndexOdm", FilterOperator.EQ, sLine.IndexPmo));
             var aWO = await this._getTableNoError("/T_APP_WO", aFilters);
-            if (aWO === []){
-              return "Index con Appuntamento";
+            if (aWO.length > 0) {
+                return "Index con Appuntamento";
             }
             // Salvataggio - Update Insert Spostamento Delete
-            var sUrl = "/T_ACT_EL(IndexPmo='" + sLine.IndexPmo + "',Cont='" + sLine.Cont + "')",
+            var sUrlAE = "/T_ACT_EL(IndexPmo='" + sLine.IndexPmo + "',Cont='" + sLine.Cont + "')",
                 sURL = "";
             var result = "";
 
             switch (sLine.GestioneLoad) {
                 case "D":
+                    this.aRigheSpostate.push(sLine.Cont);
                     delete sLine.GestioneLoad;
-                    result = await this._removeHanaShowError("/T_ACT_EL");
+                    result = await this._removeHanaShowError(sUrlAE);
 
                     aFilters = [];
                     aFilters.push(new Filter("IndexPmo", FilterOperator.EQ, sLine.IndexPmo));
@@ -558,14 +653,22 @@ sap.ui.define([
                         sURL = "/T_PMO_S(IndexPmo='" + sLine.IndexPmo + "',Cont='" + aServizi[k].Cont + "',Asnum='" + aServizi[k].Asnum + "',Asktx='" + aServizi[k].Asktx + "')";
                         await this._removeHanaShowError(sURL);
                     }
+
                     break;
                 case "S":
+                    this.aRigheSpostate.push(sLine.Cont);
                     delete sLine.GestioneLoad;
                     var vIndex = "";
-                    await this._removeHanaShowError("/T_ACT_EL");
+                    await this._removeHanaShowError(sUrlAE);
                     for (var i = 0; i < aTable.length; i++) {
                         if (aTable[i].Cont === sLine.Cont && aTable[i].GestioneLoad === "X") {
                             delete aTable[i].GestioneLoad;
+                            if (aTable[i].IntegTxtEsteso !== "" && aTable[i].IntegTxtEsteso !== undefined){
+                              await this.onTestoEstesoAESave(aTable[i], aTable[i].IntegTxtEsteso);
+                              aTable[i].IntegTxtEsteso = "X";
+                            } else {
+                              aTable[i].IntegTxtEsteso = "";
+                            }
                             result = await this._saveHanaShowError("/T_ACT_EL", aTable[i]);
                             vIndex = aTable[i].IndexPmo;
                             break;
@@ -587,26 +690,44 @@ sap.ui.define([
                         sURL = "/T_PMO_S(IndexPmo='" + sLine.IndexPmo + "',Cont='" + aServizi[k].Cont + "',Asnum='" + aServizi[k].Asnum + "',Asktx='" + aServizi[k].Asktx + "')";
                         await this._removeHanaShowError(sURL);
                         aServizi[k].IndexPmo = vIndex;
-                        await this._saveHanaShowError("/T_PMO_M", aServizi[k]);
+                        await this._saveHanaShowError("/T_PMO_S", aServizi[k]);
                     }
                     break;
                 case "X":
                     break;
                 default:
                     delete sLine.GestioneLoad;
-                    if (sLine.IndexPmo.startsWith("C-")) {
+                    if (sLine.Cont.startsWith("C-")) {
                         var sRigaNuova = {
                             last: sLine.Cont.toString(),
                             next: ""
                         };
+                        var testoEsteso = "";
+                        if (sLine.IntegTxtEsteso !== "" && sLine.IntegTxtEsteso !== undefined){
+                          testoEsteso = sLine.IntegTxtEsteso.toString();
+                          sLine.IntegTxtEsteso = "X";
+                        } else {
+                          sLine.IntegTxtEsteso = "";
+                        }
                         sLine.Cont = "";
                         result = await this._saveHanaNoError("/T_ACT_EL", sLine);
                         sRigaNuova.next = result.Cont;
+                        sLine.Cont = result.Cont;
                         this.aRigheNuove.push(sRigaNuova);
+                        result = "";
+                        if (sLine.IntegTxtEsteso === "X"){
+                          await this.onTestoEstesoAESave(sLine, testoEsteso);
+                        }
                     } else {
+                        if (sLine.IntegTxtEsteso !== "" && sLine.IntegTxtEsteso !== undefined){
+                          await this.onTestoEstesoAESave(sLine, sLine.IntegTxtEsteso);
+                          sLine.IntegTxtEsteso = "X";
+                        } else {
+                          sLine.IntegTxtEsteso = "";
+                        }                      
                         result = await this._saveHanaShowError("/T_ACT_EL", sLine);
                         if (result !== "") {
-                            result = await this._updateHanaShowError(sUrl, sLine);
+                            result = await this._updateHanaShowError(sUrlAE, sLine);
                         }
                     }
                     break;
@@ -615,10 +736,10 @@ sap.ui.define([
         },
         saveMaterial: async function (sLine) { // Controlli
             sLine.Matnr = sLine.Matnr.padStart(18, "0");
-            if (sLine.IndexPmo.startsWith("C-")) {
+            if (sLine.Cont.startsWith("C-")) {
                 for (var i = 0; i < this.aRigheNuove.length; i++) {
-                    if (this.aRigheNuove[i].last === sLine.IndexPmo) {
-                        sLine.IndexPmo = this.aRigheNuove[i].next;
+                    if (this.aRigheNuove[i].last === sLine.Cont) {
+                        sLine.Cont = this.aRigheNuove[i].next;
                         break;
                     }
                 }
@@ -633,10 +754,10 @@ sap.ui.define([
             return result;
         },
         saveServizi: async function (sLine) { // Controlli
-            if (sLine.IndexPmo.startsWith("C-")) {
+            if (sLine.Cont.startsWith("C-")) {
                 for (var i = 0; i < this.aRigheNuove.length; i++) {
-                    if (this.aRigheNuove[i].last === sLine.IndexPmo) {
-                        sLine.IndexPmo = this.aRigheNuove[i].next;
+                    if (this.aRigheNuove[i].last === sLine.Cont) {
+                        sLine.Cont = this.aRigheNuove[i].next;
                         break;
                     }
                 }
@@ -652,9 +773,9 @@ sap.ui.define([
         },
         rowMateriali: function (sLine) {
             var sData = {};
-            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = sLine.IndexPmo;
-            sData[oResource.getText("Cont").replaceAll(" ", "_")] = sLine.Cont;
-            sData[oResource.getText("Matnr").replaceAll(" ", "_")] = sLine.Matnr;
+            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = this.formatZero(sLine.IndexPmo);
+            sData[oResource.getText("Cont").replaceAll(" ", "_")] = this.formatZero(sLine.Cont);
+            sData[oResource.getText("Matnr").replaceAll(" ", "_")] = this.formatZero(sLine.Matnr);
             sData[oResource.getText("Maktx").replaceAll(" ", "_")] = sLine.Maktx;
             sData[oResource.getText("Menge").replaceAll(" ", "_")] = sLine.Menge;
             sData[oResource.getText("Meins").replaceAll(" ", "_")] = sLine.Meins;
@@ -671,8 +792,8 @@ sap.ui.define([
         },
         rowServizi: function (sLine) {
             var sData = {};
-            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = sLine.IndexPmo;
-            sData[oResource.getText("Cont").replaceAll(" ", "_")] = sLine.Cont;
+            sData[oResource.getText("IndexPmo").replaceAll(" ", "_")] = this.formatZero(sLine.IndexPmo);
+            sData[oResource.getText("Cont").replaceAll(" ", "_")] = this.formatZero(sLine.Cont);
             sData[oResource.getText("Asnum").replaceAll(" ", "_")] = sLine.Asnum;
             sData[oResource.getText("Asktx").replaceAll(" ", "_")] = sLine.Asktx;
             sData[oResource.getText("Menge").replaceAll(" ", "_")] = sLine.Menge;
@@ -989,7 +1110,7 @@ sap.ui.define([
             this.getView().getModel("sHelp").refresh();
             // sap.ui.core.BusyIndicator.hide();
         },
-        
+
         onPressIndex: async function (oEvent) {
             var sPiani = oEvent.getSource().getBindingContext("mPiani").getObject();
             sap.ui.getCore().setModel(sPiani, "Piani");
@@ -1093,14 +1214,14 @@ sap.ui.define([
                 aFilters.push(new Filter("IComponentTipoActEl", FilterOperator.Contains, sFilter.IComponentTipoActEl));
             }
             if (sFilter.IPoint !== undefined && sFilter.IPoint !== "") {
-              aFilters.push(new Filter("IPoint", FilterOperator.EQ, sFilter.IPoint));
+                aFilters.push(new Filter("IPoint", FilterOperator.EQ, sFilter.IPoint));
             }
             if (sFilter.ITplnrActEl !== undefined && sFilter.ITplnrActEl !== "") {
-              aFilters.push(new Filter("ITplnrActEl", FilterOperator.EQ, sFilter.ITplnrActEl));
-          }
-          if (sFilter.IStComponente !== undefined && sFilter.IStComponente !== "") {
-            aFilters.push(new Filter("IStComponente", FilterOperator.EQ, sFilter.IStComponente));
-        }
+                aFilters.push(new Filter("ITplnrActEl", FilterOperator.EQ, sFilter.ITplnrActEl));
+            }
+            if (sFilter.IStComponente !== undefined && sFilter.IStComponente !== "") {
+                aFilters.push(new Filter("IStComponente", FilterOperator.EQ, sFilter.IStComponente));
+            }
             if (sFilter.IPriorita !== undefined) {
                 if (sFilter.IPriorita.length !== 0) {
                     tempFilter = this.multiFilterText(sFilter.IPriorita, "IPriorita");
@@ -1114,23 +1235,23 @@ sap.ui.define([
                 }
             }
             if (sFilter.ITipoGestione !== undefined) {
-              if (sFilter.ITipoGestione.length !== 0) {
-                  tempFilter = this.multiFilterText(sFilter.ITipoGestione, "ITipoGestione");
-                  aFilters = aFilters.concat(tempFilter);
-              }
-          }
-          if (sFilter.ITipoGestione1 !== undefined) {
-            if (sFilter.ITipoGestione1.length !== 0) {
-                tempFilter = this.multiFilterText(sFilter.ITipoGestione1, "ITipoGestione1");
-                aFilters = aFilters.concat(tempFilter);
+                if (sFilter.ITipoGestione.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.ITipoGestione, "ITipoGestione");
+                    aFilters = aFilters.concat(tempFilter);
+                }
             }
-        }
-        if (sFilter.ITipoGestione2 !== undefined) {
-          if (sFilter.ITipoGestione2.length !== 0) {
-              tempFilter = this.multiFilterText(sFilter.ITipoGestione2, "ITipoGestione2");
-              aFilters = aFilters.concat(tempFilter);
-          }
-      }
+            if (sFilter.ITipoGestione1 !== undefined) {
+                if (sFilter.ITipoGestione1.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.ITipoGestione1, "ITipoGestione1");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
+            if (sFilter.ITipoGestione2 !== undefined) {
+                if (sFilter.ITipoGestione2.length !== 0) {
+                    tempFilter = this.multiFilterText(sFilter.ITipoGestione2, "ITipoGestione2");
+                    aFilters = aFilters.concat(tempFilter);
+                }
+            }
 
 
             var aSelIndici = "",
@@ -1183,15 +1304,6 @@ sap.ui.define([
             if (sFilter.ITipoPmo !== undefined && sFilter.ITipoPmo !== "") {
                 aFilters.push(new Filter("ITipoPmo", FilterOperator.EQ, sFilter.ITipoPmo));
             }
-            if (sFilter.IDesBreve !== undefined && sFilter.IDesBreve !== "") {
-                aFilters.push(new Filter("IDesBreve", "CP", sFilter.IDesBreve));
-            }
-            if (sFilter.IAzione !== undefined && sFilter.IAzione !== "") {
-                aFilters.push(new Filter("IAzione", "CP", sFilter.IAzione));
-            }
-            if (sFilter.IDesComponenteActEl !== undefined && sFilter.IDesComponenteActEl !== "") {
-                aFilters.push(new Filter("IDesComponenteActEl", "CP", sFilter.IDesComponenteActEl));
-            }
             if (sFilter.IPercorso !== undefined && sFilter.IPercorso !== "") {
                 aFilters.push(new Filter("IPercorso", "EQ", sFilter.IPercorso));
             }
@@ -1231,6 +1343,22 @@ sap.ui.define([
                 aFilters.push(new Filter("IDifferibile", FilterOperator.EQ, vValue));
             }
 
+            if (sFilter.IDesBreve !== undefined && sFilter.IDesBreve !== "") {
+              aFilters.push(new Filter("IDesBreve", FilterOperator.Contains, sFilter.IDesBreve));
+            }
+            if (sFilter.IAzione !== undefined && sFilter.IAzione !== "") {
+              aFilters.push(new Filter("IAzione", FilterOperator.EQ, sFilter.IAzione));
+            }
+            if (sFilter.IDesComponenteActEl !== undefined && sFilter.IDesComponenteActEl !== "") {
+                aFilters.push(new Filter("IDesComponenteActEl", FilterOperator.Contains, sFilter.IDesComponenteActEl));
+            }
+
+            var aFilterFE = [];
+            if (sFilter.IEquipmentCompo !== undefined && sFilter.IEquipmentCompo !== "") {
+              aFilterFE.push(new Filter("EquipmentCompo", FilterOperator.EQ, sFilter.IEquipmentCompo));
+            }
+            //IAzione IDesComponenteActEl IEquipmentCompo
+
             var aIndici = [];
             oPiani = new sap.ui.model.json.JSONModel();
             oPiani.setData(aIndici);
@@ -1267,9 +1395,11 @@ sap.ui.define([
                     }
                 }
             }
+
             var oPiani = new sap.ui.model.json.JSONModel();
             oPiani.setData(aIndici);
             this.getView().setModel(oPiani, "mPiani");
+            this.byId("tbPiani").getBinding("items").filter(aFilterFE);
 
             var oAzioni = new sap.ui.model.json.JSONModel();
             oAzioni.setData(sPiani[0].T_ACT_ELSet.results);

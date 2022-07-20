@@ -44,6 +44,9 @@ sap.ui.define([
         setModel: function (oModel, sName) {
             return this.getView().setModel(oModel, sName);
         },
+        formatZero: function (value) {
+            return(value !== undefined && value !== null) ? value.replace(/^0+/, "") : value;
+        },
         formatDate: function (sValue) {
 
             if (sValue === "" || sValue === undefined || sValue === null) {
@@ -76,16 +79,16 @@ sap.ui.define([
             return result;
         },
         onTestoEstesoISave: async function (line, Testo) {
-          if (Testo !== undefined && Testo !== null && Testo !== ""){
-            var Tdname = "ZI" + line.IndexPmo.padStart(12, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
-            await this.TestoSave(Tdname, Testo);
-          }
+            if (Testo !== undefined && Testo !== null && Testo !== "") {
+                var Tdname = "ZI" + line.IndexPmo.padStart(12, "0") + this.formatDate(line.InizioVal) + this.formatDate(line.FineVal) + line.Uzeit.replaceAll(":", "");
+                await this.TestoSave(Tdname, Testo);
+            }
         },
         onTestoEstesoAESave: async function (line, Testo) {
-          if (Testo !== undefined && Testo !== null && Testo !== ""){
-            var Tdname = "ZAE" + line.IndexPmo.padStart(12, "0") + line.Cont.padStart(10, "0");
-            await this.TestoSave(Tdname, Testo);
-          }
+            if (Testo !== undefined && Testo !== null && Testo !== "") {
+                var Tdname = "ZAE" + line.IndexPmo.padStart(12, "0") + line.Cont.padStart(10, "0");
+                await this.TestoSave(Tdname, Testo);
+            }
         },
         TestoSave: async function (Tdname, Testo) {
             var sTesto = {
@@ -97,36 +100,41 @@ sap.ui.define([
                 "Testo": Testo
             };
 
-            /*var aFilters = [];
-            aFilters.push(new Filter("Tdname", FilterOperator.EQ, Tdname));
-            aFilters.push(new Filter("Tdid", FilterOperator.EQ, "ST"));
-            aFilters.push(new Filter("Tdspras", FilterOperator.EQ, "I"));
-            aFilters.push(new Filter("Tdobject", FilterOperator.EQ, "TEXT"));
-            await this._removeHanaShowError("/TestiEstesiDelete", aFilters);*/
-
-            var result = await this._saveHanaNoError("/TestiEstesi", sTesto);
-            if (result !== ""){
-              var sUrl = "/TestiEstesi(Testo='" + Testo + "')";
-              delete sTesto.Testo;
-              await this._updateHanaNoError(sUrl, sTesto);
-            }
+            var sURL = "/TestiEstesiDelete(Tdname='" + Tdname + "',Tdid='ST',Tdspras='I',Tdobject='TEXT')";
+            await this._removeHanaShowError(sURL);
+            await this._saveHanaNoError("/TestiEstesi", sTesto);
         },
         ControlAzioni: async function (sData) {
 
-          if (sData.Tplnr === "" || sData.Tplnr === undefined) {
-            return "Inserire Tecnologia";
-          }
-          if (sData.Sistem === "" || sData.Sistem === undefined) {
-              return "Inserire Sistema";
-          }
-          if (sData.Progres === null || sData.Progres === undefined || sData.Progres === "") {
-              return "Inserire Progressivo";
-          }
-          if (sData.Classe === "" || sData.Classe === undefined) {
-              return "Inserire Classe";
+            if (sData.Tplnr === "" || sData.Tplnr === undefined) {
+                return "Inserire Sede Tecnica";
+            }
+            if (sData.Sistem === "" || sData.Sistem === undefined) {
+                return "Inserire Sistema";
+            }
+            if (sData.Progres === null || sData.Progres === undefined || sData.Progres === "") {
+                return "Inserire Progressivo";
+            }
+            if (sData.Classe === "" || sData.Classe === undefined) {
+                return "Inserire Classe";
+            }
+            return "";
+        },
+        ControlMatnr: async function (sData) {
+
+          if (sData.Cont === "" || sData.Cont === undefined) {
+            return "Inserire Azione Elementare";
           }
           return "";
-      },
+
+        },
+        ControlServizi: async function (sData) {
+
+          if (sData.Cont === "" || sData.Cont === undefined) {
+            return "Inserire Azione Elementare";
+          }
+          return "";
+        },
         formatUzeit: function (duration) {
             if (duration === undefined) {
                 return "00:00:00";
@@ -613,7 +621,6 @@ sap.ui.define([
             aFilter.push(this.filterLivello6(sel.LIVELLO6));
 
             aFilter.push(new Filter("LANGUAGE", FilterOperator.EQ, "IT")); // fisso IT - todo
-            debugger
             var result = await this._getLine("/Sede", aFilter);
             if (result.SEDE_TECNICA !== undefined) {
                 return true;
@@ -1038,6 +1045,29 @@ sap.ui.define([
                 });
             });
         },
+        _getLinenoError: function (Entity, Filters) {
+          var xsoDataModelReport = this.getView().getModel();
+          return new Promise(function (resolve) {
+              xsoDataModelReport.read(Entity, {
+                  filters: Filters,
+                  urlParameters: {
+                      "$top": 1
+                  },
+                  success: function (oDataIn) {
+                      if (oDataIn.results[0] !== undefined) {
+                          resolve(oDataIn.results[0]);
+                      } else if (oDataIn.results !== undefined) {
+                          resolve(oDataIn.results);
+                      } else {
+                          resolve(oDataIn);
+                      }
+                  },
+                  error: function () {
+                      resolve(undefined);
+                  }
+              });
+          });
+      },
         _getTableDistinct: function (Entity, Filters, Columns) {
             var xsoDataModelReport = this.getView().getModel();
             return new Promise(function (resolve) {

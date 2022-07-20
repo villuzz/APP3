@@ -4,505 +4,500 @@
         <!-- DynamicPage Title -->
         <f:landmarkInfo>
             <f:DynamicPageAccessibleLandmarkInfo rootRole="Region" contentRole="Main" headerRole="Banner" rootLabel="{i18n>Overview_rootLabel}" contentLabel="{i18n>Overview_contentLabel}" headerLabel="{i18n>Overview_headerLabel}"/>
-          </f:landmarkInfo>
+        </f:landmarkInfo>
         <f:title>
             <f:DynamicPageTitle>
-                <f:content>
-                 <OverflowToolbar>
+                <f:heading>
+
                     <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                        <Button type="Emphasized" text="Home"  press="onBack" class="sapUiSmallMarginEnd"></Button>
+                        <Button type="Emphasized" text="Home" press="onBack" class="sapUiSmallMarginEnd"></Button>
                         <Title text="{i18n>Review}" class="sapUiTinyMarginTop"/>
                     </HBox>
-
-                     <ToolbarSpacer/>
-                    <HBox height="100%" alignItems="Center" alignContent="Center" >
-                     <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
-                    </HBox>
-                </OverflowToolbar>
-                </f:content>
+                </f:heading>
                 <f:navigationActions>
-                  <Button text="" icon="sap-icon://action-settings" press="onPersoButtonPressed2" class="sapUiTinyMarginBegin"/>
+                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
+                    <Button text="" icon="sap-icon://action-settings" press="onPersoButtonPressed2" class="sapUiTinyMarginBegin"/>
                 </f:navigationActions>
 
             </f:DynamicPageTitle>
         </f:title>
         <!-- DynamicPage Header -->
         <f:content>
-        <VBox class="sapUiSmallMargin">
-            <form:Form width="100%" editable="true" visible="true">
-                <form:layout>
-                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
-                </form:layout>
-                <form:title>
-                    <core:Title text="1. {i18n>InformazioniDivisione}" level="H1"/>
-                </form:title>
-                <form:formContainers>
-                    <form:FormContainer visible="true">
-                        <form:formElements>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Divisione}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/DIVISIONE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Tech}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/SEDE_TECNICA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>SedeTT}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Classe}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/CLASSE_SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Caratteristica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/CARATT_SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>VALORE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/VALORE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Strategia}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/STRATEGIA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/EQUIPMENT}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>SISTEMA}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/SISTEMA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>CLASSE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/CLASSE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>PROGRES}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/PROGRES}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>TIPO_ATTIVITA}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/TIPO_ATTIVITA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>TIPO_ORDINE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/TIPO_ORDINE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>AZIONE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/AZIONE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>FrequenzaN}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/TIPOFREQUENZA} - {sSelect>/FREQ_TEMPO}{sSelect>/FREQ_CICLO} {sSelect>/UNITA_TEMPO}{sSelect>/UNITA_CICLO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                        </form:formElements>
-                        <form:title/>
-                    </form:FormContainer>
-                </form:formContainers>
-            </form:Form>
-            <form:Form width="100%" editable="true" visible="true">
-                <form:layout>
-                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
-                </form:layout>
-                <form:title>
-                    <core:Title text="2. {i18n>Specifiche}" level="H1"/>
-                </form:title>
-                <form:formContainers>
-                    <form:FormContainer visible="true">
-                        <form:formElements>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>SedeTecnicaEcc}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/SEDE_ECC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/EQUIPMENT2}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/MPTYP}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <Text text="{sSelect>/OGGETTO_TECNICO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>INIZIOVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <DatePicker dateValue="{sSelect>/INIZIOVAL}" displayFormat="dd-MM-YYYY" enabled="false" />
+            <VBox class="sapUiSmallMargin">
+                <form:Form width="100%" editable="true" visible="true">
+                    <form:layout>
+                        <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                    </form:layout>
+                    <form:title>
+                        <core:Title text="1. {i18n>InformazioniDivisione}" level="H1"/>
+                    </form:title>
+                    <form:formContainers>
+                        <form:FormContainer visible="true">
+                            <form:formElements>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Divisione}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/DIVISIONE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="{i18n>FINEVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                </form:label>
-                                <form:fields>
-                                    <DatePicker dateValue="{sSelect>/FINEVAL}" displayFormat="dd-MM-YYYY" enabled="false" />
-                                </form:fields>
-                            </form:FormElement>
-                        </form:formElements>
-                        <form:title/>
-                    </form:FormContainer>
-                </form:formContainers>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Tech}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/SEDE_TECNICA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>SedeTT}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Classe}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/CLASSE_SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Caratteristica}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/CARATT_SEDE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
 
-            </form:Form>
-            <form:Form width="100%" editable="true" visible="true">
-                <form:layout>
-                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
-                </form:layout>
-                <form:title>
-                    <core:Title text="3. {i18n>Interventi}" level="H1"/>
-                </form:title>
-                <form:formContainers/>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>VALORE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/VALORE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Strategia}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/STRATEGIA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
 
-            </form:Form>
- <!--           <OverflowToolbar width="100%">
-                <ToolbarSpacer/>
-            </OverflowToolbar>-->
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/EQUIPMENT}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>SISTEMA}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/SISTEMA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>CLASSE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/CLASSE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>PROGRES}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/PROGRES}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>TIPO_ATTIVITA}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/TIPO_ATTIVITA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>TIPO_ORDINE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/TIPO_ORDINE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>AZIONE}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/AZIONE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>FrequenzaN}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/TIPOFREQUENZA} - {sSelect>/FREQ_TEMPO}{sSelect>/FREQ_CICLO} {sSelect>/UNITA_TEMPO}{sSelect>/UNITA_CICLO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                            </form:formElements>
+                            <form:title/>
+                        </form:FormContainer>
+                    </form:formContainers>
+                </form:Form>
+                <form:Form width="100%" editable="true" visible="true">
+                    <form:layout>
+                        <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                    </form:layout>
+                    <form:title>
+                        <core:Title text="2. {i18n>Specifiche}" level="H1"/>
+                    </form:title>
+                    <form:formContainers>
+                        <form:FormContainer visible="true">
+                            <form:formElements>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>SedeTecnicaEcc}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/SEDE_ECC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>Equipment}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/EQUIPMENT2}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>PuntodiMisura}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/MPTYP}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>TipoOggettoTecnico}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <Text text="{sSelect>/OGGETTO_TECNICO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>INIZIOVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <DatePicker dateValue="{sSelect>/INIZIOVAL}" displayFormat="dd-MM-YYYY" enabled="false"/>
+                                    </form:fields>
+                                </form:FormElement>
+                                <form:FormElement visible="true">
+                                    <form:label>
+                                        <Label text="{i18n>FINEVAL}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    </form:label>
+                                    <form:fields>
+                                        <DatePicker dateValue="{sSelect>/FINEVAL}" displayFormat="dd-MM-YYYY" enabled="false"/>
+                                    </form:fields>
+                                </form:FormElement>
+                            </form:formElements>
+                            <form:title/>
+                        </form:FormContainer>
+                    </form:formContainers>
 
-            <ScrollContainer width="100%" horizontal="true">
-                <Table id="tbPiani2" items="{ path: 'allIndex2>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
-            <columns>
-              <Column width="10em" id= "Rcol1"><Text text="{i18n>nINDEX}"/></Column>
-              	<!-- <Column width="10em" id= "Rcol1" demandPopin="false" >
-                  <header >
-                    <Text text="{i18n>INDEX}" wrapping="true" />
-                  </header>
-                </Column> -->
-              <Column width="10em" id= "Rcol3"><Text text="{i18n>ATTIVO}"/></Column>              
-              <Column width="10em" id= "Rcol2"><Text text="{i18n>nCONTATORE}"/></Column>
-              <Column width="5em" id= "Rcol104"><Text text="{i18n>Materiali}"/></Column>
-              <Column width="5em" id= "Rcol105"><Text text="{i18n>Servizi}"/></Column>
-              <Column width="10em" id= "Rcol5"><Text text="{i18n>SISTEMA}"/></Column>
-              <Column width="10em" id= "Rcol6"><Text text="{i18n>PROGRES}"/></Column>
-              <Column width="16em" id= "Rcol7"><Text text="{i18n>DESC_PROG}"/></Column>
-              <Column width="10em" id= "Rcol8"><Text text="{i18n>CLASSE}"/></Column>
-              <Column width="16em" id= "Rcol9"><Text text="{i18n>DES_COMPONENTE}"/></Column>
-              <Column width="10em" id= "Rcol10"><Text text="{i18n>DIVISIONE}"/></Column>
-              <Column width="10em" id= "Rcol20"><Text text="{i18n>SEDE_TECNICA}"/></Column>
-              <Column width="15em" id= "Rcol21"><Text text="{i18n>SEDE_TECNICA_P}"/></Column>
-              <Column width="15em" id= "Rcol22"><Text text="{i18n>SEDE_ECC}"/></Column>
-              <Column width="18em" id= "Rcol27"><Text text="{i18n>DESC_SEDE}"/></Column>
-              <Column width="15em" id= "Rcol28"><Text text="{i18n>EQUIPMENT}"/></Column>
-              <Column width="10em" id= "Rcol29"><Text text="{i18n>TESTO_ESTESO_P}"/></Column>
-              <Column width="16em" id= "Rcol30"><Text text="{i18n>CLASSE_SEDE}"/></Column>
-              <Column width="16em" id= "Rcol31"><Text text="{i18n>CARATT_SEDE}"/></Column>
-              <Column width="16em" id= "Rcol32"><Text text="{i18n>OGGETTO_TECNICO}"/></Column>
-              <Column width="10em" id= "Rcol33"><Text text="{i18n>PROFILO}"/></Column>
-              <Column width="10em" id= "Rcol34"><Text text="{i18n>ZBAU}"/></Column>
-              <Column width="10em" id= "Rcol35"><Text text="{i18n>VALORE}"/></Column>
-              <Column width="16em" id= "Rcol37"><Text text="{i18n>STRATEGIA}"/></Column>
-              <Column width="16em" id= "Rcol38"><Text text="{i18n>STRATEGIA_DESC}"/></Column>
-              <Column width="10em" id= "Rcol39"><Text text="{i18n>DIVISIONEC}"/></Column>
-              <Column width="10em" id= "Rcol40"><Text text="{i18n>CENTRO_LAVORO}"/></Column>
-              <Column width="10em" id= "Rcol50"><Text text="{i18n>TIPO_GESTIONE}"/></Column>
-              <Column width="10em" id= "Rcol51"><Text text="{i18n>TIPO_GESTIONE_1}"/></Column>
-              <Column width="10em" id= "Rcol52"><Text text="{i18n>TIPO_GESTIONE_2}"/></Column>
-              <Column width="10em" id= "Rcol53"><Text text="{i18n>PRIORITA}"/></Column>
-              <Column width="10em" id= "Rcol54"><Text text="{i18n>TIPO_ATTIVITA}"/></Column>
-              <Column width="18em" id= "Rcol55"><Text text="{i18n>DESC_BREVE}"/></Column>
-              <Column width="10em" id= "Rcol56"><Text text="{i18n>TESTO_ESTESO}"/></Column>
-              <Column width="10em" id= "Rcol57"><Text text="{i18n>INDISPONIBILITA}"/></Column>
-              <Column width="10em" id= "Rcol58"><Text text="{i18n>TIPO_ORDINE}"/></Column>
-              <Column width="10em" id= "Rcol59"><Text text="{i18n>LSTAR}"/></Column>
-              <Column width="12em" id= "Rcol60"><Text text="{i18n>STEUS}"/></Column>
-              <Column width="10em" id= "Rcol61"><Text text="{i18n>NUM}"/></Column>
-              <Column width="10em" id= "Rcol62"><Text text="{i18n>PERSONE}"/></Column>
-              <Column width="10em" id= "Rcol63"><Text text="{i18n>HPER}"/></Column>
-              <Column width="10em" id= "Rcol120"><Text text="{i18n>Toth}"/></Column>
+                </form:Form>
+                <form:Form width="100%" editable="true" visible="true">
+                    <form:layout>
+                        <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                    </form:layout>
+                    <form:title>
+                        <core:Title text="3. {i18n>Interventi}" level="H1"/>
+                    </form:title>
+                    <form:formContainers/>
 
-              <Column width="10em" id= "Rcol64"><Text text="{i18n>LSTAR_1}"/></Column>
-              <Column width="12em" id= "Rcol65"><Text text="{i18n>STEUS_1}"/></Column>
-              <Column width="10em" id= "Rcol66"><Text text="{i18n>NUM_1}"/></Column>
-              <Column width="10em" id= "Rcol67"><Text text="{i18n>PERSONE_1}"/></Column>
-              <Column width="10em" id= "Rcol68"><Text text="{i18n>HPER_1}"/></Column>
-              <Column width="10em" id= "Rcol121"><Text text="{i18n>Toth1}"/></Column>
+                </form:Form>
+                <!--           <OverflowToolbar width="100%">
+                                <ToolbarSpacer/>
+                            </OverflowToolbar>-->
 
-              <Column width="10em" id= "Rcol69"><Text text="{i18n>LSTAR_2}"/></Column>
-              <Column width="12em" id= "Rcol70"><Text text="{i18n>STEUS_2}"/></Column>
-              <Column width="10em" id= "Rcol71"><Text text="{i18n>NUM_2}"/></Column>
-              <Column width="10em" id= "Rcol72"><Text text="{i18n>PERSONE_2}"/></Column>
-              <Column width="10em" id= "Rcol73"><Text text="{i18n>HPER_2}"/></Column>
-              <Column width="10em" id= "Rcol122"><Text text="{i18n>Toth2}"/></Column>
+                <ScrollContainer width="100%" horizontal="true">
+                    <Table id="tbPiani2" items="{ path: 'allIndex2>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
+                        <columns>
+                            <Column width="10em" id="Rcol1"><Text text="{i18n>INDEX}"/></Column>
+                            <!-- <Column width="10em" id= "Rcol1" demandPopin="false" >
+                                              <header >
+                                                <Text text="{i18n>INDEX}" wrapping="true" />
+                                              </header>
+                                            </Column> -->
+                            <Column width="10em" id="Rcol3"><Text text="{i18n>ATTIVO}"/></Column>
+                            <Column width="10em" id="Rcol2"><Text text="{i18n>CONTATORE}"/></Column>
+                            <Column width="5em" id="Rcol104"><Text text="{i18n>Materiali}"/></Column>
+                            <Column width="5em" id="Rcol105"><Text text="{i18n>Servizi}"/></Column>
+                            <Column width="10em" id="Rcol5"><Text text="{i18n>SISTEMA}"/></Column>
+                            <Column width="10em" id="Rcol6"><Text text="{i18n>PROGRES}"/></Column>
+                            <Column width="16em" id="Rcol7"><Text text="{i18n>DESC_PROG}"/></Column>
+                            <Column width="10em" id="Rcol8"><Text text="{i18n>CLASSE}"/></Column>
+                            <Column width="16em" id="Rcol9"><Text text="{i18n>DES_COMPONENTE}"/></Column>
+                            <Column width="10em" id="Rcol10"><Text text="{i18n>DIVISIONE}"/></Column>
+                            <Column width="10em" id="Rcol20"><Text text="{i18n>SEDE_TECNICA}"/></Column>
+                            <Column width="15em" id="Rcol21"><Text text="{i18n>SEDE_TECNICA_P}"/></Column>
+                            <Column width="15em" id="Rcol22"><Text text="{i18n>SEDE_ECC}"/></Column>
+                            <Column width="18em" id="Rcol27"><Text text="{i18n>DESC_SEDE}"/></Column>
+                            <Column width="15em" id="Rcol28"><Text text="{i18n>EQUIPMENT}"/></Column>
+                            <Column width="10em" id="Rcol29"><Text text="{i18n>TESTO_ESTESO_P}"/></Column>
+                            <Column width="16em" id="Rcol30"><Text text="{i18n>CLASSE_SEDE}"/></Column>
+                            <Column width="16em" id="Rcol31"><Text text="{i18n>CARATT_SEDE}"/></Column>
+                            <Column width="16em" id="Rcol32"><Text text="{i18n>OGGETTO_TECNICO}"/></Column>
+                            <Column width="10em" id="Rcol33"><Text text="{i18n>PROFILO}"/></Column>
+                            <Column width="10em" id="Rcol34"><Text text="{i18n>ZBAU}"/></Column>
+                            <Column width="10em" id="Rcol35"><Text text="{i18n>VALORE}"/></Column>
+                            <Column width="16em" id="Rcol37"><Text text="{i18n>STRATEGIA}"/></Column>
+                            <Column width="16em" id="Rcol38"><Text text="{i18n>STRATEGIA_DESC}"/></Column>
+                            <Column width="10em" id="Rcol39"><Text text="{i18n>DIVISIONEC}"/></Column>
+                            <Column width="10em" id="Rcol40"><Text text="{i18n>CENTRO_LAVORO}"/></Column>
+                            <Column width="10em" id="Rcol50"><Text text="{i18n>TIPO_GESTIONE}"/></Column>
+                            <Column width="10em" id="Rcol51"><Text text="{i18n>TIPO_GESTIONE_1}"/></Column>
+                            <Column width="10em" id="Rcol52"><Text text="{i18n>TIPO_GESTIONE_2}"/></Column>
+                            <Column width="10em" id="Rcol53"><Text text="{i18n>PRIORITA}"/></Column>
+                            <Column width="10em" id="Rcol54"><Text text="{i18n>TIPO_ATTIVITA}"/></Column>
+                            <Column width="18em" id="Rcol55"><Text text="{i18n>DESC_BREVE}"/></Column>
+                            <Column width="10em" id="Rcol56"><Text text="{i18n>TESTO_ESTESO}"/></Column>
+                            <Column width="10em" id="Rcol57"><Text text="{i18n>INDISPONIBILITA}"/></Column>
+                            <Column width="10em" id="Rcol58"><Text text="{i18n>TIPO_ORDINE}"/></Column>
+                            <Column width="10em" id="Rcol59"><Text text="{i18n>LSTAR}"/></Column>
+                            <Column width="12em" id="Rcol60"><Text text="{i18n>STEUS}"/></Column>
+                            <Column width="10em" id="Rcol61"><Text text="{i18n>NUM}"/></Column>
+                            <Column width="10em" id="Rcol62"><Text text="{i18n>PERSONE}"/></Column>
+                            <Column width="10em" id="Rcol63"><Text text="{i18n>HPER}"/></Column>
+                            <Column width="10em" id="Rcol120"><Text text="{i18n>Toth}"/></Column>
 
-              <Column width="10em" id= "Rcol75"><Text text="{i18n>LSTAR_3}"/></Column>
-              <Column width="12em" id= "Rcol76"><Text text="{i18n>STEUS_3}"/></Column>
-              <Column width="10em" id= "Rcol77"><Text text="{i18n>NUM_3}"/></Column>
-              <Column width="10em" id= "Rcol78"><Text text="{i18n>PERSONE_3}"/></Column>
-              <Column width="10em" id= "Rcol79"><Text text="{i18n>HPER_3}"/></Column>
-              <Column width="10em" id= "Rcol123"><Text text="{i18n>Toth3}"/></Column>
+                            <Column width="10em" id="Rcol64"><Text text="{i18n>LSTAR_1}"/></Column>
+                            <Column width="12em" id="Rcol65"><Text text="{i18n>STEUS_1}"/></Column>
+                            <Column width="10em" id="Rcol66"><Text text="{i18n>NUM_1}"/></Column>
+                            <Column width="10em" id="Rcol67"><Text text="{i18n>PERSONE_1}"/></Column>
+                            <Column width="10em" id="Rcol68"><Text text="{i18n>HPER_1}"/></Column>
+                            <Column width="10em" id="Rcol121"><Text text="{i18n>Toth1}"/></Column>
 
-              <Column width="10em" id= "Rcol80"><Text text="{i18n>LSTAR_4}"/></Column>
-              <Column width="12em" id= "Rcol81"><Text text="{i18n>STEUS_4}"/></Column>
-              <Column width="10em" id= "Rcol82"><Text text="{i18n>NUM_4}"/></Column>
-              <Column width="10em" id= "Rcol83"><Text text="{i18n>PERSONE_4}"/></Column>
-              <Column width="10em" id= "Rcol84"><Text text="{i18n>HPER_4}"/></Column>
-              <Column width="10em" id= "Rcol124"><Text text="{i18n>Toth4}"/></Column>
+                            <Column width="10em" id="Rcol69"><Text text="{i18n>LSTAR_2}"/></Column>
+                            <Column width="12em" id="Rcol70"><Text text="{i18n>STEUS_2}"/></Column>
+                            <Column width="10em" id="Rcol71"><Text text="{i18n>NUM_2}"/></Column>
+                            <Column width="10em" id="Rcol72"><Text text="{i18n>PERSONE_2}"/></Column>
+                            <Column width="10em" id="Rcol73"><Text text="{i18n>HPER_2}"/></Column>
+                            <Column width="10em" id="Rcol122"><Text text="{i18n>Toth2}"/></Column>
 
-              <Column width="10em" id= "Rcol85"><Text text="{i18n>LSTAR_5}"/></Column>
-              <Column width="12em" id= "Rcol86"><Text text="{i18n>STEUS_5}"/></Column>
-              <Column width="10em" id= "Rcol87"><Text text="{i18n>NUM_5}"/></Column>
-              <Column width="10em" id= "Rcol88"><Text text="{i18n>PERSONE_5}"/></Column>
-              <Column width="10em" id= "Rcol89"><Text text="{i18n>HPER_5}"/></Column>
-              <Column width="10em" id= "Rcol125"><Text text="{i18n>Toth5}"/></Column>
+                            <Column width="10em" id="Rcol75"><Text text="{i18n>LSTAR_3}"/></Column>
+                            <Column width="12em" id="Rcol76"><Text text="{i18n>STEUS_3}"/></Column>
+                            <Column width="10em" id="Rcol77"><Text text="{i18n>NUM_3}"/></Column>
+                            <Column width="10em" id="Rcol78"><Text text="{i18n>PERSONE_3}"/></Column>
+                            <Column width="10em" id="Rcol79"><Text text="{i18n>HPER_3}"/></Column>
+                            <Column width="10em" id="Rcol123"><Text text="{i18n>Toth3}"/></Column>
 
-              <Column width="10em" id= "Rcol95"><Text text="{i18n>RISK}"/></Column>
-              <Column width="10em" id= "Rcol96"><Text text="{i18n>LIMITE}"/></Column>
-              <Column width="10em" id= "Rcol97"><Text text="{i18n>FREQ_TEMPO}"/></Column>
-              <Column width="10em" id= "Rcol98"><Text text="{i18n>UNITA_TEMPO}"/></Column>
-              <Column width="14em" id= "Rcol99"><Text text="{i18n>FREQ_CICLO}"/></Column>
-              <Column width="10em" id= "Rcol100"><Text text="{i18n>UNITA_CICLO}"/></Column>
-              <Column width="14em" id= "Rcol101"><Text text="{i18n>POINT}"/></Column>
-              <Column width="10em" id= "Rcol102"><Text text="{i18n>MPTYP}"/></Column>
-              <Column width="10em" id= "Rcol103"><Text text="{i18n>TIPOFREQUENZA}"/></Column>
+                            <Column width="10em" id="Rcol80"><Text text="{i18n>LSTAR_4}"/></Column>
+                            <Column width="12em" id="Rcol81"><Text text="{i18n>STEUS_4}"/></Column>
+                            <Column width="10em" id="Rcol82"><Text text="{i18n>NUM_4}"/></Column>
+                            <Column width="10em" id="Rcol83"><Text text="{i18n>PERSONE_4}"/></Column>
+                            <Column width="10em" id="Rcol84"><Text text="{i18n>HPER_4}"/></Column>
+                            <Column width="10em" id="Rcol124"><Text text="{i18n>Toth4}"/></Column>
 
-              <Column width="10em" id= "Rcol106"><Text text="{i18n>COLLECTIVE}"/></Column>
-              <Column width="10em" id= "Rcol107"><Text text="{i18n>PERCORSO}"/></Column>
-              <Column width="10em" id= "Rcol108"><Text text="{i18n>FINEVAL}"/></Column>
-              <Column width="10em" id= "Rcol109"><Text text="{i18n>INIZIOVAL}"/></Column>
-              <Column width="10em" id= "Rcol110"><Text text="{i18n>DESTINATARIO}"/></Column>
-              <Column width="10em" id="Rcol130"><Text text="{i18n>CodAzione}"/></Column>
-            </columns>
-            <items>
-              <ColumnListItem vAlign="Middle" type="Active">
-                <customData>
-                  <core:CustomData id="custm2" key="mydata" value="{allIndex2>COLORSET}" writeToDom="true"></core:CustomData>
-                </customData>
-                <cells>
+                            <Column width="10em" id="Rcol85"><Text text="{i18n>LSTAR_5}"/></Column>
+                            <Column width="12em" id="Rcol86"><Text text="{i18n>STEUS_5}"/></Column>
+                            <Column width="10em" id="Rcol87"><Text text="{i18n>NUM_5}"/></Column>
+                            <Column width="10em" id="Rcol88"><Text text="{i18n>PERSONE_5}"/></Column>
+                            <Column width="10em" id="Rcol89"><Text text="{i18n>HPER_5}"/></Column>
+                            <Column width="10em" id="Rcol125"><Text text="{i18n>Toth5}"/></Column>
 
-                <Text text="{allIndex2>INDEX}"/>
-                  <Switch type="AcceptReject" state="{allIndex2>ATTIVO}" enabled="false"></Switch>
-                  <Text text="{allIndex2>CONTATORE} " />
-                  
-                  <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
-                  <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
-                  <Text text="{allIndex2>SISTEMA}" />
-                  <Text text="{allIndex2>PROGRES}" />
-                  <Text text="{allIndex2>DESC_PROG} " />
-                  <Text text="{allIndex2>CLASSE}" />
-                  <Text text="{allIndex2>DES_COMPONENTE} " />
-                  <Text text="{allIndex2>DIVISIONE}" />
+                            <Column width="10em" id="Rcol95"><Text text="{i18n>RISK}"/></Column>
+                            <Column width="10em" id="Rcol96"><Text text="{i18n>LIMITE}"/></Column>
+                            <Column width="10em" id="Rcol97"><Text text="{i18n>FREQ_TEMPO}"/></Column>
+                            <Column width="10em" id="Rcol98"><Text text="{i18n>UNITA_TEMPO}"/></Column>
+                            <Column width="14em" id="Rcol99"><Text text="{i18n>FREQ_CICLO}"/></Column>
+                            <Column width="10em" id="Rcol100"><Text text="{i18n>UNITA_CICLO}"/></Column>
+                            <Column width="14em" id="Rcol101"><Text text="{i18n>POINT}"/></Column>
+                            <Column width="10em" id="Rcol102"><Text text="{i18n>MPTYP}"/></Column>
+                            <Column width="10em" id="Rcol103"><Text text="{i18n>TIPOFREQUENZA}"/></Column>
+
+                            <Column width="10em" id="Rcol106"><Text text="{i18n>COLLECTIVE}"/></Column>
+                            <Column width="10em" id="Rcol107"><Text text="{i18n>PERCORSO}"/></Column>
+                            <Column width="10em" id="Rcol108"><Text text="{i18n>FINEVAL}"/></Column>
+                            <Column width="10em" id="Rcol109"><Text text="{i18n>INIZIOVAL}"/></Column>
+                            <Column width="10em" id="Rcol110"><Text text="{i18n>DESTINATARIO}"/></Column>
+                            <Column width="10em" id="Rcol130"><Text text="{i18n>CodAzione}"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem vAlign="Middle" type="Active">
+                                <customData>
+                                    <core:CustomData id="custm2" key="mydata" value="{allIndex2>COLORSET}" writeToDom="true"></core:CustomData>
+                                </customData>
+                                <cells>
+
+                                    <Text text="{allIndex2>INDEX}"/>
+                                    <Switch type="AcceptReject" state="{allIndex2>ATTIVO}" enabled="false"></Switch>
+                                    <Text text="{allIndex2>CONTATORE} "/>
+
+                                    <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
+                                    <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
+                                    <Text text="{allIndex2>SISTEMA}"/>
+                                    <Text text="{allIndex2>PROGRES}"/>
+                                    <Text text="{allIndex2>DESC_PROG} "/>
+                                    <Text text="{allIndex2>CLASSE}"/>
+                                    <Text text="{allIndex2>DES_COMPONENTE} "/>
+                                    <Text text="{allIndex2>DIVISIONE}"/>
 
 
-                  <Text text="{allIndex2>SEDE_TECNICA} " />
-                  <Text text="{allIndex2>SEDE_TECNICA_P} " />
-                  <Text text="{allIndex2>SEDE_ECC} " />
-                  <Text text="{allIndex2>DESC_SEDE} " />
-                  <Text text="{allIndex2>EQUIPMENT} " />
-                  <Button icon="sap-icon://document-text" tooltip="{allIndex2>TESTO_ESTESO_P}" type="Transparent" press="handleTestoView" />
-                  <Text text="{allIndex2>CLASSE_SEDE} " />
-                  <Text text="{allIndex2>CARATT_SEDE} " />
-                  <Text text="{allIndex2>OGGETTO_TECNICO} " />
-                  <Text text="{allIndex2>PROFILO} " />
-                  <Text text="{allIndex2>ZBAU} " />
-                  <Text text="{allIndex2>VALORE} " />
-                  <Text text="{allIndex2>STRATEGIA}" />
-                  <Text text="{allIndex2>STRATEGIA_DESC}" />
+                                    <Text text="{allIndex2>SEDE_TECNICA} "/>
+                                    <Text text="{allIndex2>SEDE_TECNICA_P} "/>
+                                    <Text text="{allIndex2>SEDE_ECC} "/>
+                                    <Text text="{allIndex2>DESC_SEDE} "/>
+                                    <Text text="{allIndex2>EQUIPMENT} "/>
+                                    <Button icon="sap-icon://document-text" tooltip="{allIndex2>TESTO_ESTESO_P}" type="Transparent" press="handleTestoView"/>
+                                    <Text text="{allIndex2>CLASSE_SEDE} "/>
+                                    <Text text="{allIndex2>CARATT_SEDE} "/>
+                                    <Text text="{allIndex2>OGGETTO_TECNICO} "/>
+                                    <Text text="{allIndex2>PROFILO} "/>
+                                    <Text text="{allIndex2>ZBAU} "/>
+                                    <Text text="{allIndex2>VALORE} "/>
+                                    <Text text="{allIndex2>STRATEGIA}"/>
+                                    <Text text="{allIndex2>STRATEGIA_DESC}"/>
 
-                  <Text text="{allIndex2>DIVISIONEC}" />
-                  <Text text="{allIndex2>CENTRO_LAVORO}" />
-                  <Text text="{allIndex2>TIPO_GESTIONE}" />
-                  <Text text="{allIndex2>TIPO_GESTIONE_1}" />
-                  <Text text="{allIndex2>TIPO_GESTIONE_2}" />
+                                    <Text text="{allIndex2>DIVISIONEC}"/>
+                                    <Text text="{allIndex2>CENTRO_LAVORO}"/>
+                                    <Text text="{allIndex2>TIPO_GESTIONE}"/>
+                                    <Text text="{allIndex2>TIPO_GESTIONE_1}"/>
+                                    <Text text="{allIndex2>TIPO_GESTIONE_2}"/>
 
-                  <Text text="{allIndex2>PRIORITA}" />
-                  <Text text="{allIndex2>TIPO_ATTIVITA}" />
-                  <Text text="{allIndex2>DESC_BREVE}" />
-                  <Button icon="sap-icon://document-text" tooltip="{allIndex2>TESTO_ESTESO}" type="Transparent" press="handleTesto2View" />
-                  <Text text="{allIndex2>INDISPONIBILITA}" />
-                  <Text text="{allIndex2>TIPO_ORDINE}" />
-                  <Text text="{allIndex2>LSTAR}" />
-                  <Text text="{allIndex2>STEUS}" />
-                  <Text text="{allIndex2>NUM}" />
-                  <Text text="{allIndex2>PERSONE}"  />
-                  <Text text="{allIndex2>HPER}"  />
-                  <Text text="{allIndex2>Toth}" />
+                                    <Text text="{allIndex2>PRIORITA}"/>
+                                    <Text text="{allIndex2>TIPO_ATTIVITA}"/>
+                                    <Text text="{allIndex2>DESC_BREVE}"/>
+                                    <Button icon="sap-icon://document-text" tooltip="{allIndex2>TESTO_ESTESO}" type="Transparent" press="handleTesto2View"/>
+                                    <Text text="{allIndex2>INDISPONIBILITA}"/>
+                                    <Text text="{allIndex2>TIPO_ORDINE}"/>
+                                    <Text text="{allIndex2>LSTAR}"/>
+                                    <Text text="{allIndex2>STEUS}"/>
+                                    <Text text="{allIndex2>NUM}"/>
+                                    <Text text="{allIndex2>PERSONE}"/>
+                                    <Text text="{allIndex2>HPER}"/>
+                                    <Text text="{allIndex2>Toth}"/>
 
-                  <Text text="{allIndex2>LSTAR_1}" />
-                  <Text text="{allIndex2>STEUS_1}" />
-                  <Text text="{allIndex2>NUM_1}"   />
-                  <Text text="{allIndex2>PERSONE_1}"  />
-                  <Text text="{allIndex2>HPER_1}"  />
-                  <Text text="{allIndex2>Toth1}" />
+                                    <Text text="{allIndex2>LSTAR_1}"/>
+                                    <Text text="{allIndex2>STEUS_1}"/>
+                                    <Text text="{allIndex2>NUM_1}"/>
+                                    <Text text="{allIndex2>PERSONE_1}"/>
+                                    <Text text="{allIndex2>HPER_1}"/>
+                                    <Text text="{allIndex2>Toth1}"/>
 
-                  <Text text="{allIndex2>LSTAR_2}" />
-                  <Text text="{allIndex2>STEUS_2}" />
-                  <Text text="{allIndex2>NUM_2}" />
-                  <Text text="{allIndex2>PERSONE_2}"  />
-                  <Text text="{allIndex2>HPER_2}"  />
-                  <Text text="{allIndex2>Toth2}" />
+                                    <Text text="{allIndex2>LSTAR_2}"/>
+                                    <Text text="{allIndex2>STEUS_2}"/>
+                                    <Text text="{allIndex2>NUM_2}"/>
+                                    <Text text="{allIndex2>PERSONE_2}"/>
+                                    <Text text="{allIndex2>HPER_2}"/>
+                                    <Text text="{allIndex2>Toth2}"/>
 
-                  <Text text="{allIndex2>LSTAR_3}" />
-                  <Text text="{allIndex2>STEUS_3}" />
-                  <Text text="{allIndex2>NUM_3}"   />
-                  <Text text="{allIndex2>PERSONE_3}"  />
-                  <Text text="{allIndex2>HPER_3}"  />
-                  <Text text="{allIndex2>Toth3}" />
+                                    <Text text="{allIndex2>LSTAR_3}"/>
+                                    <Text text="{allIndex2>STEUS_3}"/>
+                                    <Text text="{allIndex2>NUM_3}"/>
+                                    <Text text="{allIndex2>PERSONE_3}"/>
+                                    <Text text="{allIndex2>HPER_3}"/>
+                                    <Text text="{allIndex2>Toth3}"/>
 
-                  <Text text="{allIndex2>LSTAR_4}" />
-                  <Text text="{allIndex2>STEUS_4}" />
-                  <Text text="{allIndex2>NUM_4}" />
-                  <Text text="{allIndex2>PERSONE_4}"  />
-                  <Text text="{allIndex2>HPER_4}"  />
-                  <Text text="{allIndex2>Toth4}" />
+                                    <Text text="{allIndex2>LSTAR_4}"/>
+                                    <Text text="{allIndex2>STEUS_4}"/>
+                                    <Text text="{allIndex2>NUM_4}"/>
+                                    <Text text="{allIndex2>PERSONE_4}"/>
+                                    <Text text="{allIndex2>HPER_4}"/>
+                                    <Text text="{allIndex2>Toth4}"/>
 
-                  <Text text="{allIndex2>LSTAR_5}" />
-                  <Text text="{allIndex2>STEUS_5}" />
-                  <Text text="{allIndex2>NUM_5}"   />
-                  <Text text="{allIndex2>PERSONE_5}"  />
-                  <Text text="{allIndex2>HPER_5}"  />
-                  <Text text="{allIndex2>Toth5}" />
+                                    <Text text="{allIndex2>LSTAR_5}"/>
+                                    <Text text="{allIndex2>STEUS_5}"/>
+                                    <Text text="{allIndex2>NUM_5}"/>
+                                    <Text text="{allIndex2>PERSONE_5}"/>
+                                    <Text text="{allIndex2>HPER_5}"/>
+                                    <Text text="{allIndex2>Toth5}"/>
 
-                  <Text text="{allIndex2>RISK}" />
-                  <Text text="{allIndex2>LIMITE}" />
-                  <Text text="{allIndex2>FREQ_TEMPO}" />
-                  <Text text="{allIndex2>UNITA_TEMPO}" />
-                  <Text text="{allIndex2>FREQ_CICLO}" />
-                  <Text text="{allIndex2>UNITA_CICLO}" />
-                  <Text text="{allIndex2>POINT}" />
-                  <Text text="{allIndex2>MPTYP}" />
-                  <Text text="{allIndex2>TIPOFREQUENZA}" />
-                  <Text text="{allIndex2>COLLECTIVE}" />
-                  <Text text="{allIndex2>PERCORSO}" />
-                  <Text text="{ parts:[{path:'allIndex2>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
-                  <Text text="{ parts:[{path:'allIndex2>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
-                  <Text text="{allIndex2>DESTINATARIO}" />
-                  <Text text="{allIndex2>AZIONE}" />
-                </cells>
-              </ColumnListItem>
-            </items>
-          </Table>
-            </ScrollContainer>
-            <form:Form width="100%" editable="true" visible="true">
-                <form:layout>
-                    <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
-                </form:layout>
-                <form:title>
-                    <core:Title text="4. {i18n>InterventiAcc}" level="H1"/>
-                </form:title>
-                <form:formContainers/>
+                                    <Text text="{allIndex2>RISK}"/>
+                                    <Text text="{allIndex2>LIMITE}"/>
+                                    <Text text="{allIndex2>FREQ_TEMPO}"/>
+                                    <Text text="{allIndex2>UNITA_TEMPO}"/>
+                                    <Text text="{allIndex2>FREQ_CICLO}"/>
+                                    <Text text="{allIndex2>UNITA_CICLO}"/>
+                                    <Text text="{allIndex2>POINT}"/>
+                                    <Text text="{allIndex2>MPTYP}"/>
+                                    <Text text="{allIndex2>TIPOFREQUENZA}"/>
+                                    <Text text="{allIndex2>COLLECTIVE}"/>
+                                    <Text text="{allIndex2>PERCORSO}"/>
+                                    <Text text="{ parts:[{path:'allIndex2>FINEVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
+                                    <Text text="{ parts:[{path:'allIndex2>INIZIOVAL'}], formatter: '.LocalFormatter.formatDate'}"/>
+                                    <Text text="{allIndex2>DESTINATARIO}"/>
+                                    <Text text="{allIndex2>AZIONE}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </ScrollContainer>
+                <form:Form width="100%" editable="true" visible="true">
+                    <form:layout>
+                        <form:ColumnLayout columnsM="1" columnsL="1" columnsXL="1"/>
+                    </form:layout>
+                    <form:title>
+                        <core:Title text="4. {i18n>InterventiAcc}" level="H1"/>
+                    </form:title>
+                    <form:formContainers/>
 
-            </form:Form>
-            <ScrollContainer width="100%" horizontal="true" >
-                <Table items="{ path: 'accIndex>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
-                    <columns>
-                        <Column width="10em" id="rCol1"><Text text="{i18n>INDEX}"/></Column>
-                        <Column width="10em" id="rCol2"><Text text="{i18n>AZIONI}"/></Column>
-                        <Column width="6em" id="rCol8"><Text text="{i18n>MATERIALI}"/></Column>
-                        <Column width="6em" id="rCol9"><Text text="{i18n>Servizi}"/></Column>
-                        <Column width="10em" id="rCol3"><Text text="{i18n>Divisione}"/></Column>
-                        <Column width="10em" id="rCol4"><Text text="{i18n>SEDE_TECNICA}"/></Column>
-                        <Column width="25em" id="rCol5"><Text text="{i18n>SEDE_ECC}"/></Column>
-                        <Column width="15em" id="rCol6"><Text text="{i18n>CentrodiLavoro}"/></Column>
-                        <Column width="20em" id="rCol7"><Text text="{i18n>Strategy}"/></Column>
+                </form:Form>
+                <ScrollContainer width="100%" horizontal="true">
+                    <Table items="{ path: 'accIndex>/' }" class="backClass sapUiSizeCompact stipAdmin" showNoData="false" mode="None" sticky="HeaderToolbar,ColumnHeaders">
+                        <columns>
+                            <Column width="10em" id="rCol1"><Text text="{i18n>nINDEX}"/></Column>
+                            <Column width="10em" id="rCol2"><Text text="{i18n>nCONTATORE}"/></Column>
+                            <Column width="6em" id="rCol8"><Text text="{i18n>MATERIALI}"/></Column>
+                            <Column width="6em" id="rCol9"><Text text="{i18n>Servizi}"/></Column>
+                            <Column width="10em" id="rCol3"><Text text="{i18n>Divisione}"/></Column>
+                            <Column width="10em" id="rCol4"><Text text="{i18n>SEDE_TECNICA}"/></Column>
+                            <Column width="25em" id="rCol5"><Text text="{i18n>SEDE_ECC}"/></Column>
+                            <Column width="15em" id="rCol6"><Text text="{i18n>CentrodiLavoro}"/></Column>
+                            <Column width="20em" id="rCol7"><Text text="{i18n>Strategy}"/></Column>
 
-                    </columns>
-                    <items>
-                        <ColumnListItem type="Active">
-                            <customData>
-                              <core:CustomData id="custm3" key="mydata" value="{accIndex>COLORSET}" writeToDom="true"></core:CustomData>
-                            </customData>
-                            <cells>
-                            
-                                <Text text="{accIndex>INDEX}"/>
-                                <Text text="{accIndex>CONTATORE}"/>
-                                <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
-                                <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
-                                <Text text="{accIndex>DIVISIONE}"/>
-                                <Text text="{accIndex>SEDE_TECNICA}"/>
-                                <Text text="{accIndex>SEDE_ECC}"/>
-                                <Text text="{accIndex>CENTRO_LAVORO}"/>
-                                <Text text="{accIndex>STRATEGIA}"/>
+                        </columns>
+                        <items>
+                            <ColumnListItem type="Active">
+                                <customData>
+                                    <core:CustomData id="custm3" key="mydata" value="{accIndex>COLORSET}" writeToDom="true"></core:CustomData>
+                                </customData>
+                                <cells>
 
-                            </cells>
-                        </ColumnListItem>
-                    </items>
-                </Table>
-            </ScrollContainer>
+                                    <Text text="{accIndex>INDEX}"/>
+                                    <Text text="{accIndex>CONTATORE}"/>
+                                    <Button icon="sap-icon://activity-2" type="Transparent" press="HandleMaterialView"/>
+                                    <Button icon="sap-icon://crm-service-manager" type="Transparent" press="HandleServiziView"/>
+                                    <Text text="{accIndex>DIVISIONE}"/>
+                                    <Text text="{accIndex>SEDE_TECNICA}"/>
+                                    <Text text="{accIndex>SEDE_ECC}"/>
+                                    <Text text="{accIndex>CENTRO_LAVORO}"/>
+                                    <Text text="{accIndex>STRATEGIA}"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </ScrollContainer>
             </VBox>
         </f:content>
         <!-- DynamicPage Footer -->

@@ -70,7 +70,7 @@
                                     <!--<ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>EQUIPMENT}" showSecondaryValues= "true" items="{ path: 'sHelp>/EQUIPMENT2', sorter: { path: 'EQUIPMENT' }, length:2000 }" selectedKey="{sSelect>/EQUIPMENT2}">
                                       <core:ListItem key="{sHelp>Fieldname1}" text="{sHelp>Fieldname1}" additionalText="{sHelp>Fieldname3}"/>
                                     </ComboBox>-->
-                                    <Input showSuggestion="true" value="{sSelect>/EQUIPMENT2}" suggestionRows="{sHelp>/EQUIPMENT2}" suggest=".onSuggestEquipment" >
+                                    <MultiInput id="inEquip" showSuggestion="true" showValueHelp="false" value="{sSelect>/EQUIPMENT2}" suggestionRows="{sHelp>/EQUIPMENT2}" suggest=".onSuggestEquipment" >
                                         <suggestionColumns>
                                           <Column>
                                             <Label text="{i18n>Equipment}" />
@@ -85,7 +85,7 @@
                                             <Label text="{sHelp>Fieldname3}" />
                                           </ColumnListItem>
                                         </suggestionRows>
-                                      </Input>
+                                      </MultiInput>
                                 </form:fields>
                             </form:FormElement>
                             <form:FormElement visible="true">

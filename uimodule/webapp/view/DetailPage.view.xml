@@ -97,17 +97,17 @@
                                             </form:FormElement>-->
                                             
                                             <form:FormElement label="{i18n>TipoGestione}">
-                                                <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TipoGestione}" showSecondaryValues="true" required="true" items="{ path: 'sHelp>/TIPO_GESTIONE', length:2500 }" selectedKey="{PianiDetail>/TipoGestione}">
+                                                <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TipoGestione}" showSecondaryValues="true" items="{ path: 'sHelp>/TIPO_GESTIONE', length:2500 }" selectedKey="{PianiDetail>/TipoGestione}">
                                                         <core:ListItem key="{sHelp>TipoGestione}" text="{sHelp>TipoGestione}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest}"/>
                                                     </ComboBox></form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{i18n>TipoGestione1}">
-                                                <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TipoGestione1}" showSecondaryValues="true" required="true" items="{ path: 'sHelp>/TIPO_GESTIONE_1', length:2500 }" selectedKey="{PianiDetail>/TipoGestione1}">
+                                                <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TipoGestione1}" showSecondaryValues="true" items="{ path: 'sHelp>/TIPO_GESTIONE_1', length:2500 }" selectedKey="{PianiDetail>/TipoGestione1}">
                                                         <core:ListItem key="{sHelp>TipoGestione1}" text="{sHelp>TipoGestione1}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest1}"/>
                                                     </ComboBox></form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{i18n>TipoGestione2}">
-                                                <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TipoGestione2}" showSecondaryValues="true" required="true" items="{ path: 'sHelp>/TIPO_GESTIONE_2', length:2500 }" selectedKey="{PianiDetail>/TipoGestione2}">
+                                                <form:fields><ComboBox change="handleChangeCb" valueStateText="{i18n>valueState} {i18n>TipoGestione2}" showSecondaryValues="true" items="{ path: 'sHelp>/TIPO_GESTIONE_2', length:2500 }" selectedKey="{PianiDetail>/TipoGestione2}">
                                                         <core:ListItem key="{sHelp>TipoGestione2}" text="{sHelp>TipoGestione2}" additionalText="{sHelp>Divisione} - {sHelp>DesTipoGest2}"/>
                                                     </ComboBox></form:fields>
                                             </form:FormElement>
@@ -273,8 +273,10 @@
                                             </ComboBox>
                                                 </form:fields>
                                             </form:FormElement>
-                                            <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>FineCard}"><form:fields><Input value="{PianiDetail>/FineCard}" enabled="false" maxLength="4"/></form:fields></form:FormElement>
-                                            <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>Scostamento}"><form:fields><Input value="{PianiDetail>/Scostamento}" enabled="false" maxLength="4"/></form:fields></form:FormElement>
+                                            <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>FineCard}"><form:fields>
+                                             <DatePicker displayFormat="dd-MM-YYYY" dateValue="{PianiDetail>/FineCard}"  />
+                                            </form:fields></form:FormElement>
+                                            <form:FormElement visible="{PianiDetail>/TipoPmoT}" label="{i18n>Scostamento}"><form:fields><Input value="{PianiDetail>/Scostamento}" enabled="true" maxLength="4"/></form:fields></form:FormElement>
                                             
                                             <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>Ciclo}"><form:fields><Input value="{PianiDetail>/Ciclo}" maxLength="32"/></form:fields></form:FormElement>
                                             <form:FormElement visible="{PianiDetail>/TipoPmoC}" label="{i18n>UnitaCiclo}"><form:fields>
@@ -551,6 +553,7 @@
                                     <Column width="8em" id="aCol2"><Text text="{i18n>Cont}"/></Column>
                                     <Column width="5em" id="aCol5"><Label text="{i18n>Sistem}"/></Column>
                                     <Column width="7em" id="aCol6"><Label text="{i18n>Progres}"/></Column>
+                                    <Column width="16em" visible="false" id="aCol11"><Label text="{i18n>DesBreveAE}"/></Column>
                                     <Column width="5em" id="aCol7"><Label text="{i18n>Classe}"/></Column>
                                     <Column width="14em" id="aCol9"><Text text="{i18n>Tplnr}"/></Column>
                                     <Column width="16em" id="aCol8"><Text text="{i18n>DesComponente}"/></Column>
@@ -558,7 +561,7 @@
                                     <Column width="6em" id="aCol3"><Text text="{i18n>FlagAttivo}"/></Column>
 
                                     
-                                    <Column width="16em" visible="false" id="aCol11"><Label text="{i18n>DesBreveAE}"/></Column>
+                                    
                                     <Column width="16em" visible="false" id="aCol12"><Text text="{i18n>ComponentTipo}"/></Column>
                                     <Column width="10em" visible="false" id="aCol13"><Text text="{i18n>IntegTxtEsteso}"/></Column>
                                     <!--
@@ -578,6 +581,7 @@
                                                     <core:ListItem text="{sHelp>Progres}" additionalText="{sHelp>Txt}"/>
                                                 </suggestionItems>
                                             </Input>
+                                            <Input value="{AzioniDetail>DesBreve}" editable="false" maxLength="30"/>
                                             <ComboBox selectedKey="{AzioniDetail>Classe}" valueStateText="{i18n>valueState} {i18n>Classe}" items="{ path: 'sHelp>/CLASSE', sorter: [{ path: 'Classe', descending: false, group:false }], length:4000 }" change="handleChangeCb" showSecondaryValues="true" editable="{ parts:[{path:'AzioniDetail>Create'}], formatter: '.LocalFormatter.formatAttivo'}">
                                                 <core:ListItem key="{sHelp>Classe}" text="{sHelp>Classe}" additionalText="{sHelp>Txt}"/>
                                             </ComboBox>
@@ -622,7 +626,7 @@
                                             </Input>
                                             <Switch type="AcceptReject" state="{AzioniDetail>FlagAttivo}" customTextOn="Attivo" customTextOff="Disattivo" change="onChangeAttivo" ></Switch>
                                 
-                                            <Input value="{AzioniDetail>DesBreve}" editable="false" maxLength="30"/>
+                                            
                                             <Input value="{AzioniDetail>ComponentTipo}" editable="false" maxLength="30"/>
                                             <Button icon="sap-icon://document-text" type="Transparent" press="handleTesto"/>
                                             
@@ -647,8 +651,8 @@
                             <Table id="tMateriali" items="{ path: 'MatnrDetail>/' }" sticky="ColumnHeaders" mode="MultiSelect">
                                 <columns>
                                     <Column width="8em" id="mCol1"><Text text="{i18n>Cont}"/></Column>
-                                    <Column width="8em" id="mCol2"><Text text="{i18n>Matnr}"/></Column>
-                                    <Column width="8em" id="mCol3"><Text text="{i18n>Maktx}"/></Column>
+                                    <Column width="12em" id="mCol2"><Text text="{i18n>Matnr}"/></Column>
+                                    <Column width="12em" id="mCol3"><Text text="{i18n>Maktx}"/></Column>
                                     <Column width="8em" id="mCol4"><Text text="{i18n>Menge}"/></Column>
                                     <Column width="8em" id="mCol5"><Text text="{i18n>Meins}"/></Column>
                                     <Column width="8em" id="mCol7"><Text text="{i18n>Werks}"/></Column>
@@ -712,7 +716,7 @@
                         </ScrollContainer>
 
                     </IconTabFilter>
-                    <IconTabFilter text="Serivizi">
+                    <IconTabFilter text="Servizi">
                         <OverflowToolbar width="100%" height="3em">
                             <Button icon="sap-icon://add" text="Aggiungi" type="Emphasized" press="onAddS"/>
                             <Button text="Copia" icon="sap-icon://copy" type="Emphasized" press="onCopyS" class="sapUiTinyMarginBegin"/>
@@ -724,8 +728,8 @@
                             <Table id="tServizi" items="{ path: 'ServiziDetail>/' }" sticky="ColumnHeaders" mode="MultiSelect">
                                 <columns>
                                     <Column width="8em" id="sCol1"><Text text="{i18n>Cont}"/></Column>
-                                    <Column width="8em" id="sCol2"><Text text="{i18n>Asnum}"/></Column>
-                                    <Column width="8em" id="sCol3"><Text text="{i18n>Asktx}"/></Column>
+                                    <Column width="12em" id="sCol2"><Text text="{i18n>Asnum}"/></Column>
+                                    <Column width="12em" id="sCol3"><Text text="{i18n>Asktx}"/></Column>
                                     <Column width="8em" id="sCol4"><Text text="{i18n>Menge}"/></Column>
                                     <Column width="8em" id="sCol5"><Text text="{i18n>Meins}"/></Column>
                                     <Column width="8em" id="sCol8"><Text text="{i18n>Ekgrp}"/></Column>

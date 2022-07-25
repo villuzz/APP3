@@ -14,7 +14,8 @@
                         <Title text="{i18n>InformazioniDivisione}" class="sapUiTinyMarginTop"/>
                     </HBox>
                     <HBox height="100%" alignItems="Center" alignContent="Center" justifyContent="Center">
-                    <Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" class="sapUiSmallMarginEnd"/>
+                      <!--<Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" />-->
+						          <Button text="{i18n>accessibility}" press="accesibilityLink" />
                     </HBox>
                     </OverflowToolbar>
                 </f:content>

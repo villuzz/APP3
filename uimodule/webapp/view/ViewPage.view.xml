@@ -35,7 +35,8 @@
             </HBox>
 					</f:heading>
 					<f:navigationActions>
-						<Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" />
+						<!--<Link href="https://www.w3.org/WAI/eval/report-tool/" target="_blank" text="{i18n>accessibility}" />-->
+						<Button text="{i18n>accessibility}" press="accesibilityLink" />
 					  <Button text="Modifica" icon="sap-icon://edit" press="onModify" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonEdit" ariaLabelledBy="ActionEdit"/>
                     <Button text="Copia"  icon="sap-icon://copy" press="onCopy" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonCopy" ariaLabelledBy="ActionCopy"/>
                     <Button text="Cancella" icon="sap-icon://delete" press="handleDelete" class="sapUiTinyMarginBegin" ariaDescribedBy="ButtonDelete" ariaLabelledBy="ActionDelete"/>
@@ -123,7 +124,7 @@
                             <fb:FilterGroupItem id="FIIDesBreve" visible="true" groupName="__$INTERNAL$" name="FYIDesBreve" label="{i18n>IDesBreve}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                   <Input value="{sFilter>/IDesBreve}" />
-                                  </fb:control>
+                                </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIIAzione" visible="true" groupName="__$INTERNAL$" name="FYIAzione" label="{i18n>IAzione}" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
@@ -179,51 +180,64 @@
 
                             <fb:FilterGroupItem id="FIIStComponente" visible="true" groupName="__$INTERNAL$" name="FYIStComponente" label="{i18n>SedeTecnica2}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/IStComponente}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
-                                                <suggestionColumns>
-                                                    <Column>
-                                                        <Label text="{i18n>Functlocation}"/>
-                                                    </Column>
-                                                    <Column hAlign="Center">
-                                                        <Label text="{i18n>Category}"/>
-                                                    </Column>
-                                                    <Column hAlign="End">
-                                                        <Label text="{i18n>Descript}"/>
-                                                    </Column>
-                                                </suggestionColumns>
-                                                <suggestionRows>
-                                                    <ColumnListItem>
-                                                        <Label text="{sHelp>Functlocation}"/>
-                                                        <Label text="{sHelp>Category}"/>
-                                                        <Label text="{sHelp>Descript}"/>
-                                                    </ColumnListItem>
-                                                </suggestionRows>
-                                            </Input>
+                                <HBox>
+                                  <MultiInput id="schedaTecnicaMultiInputId" showValueHelp="false"/>
+                                  <Button type="Emphasized" icon="sap-icon://value-help" press="handleSedeTecnicaECC">
+                                    <layoutData>
+                                      <l:GridData span="L1 M1 S3" />
+                                    </layoutData>
+                                  </Button>
+                                </HBox>
+                                <!-- <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/IStComponente}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
+                                  <suggestionColumns>
+                                    <Column>
+                                      <Label text="{i18n>Functlocation}"/>
+                                    </Column>
+                                    <Column hAlign="Center">
+                                      <Label text="{i18n>Category}"/>
+                                    </Column>
+                                    <Column hAlign="End">
+                                      <Label text="{i18n>Descript}"/>
+                                    </Column>
+                                  </suggestionColumns>
+                                  <suggestionRows>
+                                    <ColumnListItem>
+                                      <Label text="{sHelp>Functlocation}"/>
+                                      <Label text="{sHelp>Category}"/>
+                                      <Label text="{sHelp>Descript}"/>
+                                    </ColumnListItem>
+                                  </suggestionRows>
+                                </Input>               -->
                               </fb:control>
                             </fb:FilterGroupItem>
                             
-
                             <fb:FilterGroupItem id="FIEquipment" visible="true" groupName="__$INTERNAL$" name="FYEquipment" label="{i18n>Equipment}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentCompo}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
-                                        <suggestionColumns>
-                                          <Column>
-                                            <Label text="{i18n>Equipment}" />
-                                          </Column>
-                                          <Column hAlign="End">
-                                            <Label text="{i18n>Description}" />
-                                          </Column>
-                                        </suggestionColumns>
-                                        <suggestionRows>
-                                          <ColumnListItem>
-                                            <Label text="{sHelp>Fieldname1}" />
-                                            <Label text="{sHelp>Fieldname3}" />
-                                          </ColumnListItem>
-                                        </suggestionRows>
-                                      </Input>
+                                <MultiInput id="inEquipment" showValueHelp="false">
+                                </MultiInput>
+                                <!-- <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentCompo}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
+                                  <suggestionColumns>
+                                    <Column>
+                                      <Label text="{i18n>Equipment}" />
+                                    </Column>
+                                    <Column hAlign="End">
+                                      <Label text="{i18n>Description}" />
+                                    </Column>
+                                  </suggestionColumns>
+                                  <suggestionRows>
+                                    <ColumnListItem>
+                                      <Label text="{sHelp>Fieldname1}" />
+                                      <Label text="{sHelp>Fieldname3}" />
+                                    </ColumnListItem>
+                                  </suggestionRows>
+                                </Input> -->
                               </fb:control>
                             </fb:FilterGroupItem>
-
+                            <fb:FilterGroupItem id="filterDescComponente" visible="true" groupName="__$INTERNAL$" name="filterDescComponente" label="{i18n>Componente}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Input value="{sFilter>/descrComponente}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIICentroLavoro" visible="true" groupName="__$INTERNAL$" name="FYICentroLavoro" label="{i18n>ICentroLavoro}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
                                 <MultiComboBox showSecondaryValues= "true" items="{ path: 'sHelp>/ICentroLavoro', length:2500  }" selectedKeys="{sFilter>/ICentroLavoro}">
@@ -327,46 +341,48 @@
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIITplnrActEl" visible="true" groupName="__$INTERNAL$" name="FYITplnrActEl" label="{i18n>ITplnrActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/ITplnrActEl}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
-                                                <suggestionColumns>
-                                                    <Column>
-                                                        <Label text="{i18n>Functlocation}"/>
-                                                    </Column>
-                                                    <Column hAlign="Center">
-                                                        <Label text="{i18n>Category}"/>
-                                                    </Column>
-                                                    <Column hAlign="End">
-                                                        <Label text="{i18n>Descript}"/>
-                                                    </Column>
-                                                </suggestionColumns>
-                                                <suggestionRows>
-                                                    <ColumnListItem>
-                                                        <Label text="{sHelp>Functlocation}"/>
-                                                        <Label text="{sHelp>Category}"/>
-                                                        <Label text="{sHelp>Descript}"/>
-                                                    </ColumnListItem>
-                                                </suggestionRows>
-                                            </Input>
+                                <MultiInput id="inITplnrActEl" showValueHelp="false"/>
+                                <!-- <Input showSuggestion="true" maxSuggestionWidth="40em" maxLength="40" value="{sFilter>/ITplnrActEl}" suggestionRows="{sHelp>/SedeRealeSingle}" suggest=".onSuggestSEDE">
+                                  <suggestionColumns>
+                                    <Column>
+                                      <Label text="{i18n>Functlocation}"/>
+                                    </Column>
+                                    <Column hAlign="Center">
+                                      <Label text="{i18n>Category}"/>
+                                    </Column>
+                                    <Column hAlign="End">
+                                      <Label text="{i18n>Descript}"/>
+                                    </Column>
+                                  </suggestionColumns>
+                                  <suggestionRows>
+                                    <ColumnListItem>
+                                      <Label text="{sHelp>Functlocation}"/>
+                                      <Label text="{sHelp>Category}"/>
+                                      <Label text="{sHelp>Descript}"/>
+                                    </ColumnListItem>
+                                  </suggestionRows>
+                                </Input> -->
                               </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem id="FIIEquipmentActEl" visible="true" groupName="__$INTERNAL$" name="FYIEquipmentActEl" label="{i18n>IEquipmentActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
-                                <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentActEl}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
-                                        <suggestionColumns>
-                                          <Column>
-                                            <Label text="{i18n>Equipment}" />
-                                          </Column>
-                                          <Column hAlign="End">
-                                            <Label text="{i18n>Description}" />
-                                          </Column>
-                                        </suggestionColumns>
-                                        <suggestionRows>
-                                          <ColumnListItem>
-                                            <Label text="{sHelp>Fieldname1}" />
-                                            <Label text="{sHelp>Fieldname3}" />
-                                          </ColumnListItem>
-                                        </suggestionRows>
-                                      </Input>
+                                <MultiInput id="inEquipmentActEl" showValueHelp="false"/>
+                                <!-- <Input showSuggestion="true" maxSuggestionWidth="40em" value="{sFilter>/IEquipmentActEl}" suggestionRows="{sHelp>/EQUIPMENT}" suggest=".onSuggestEquipment" >
+                                  <suggestionColumns>
+                                    <Column>
+                                      <Label text="{i18n>Equipment}" />
+                                    </Column>
+                                    <Column hAlign="End">
+                                      <Label text="{i18n>Description}" />
+                                    </Column>
+                                  </suggestionColumns>
+                                  <suggestionRows>
+                                    <ColumnListItem>
+                                      <Label text="{sHelp>Fieldname1}" />
+                                      <Label text="{sHelp>Fieldname3}" />
+                                    </ColumnListItem>
+                                  </suggestionRows>
+                                </Input> -->
                               </fb:control>
                             </fb:FilterGroupItem>
                             
@@ -378,6 +394,12 @@
                             <fb:FilterGroupItem id="FYIDesComponenteActEl" visible="true" groupName="__$INTERNAL$" name="FIIDesComponenteActEl" label="{i18n>IDesComponenteActEl}" partOfCurrentVariant="true" visibleInFilterBar="true">
                               <fb:control>
                                 <Input value="{sFilter>/IDesComponenteActEl}" />
+                              </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="filterVisualConAzioneElementare" visible="true" groupName="__$INTERNAL$" name="filterVisualConAzioneElementare" label="{i18n>VisualConAzioneElementare}" partOfCurrentVariant="true" visibleInFilterBar="true">
+                              <fb:control>
+                                <Switch id="switchFilterVisualId" type="AcceptReject" state="false" customTextOn="Attivo" customTextOff="Disattivo"></Switch>
+                                <!-- change="onChangeAttivo" state="{sFilter>filterVisualConAzioneElementare}"-->
                               </fb:control>
                             </fb:FilterGroupItem>
                            
@@ -399,6 +421,9 @@
                 <Table id="tbPiani" items="{ path: 'mPiani>/',  sorter: [{ path: 'IndexPmo', descending: true, group:false }] }" mode="MultiSelect" sticky="HeaderToolbar,ColumnHeaders">
                     <columns>
                         <Column width="10em" id="col1"><Text text="{i18n>IndexPmo}"/></Column>
+                        <Column width="10em" id="col100" visible="true">
+                          <Text text="{i18n>AzioniElementari}" />
+                        </Column>
                         <Column width="10em" id="col2"><Text text="{i18n>InizioVal}"/></Column>
                         <Column width="10em" id="col3"><Text text="{i18n>FineVal}"/></Column>
                         <Column width="10em" id="col4"><Text text="{i18n>Divisioneu}"/></Column>
@@ -494,11 +519,13 @@
                         <Column width="10em" id="col97"><Text text="{i18n>TxtCiclo}"/></Column>
                         <Column width="10em" id="col98"><Text text="{i18n>Uname}"/></Column>
                         <Column width="10em" id="col99"><Text text="{i18n>UnitaCiclo}"/></Column>
+                        
                     </columns>
                     <items>
                         <ColumnListItem vAlign="Middle" type="Active" press="onPressLine">
                             <cells>
                                 <Text text="{ parts:[{path:'mPiani>IndexPmo'}], formatter: '.LocalFormatter.alphaOutput'}"/>
+                                <Text visible="{path: '', formatter: '.formatter.visualAzioneElementare'}" text="{mPiani>Cont}"/>
                                 <Text text="{ parts:[{path:'mPiani>InizioVal'}], formatter: '.LocalFormatter.formatDate'}"/>
                                 <Text text="{ parts:[{path:'mPiani>FineVal'}], formatter: '.LocalFormatter.formatDate'}"/>
                                 <Text text="{mPiani>Divisioneu}"/>
@@ -607,10 +634,12 @@
             </OverflowToolbar>
         </f:footer>
         <f:dependents>
-        <core:Fragment fragmentName="PM030.APP3.fragment.popTestoEstesoView" type="XML"></core:Fragment>
+          <core:Fragment fragmentName="PM030.APP3.fragment.popTestoEstesoView" type="XML"></core:Fragment>
           <core:Fragment fragmentName="PM030.APP3.fragment.Variant" type="XML"></core:Fragment>
           <core:Fragment fragmentName="PM030.APP3.fragment.SaveVariant" type="XML"></core:Fragment>
-      <core:Fragment fragmentName="PM030.APP3.fragment.UploadTable" type="XML"></core:Fragment>
-    </f:dependents>
+          <core:Fragment fragmentName="PM030.APP3.fragment.UploadTable" type="XML"></core:Fragment>
+          <!-- 2DO check -->
+          <core:Fragment fragmentName="PM030.APP3.fragment.SedeTecnicaReale" type="XML"></core:Fragment>
+        </f:dependents>
     </f:DynamicPage>
 </mvc:View>
